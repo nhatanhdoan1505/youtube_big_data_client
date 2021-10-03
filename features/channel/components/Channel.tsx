@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useAppDispatch } from "../../../app/hook";
 import { channelAction } from "../channelSlice";
+import { beautyNumberDisplay } from "../../../utils/common";
 
 function Channel({
   channelThumnail,
@@ -70,7 +71,7 @@ function Channel({
                 Subscribe
               </StatLabel>
               <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {subscribe}
+                {beautyNumberDisplay(subscribe)}
               </StatNumber>
               <StatHelpText fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
                 {+gapSubcribe >= 0 ? (
@@ -78,7 +79,7 @@ function Channel({
                 ) : (
                   <StatArrow type="increase" />
                 )}
-                {gapSubcribe}
+                {beautyNumberDisplay(gapSubcribe)}
               </StatHelpText>
             </Stat>
             <Stat mr={5}>
@@ -86,7 +87,7 @@ function Channel({
                 Views
               </StatLabel>
               <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {views}
+                {beautyNumberDisplay(views)}
               </StatNumber>
               <StatHelpText fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
                 {+gapViews >= 0 ? (
@@ -94,7 +95,7 @@ function Channel({
                 ) : (
                   <StatArrow type="increase" />
                 )}
-                {gapViews}
+                {beautyNumberDisplay(gapViews)}
               </StatHelpText>
             </Stat>
             <Stat mr={5}>
@@ -102,7 +103,7 @@ function Channel({
                 Videos
               </StatLabel>
               <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {numberVideos}
+                {beautyNumberDisplay(numberVideos)}
               </StatNumber>
               <StatHelpText fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
                 {+gapNumberVideos >= 0 ? (
@@ -110,7 +111,7 @@ function Channel({
                 ) : (
                   <StatArrow type="increase" />
                 )}
-                {gapNumberVideos}
+                {beautyNumberDisplay(gapNumberVideos)}
               </StatHelpText>
             </Stat>
           </StatGroup>

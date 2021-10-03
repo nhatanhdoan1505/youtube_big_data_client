@@ -34,3 +34,19 @@ export const optimizeChannel = (channels: IChannel[]) =>
       numberVideos,
     };
   });
+
+export const beautyNumberDisplay = (number: string) => {
+  const numberComma = Math.trunc(number.length / 3);
+  const indexStart = number.length % 3;
+  let beautyNumber = "";
+
+  let pivot = 0;
+  for (let i = indexStart; i < number.length; i += 3) {
+    beautyNumber += `${number.slice(pivot, i)},`;
+    pivot = i;
+    console.log(beautyNumber);
+  }
+  beautyNumber += `${number.slice(pivot)}`;
+  beautyNumber = beautyNumber[0] === "," ? beautyNumber.slice(1) : beautyNumber;
+  return beautyNumber;
+};
