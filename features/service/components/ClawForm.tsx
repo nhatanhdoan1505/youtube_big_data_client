@@ -17,8 +17,11 @@ import {
   selectChannels,
 } from "../serviceSlice";
 import Channel from "../../channel/components/Channel";
+import { useRouter } from "next/router";
 
 function ClawForm() {
+  const router = useRouter();
+
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectLoading);
   const isSuccess = useAppSelector(selectIsSuccess);
@@ -98,6 +101,14 @@ function ClawForm() {
         <Divider />
         <Button my={4} onClick={handerClaw} isLoading={isLoading}>
           Run
+        </Button>
+        <Button
+          mx={4}
+          my={4}
+          onClick={() => router.push("/admin/dashboard")}
+          colorScheme="telegram"
+        >
+          Dashboard
         </Button>
       </Box>
       {channels.map((c) => (
