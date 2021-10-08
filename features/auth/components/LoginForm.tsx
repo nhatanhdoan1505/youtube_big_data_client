@@ -56,7 +56,7 @@ function signIn() {
         position: "top",
       });
 
-    if (isLoginSuccessfully) router.push("/home");
+    if (isLoginSuccessfully) router.push("/admin");
   }, [isLoading]);
 
   return (
