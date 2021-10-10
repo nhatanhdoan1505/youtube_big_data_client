@@ -36,7 +36,7 @@ export const optimizeChannel = (channels: IChannel[]) =>
   });
 
 export const beautyNumberDisplay = (number: string) => {
-  const numberComma = Math.trunc(number.length / 3);
+  if (!number) return "-1";
   const indexStart = number.length % 3;
   let beautyNumber = "";
 
@@ -44,7 +44,6 @@ export const beautyNumberDisplay = (number: string) => {
   for (let i = indexStart; i < number.length; i += 3) {
     beautyNumber += `${number.slice(pivot, i)},`;
     pivot = i;
-    console.log(beautyNumber);
   }
   beautyNumber += `${number.slice(pivot)}`;
   beautyNumber = beautyNumber[0] === "," ? beautyNumber.slice(1) : beautyNumber;

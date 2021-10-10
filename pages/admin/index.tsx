@@ -10,7 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -18,6 +18,7 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import { authAction, selectIsAdmin } from "../../features/auth/authSlice";
 import ClawForm from "../../features/service/components/ClawForm";
+import Header from "../../component/common/Header";
 
 const Admin: NextPage = () => {
   const isAdmin = useAppSelector(selectIsAdmin);
@@ -37,6 +38,7 @@ const Admin: NextPage = () => {
 
   const page = isAdmin ? (
     <>
+      <Header title="Admin Page" />
       <Center marginTop={4} pos="static">
         <Box width={{ base: "100%", sm: "100%", md: "90%", lg: "60%" }}>
           <ClawForm />
@@ -45,6 +47,7 @@ const Admin: NextPage = () => {
     </>
   ) : (
     <>
+      <Header title="Admin Page" />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

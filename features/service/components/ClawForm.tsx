@@ -123,6 +123,7 @@ function ClawForm() {
           gapNumberVideos="0"
           numberVideos={c.numberVideos}
           gapSubcribe="0"
+          urlChannel={c.urlChannel}
         />
       ))}
     </>

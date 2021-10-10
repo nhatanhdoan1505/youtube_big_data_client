@@ -14,10 +14,12 @@ import {
   HStack,
   Badge,
   Tag,
+  Button,
 } from "@chakra-ui/react";
-import { useAppDispatch } from "../../../app/hook";
-import { channelAction } from "../channelSlice";
+import { useAppDispatch, useAppSelector } from "../../../app/hook";
+import { channelAction, selectLoading } from "../channelSlice";
 import { beautyNumberDisplay } from "../../../utils/common";
+import Link from "next/link";
 
 function Channel({
   channelThumnail,
@@ -29,6 +31,7 @@ function Channel({
   gapSubcribe,
   gapNumberVideos,
   id,
+  urlChannel,
 }: {
   id: string;
   channelThumnail: string;
@@ -39,8 +42,10 @@ function Channel({
   gapViews: string;
   gapSubcribe: string;
   gapNumberVideos: string;
+  urlChannel: string;
 }) {
   const dispatch = useAppDispatch();
+  const loading = useAppSelector(selectLoading);
 
   const handleDeleteBtn = () => {
     dispatch(channelAction.deleteChannel(id));
@@ -64,59 +69,67 @@ function Channel({
         <Heading as="h2" fontSize={{ base: "14px", sm: "18px", md: "24px" }}>
           {title}
         </Heading>
-        <HStack spacing={5} mt={4}>
-          <StatGroup>
-            <Stat mr={5}>
-              <StatLabel fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                Subscribe
-              </StatLabel>
-              <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {beautyNumberDisplay(subscribe)}
-              </StatNumber>
-              <StatHelpText fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {+gapSubcribe >= 0 ? (
-                  <StatArrow type="increase" />
-                ) : (
-                  <StatArrow type="increase" />
-                )}
-                {beautyNumberDisplay(gapSubcribe)}
-              </StatHelpText>
-            </Stat>
-            <Stat mr={5}>
-              <StatLabel fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                Views
-              </StatLabel>
-              <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {beautyNumberDisplay(views)}
-              </StatNumber>
-              <StatHelpText fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {+gapViews >= 0 ? (
-                  <StatArrow type="increase" />
-                ) : (
-                  <StatArrow type="increase" />
-                )}
-                {beautyNumberDisplay(gapViews)}
-              </StatHelpText>
-            </Stat>
-            <Stat mr={5}>
-              <StatLabel fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                Videos
-              </StatLabel>
-              <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {beautyNumberDisplay(numberVideos)}
-              </StatNumber>
-              <StatHelpText fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
-                {+gapNumberVideos >= 0 ? (
-                  <StatArrow type="increase" />
-                ) : (
-                  <StatArrow type="increase" />
-                )}
-                {beautyNumberDisplay(gapNumberVideos)}
-              </StatHelpText>
-            </Stat>
-          </StatGroup>
-        </HStack>
-        <Badge
+        <a href={urlChannel} target="_blank">
+          <HStack spacing={5} mt={4}>
+            <StatGroup>
+              <Stat mr={5}>
+                <StatLabel fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
+                  Subscribe
+                </StatLabel>
+                <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
+                  {beautyNumberDisplay(subscribe)}
+                </StatNumber>
+                <StatHelpText
+                  fontSize={{ base: "10px", sm: "14px", md: "16px" }}
+                >
+                  {+gapSubcribe >= 0 ? (
+                    <StatArrow type="increase" />
+                  ) : (
+                    <StatArrow type="increase" />
+                  )}
+                  {beautyNumberDisplay(gapSubcribe)}
+                </StatHelpText>
+              </Stat>
+              <Stat mr={5}>
+                <StatLabel fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
+                  Views
+                </StatLabel>
+                <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
+                  {beautyNumberDisplay(views)}
+                </StatNumber>
+                <StatHelpText
+                  fontSize={{ base: "10px", sm: "14px", md: "16px" }}
+                >
+                  {+gapViews >= 0 ? (
+                    <StatArrow type="increase" />
+                  ) : (
+                    <StatArrow type="increase" />
+                  )}
+                  {beautyNumberDisplay(gapViews)}
+                </StatHelpText>
+              </Stat>
+              <Stat mr={5}>
+                <StatLabel fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
+                  Videos
+                </StatLabel>
+                <StatNumber fontSize={{ base: "10px", sm: "14px", md: "16px" }}>
+                  {beautyNumberDisplay(numberVideos)}
+                </StatNumber>
+                <StatHelpText
+                  fontSize={{ base: "10px", sm: "14px", md: "16px" }}
+                >
+                  {+gapNumberVideos >= 0 ? (
+                    <StatArrow type="increase" />
+                  ) : (
+                    <StatArrow type="increase" />
+                  )}
+                  {beautyNumberDisplay(gapNumberVideos)}
+                </StatHelpText>
+              </Stat>
+            </StatGroup>
+          </HStack>
+        </a>
+        <Button
           size="md"
           colorScheme="red"
           borderRadius="full"
@@ -127,9 +140,10 @@ function Channel({
           alignItems="center"
           variant="outline"
           onClick={handleDeleteBtn}
+          isLoading={loading}
         >
           Delete
-        </Badge>
+        </Button>
       </Flex>
     </Flex>
   );

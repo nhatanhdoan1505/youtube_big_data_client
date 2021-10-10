@@ -21,11 +21,13 @@ const channelSlice = createSlice({
   initialState,
   reducers: {
     queryAllChannel(state) {},
-    deleteChannel(state, action: PayloadAction<string>) {},
+    deleteChannel(state, action: PayloadAction<string>) {
+      state.loading = true;
+    },
     deleteChannelSuccessfully(state, action: PayloadAction<IChannel[]>) {
-      console.log("aaa", action.payload);
       state.channels = action.payload;
       state.labels = state.channels.map((c) => c.label);
+      state.loading = false;
     },
     getAllChannel(state, action: PayloadAction<IChannel[]>) {
       state.channels = action.payload;

@@ -11,11 +11,13 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hook";
 import { authAction, selectIsAdmin } from "../../../features/auth/authSlice";
 import DashBoard from "../../../features/channel/pages/Dashboard";
+import Header from "../../../component/common/Header";
 
 const Home: NextPage = () => {
   const isAdmin = useAppSelector(selectIsAdmin);
@@ -34,9 +36,13 @@ const Home: NextPage = () => {
   }, [isAdmin]);
 
   const page = isAdmin ? (
-    <DashBoard />
+    <>
+      <Header title="Dashboard" />
+      <DashBoard />
+    </>
   ) : (
     <>
+      <Header title="Dashboard" />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

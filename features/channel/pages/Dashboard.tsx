@@ -1,4 +1,12 @@
-import { VStack, Select, Box, Center } from "@chakra-ui/react";
+import {
+  VStack,
+  Select,
+  Box,
+  Center,
+  Flex,
+  HStack,
+  Button,
+} from "@chakra-ui/react";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { channelAction, selectChannels, selectLabel } from "../channelSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/hook";
@@ -38,17 +46,24 @@ function Dashboard() {
     <Center my={6}>
       <Box w={{ base: "100%", sm: "100%", md: "80%", lg: "70%" }} x>
         <VStack>
-          <Select
-            placeholder="Select label"
-            colorScheme="teal.500"
-            onChange={handleChoseLabel}
-          >
-            {_.uniq(labels).map((l) => (
-              <option value={l} key={l}>
-                {l}
-              </option>
-            ))}
-          </Select>
+          <HStack w="100%">
+            <Select
+              placeholder="Select label"
+              colorScheme="teal.500"
+              onChange={handleChoseLabel}
+            >
+              {_.uniq(labels).map((l) => (
+                <option value={l} key={l}>
+                  {l}
+                </option>
+              ))}
+            </Select>
+            <Button
+              colorScheme="teal.500"
+              variant="outline"
+              onClick={() => router.push("/admin/")}
+            >Back to Admin</Button>
+          </HStack>
           <ChannelView channels={channelsPick} />
         </VStack>
       </Box>

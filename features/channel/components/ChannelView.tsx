@@ -28,6 +28,7 @@ function ChannelView(props: { channels: IChannel[] }) {
               gapNumberVideos={c.gapNumberVideos}
               gapSubcribe={c.gapSubcribe}
               gapViews={c.gapViews}
+              urlChannel={c.urlChannel}
             />
           );
         })}
