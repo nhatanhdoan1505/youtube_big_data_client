@@ -1,6 +1,6 @@
 import { IChannel } from "../models";
 import * as _ from "lodash";
-import moment from "moment";
+import * as moment from "moment";
 
 export const optimizeChannel = (channels: IChannel[]) =>
   channels.map((c) => {
@@ -94,4 +94,4 @@ export const beautyNumberDisplay = (number: string) => {
 };
 
 export const formatDate = (date: string) =>
-  moment(date).format("dddd, MMMM Do YYYY, h:mm:ss a");
+  moment.default(date).format("dddd, MMMM Do YYYY, h:mm:ss a");
