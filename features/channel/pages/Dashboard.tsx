@@ -1,19 +1,17 @@
 import {
-  VStack,
-  Select,
   Box,
-  Center,
-  Flex,
-  HStack,
   Button,
+  Center,
+  HStack,
+  Select, VStack
 } from "@chakra-ui/react";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { channelAction, selectChannels, selectLabel } from "../channelSlice";
-import { useAppDispatch, useAppSelector } from "../../../app/hook";
-import { useRouter } from "next/router";
 import * as _ from "lodash";
+import { useRouter } from "next/router";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/hook";
 import { IChannel } from "../../../models";
-import ChannelView from "../components/ChannelView";
+import { channelAction, selectChannels, selectLabel } from "../channelSlice";
+import ChannelTable from "../components/ChannelTable";
 
 function Dashboard() {
   const [label, setLabel] = useState("");
@@ -32,6 +30,12 @@ function Dashboard() {
   const handleChoseLabel = (event: ChangeEvent<HTMLSelectElement>) => {
     setLabel(event.target.value);
     const channelData = channels.filter((c) => c.label === event.target.value);
+    const date = channelData
+      .filter((c) => c.date.includes("|"))
+      .map((c) => c.date.split("|")[c.date.split("|").length - 1])
+      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())[0];
+      
+    dispatch(channelAction.setDate(date));
     setChannelsPick(channelData);
   };
 
@@ -44,7 +48,7 @@ function Dashboard() {
 
   return (
     <Center my={6}>
-      <Box w={{ base: "100%", sm: "100%", md: "80%", lg: "70%" }} x>
+      <Box w={{ base: "100%", sm: "100%", md: "100%", lg: "100%" }} mx={5}>
         <VStack>
           <HStack w="100%">
             <Select
@@ -62,9 +66,11 @@ function Dashboard() {
               colorScheme="teal.500"
               variant="outline"
               onClick={() => router.push("/admin/")}
-            >Back to Admin</Button>
+            >
+              Back to Admin
+            </Button>
           </HStack>
-          <ChannelView channels={channelsPick} />
+          <ChannelTable channels={channelsPick} />
         </VStack>
       </Box>
     </Center>

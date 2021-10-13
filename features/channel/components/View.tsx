@@ -8,7 +8,7 @@ import {
   Tbody,
   Td,
   Text,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
 import React from "react";
 

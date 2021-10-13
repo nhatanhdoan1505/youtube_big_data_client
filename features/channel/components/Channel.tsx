@@ -1,25 +1,12 @@
 import {
-  Box,
-  Flex,
-  Heading,
-  Image,
-  VStack,
-  Text,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatGroup,
-  StatHelpText,
-  StatArrow,
-  HStack,
-  Badge,
-  Tag,
-  Button,
+  Button, Flex,
+  Heading, HStack, Image, Stat, StatArrow, StatGroup,
+  StatHelpText, StatLabel,
+  StatNumber
 } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hook";
-import { channelAction, selectLoading } from "../channelSlice";
 import { beautyNumberDisplay } from "../../../utils/common";
-import Link from "next/link";
+import { channelAction, selectLoading } from "../channelSlice";
 
 function Channel({
   channelThumnail,

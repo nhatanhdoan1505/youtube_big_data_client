@@ -1,10 +1,7 @@
-import { VStack, StackDivider } from "@chakra-ui/react";
-import * as _ from "lodash";
-import { useAppSelector } from "../../../app/hook";
-import { selectChannels } from "../channelSlice";
-import Channel from "./Channel";
-import { optimizeChannel } from "../../../utils/common";
+import { StackDivider, VStack } from "@chakra-ui/react";
 import { IChannel } from "../../../models";
+import { optimizeChannel } from "../../../utils/common";
+import Channel from "./Channel";
 
 function ChannelView(props: { channels: IChannel[] }) {
   const channelsOptimize = optimizeChannel(props.channels);

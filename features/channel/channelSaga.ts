@@ -34,6 +34,7 @@ function* getAllChannel() {
   try {
     const respone: IChannel[] = yield call(channelApi.getAllChannel);
     yield put(channelAction.getAllChannel(respone));
+    yield put(channelAction.sortChannel("views"));
   } catch (error) {
     console.log(error);
   }

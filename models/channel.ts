@@ -8,6 +8,9 @@ export interface IChannel {
   numberVideos: string;
   date: string;
   channelThumnail: string;
+  gapNumberVideos: string;
+  gapViews: string;
+  gapSubcribe: string;
   videoList: [IVideo];
 }
 
