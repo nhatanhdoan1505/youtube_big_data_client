@@ -1,23 +1,26 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Box,
   Button,
   Divider,
   Flex,
   Input,
+  Select,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../../../app/hook";
-import {
-  serviceAction,
-  selectLoading,
-  selectIsSuccess,
-  selectIsFail,
-  selectChannels,
-} from "../serviceSlice";
-import Channel from "../../channel/components/Channel";
+import * as _ from "lodash";
 import { useRouter } from "next/router";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/hook";
+import { channelAction, selectLabel } from "../../channel/channelSlice";
+import Channel from "../../channel/components/Channel";
+import {
+  selectChannelsResult,
+  selectIsFail,
+  selectIsSuccess,
+  selectLoading,
+  serviceAction,
+} from "../serviceSlice";
 
 function ClawForm() {
   const router = useRouter();
@@ -26,7 +29,8 @@ function ClawForm() {
   const isLoading = useAppSelector(selectLoading);
   const isSuccess = useAppSelector(selectIsSuccess);
   const isFail = useAppSelector(selectIsFail);
-  const channels = useAppSelector(selectChannels);
+  const channels = useAppSelector(selectChannelsResult);
+  const labels = useAppSelector(selectLabel);
 
   const toast = useToast();
 
@@ -38,6 +42,9 @@ function ClawForm() {
     setUrl(event.target.value);
   };
   const handerInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setLabel(event.target.value);
+  };
+  const chooseLabelHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     setLabel(event.target.value);
   };
 
@@ -53,9 +60,14 @@ function ClawForm() {
       });
     } else {
       setIsFirst(false);
-      dispatch(serviceAction.sendRequest({ url, label }));
+      let endpoint = url.replace(/\n/g, ",");
+      dispatch(serviceAction.sendRequest({ url: endpoint, label }));
     }
   };
+
+  useEffect(() => {
+    dispatch(channelAction.queryAllChannel());
+  }, []);
 
   useEffect(() => {
     if (!isFirst && isFail)
@@ -86,7 +98,7 @@ function ClawForm() {
         <Flex my={5}>
           <Textarea
             size="lg"
-            placeholder="Enter url channel splitting by `,`"
+            placeholder="Enter url channel"
             onChange={handerTextAreaChange}
           />
           <Input
@@ -96,7 +108,20 @@ function ClawForm() {
             placeholder="Label"
             onChange={handerInputChange}
             textAlign="center"
+            value={label}
           />
+          <Select
+            placeholder="Select label"
+            colorScheme="teal.500"
+            onChange={chooseLabelHandler}
+            w="250px"
+          >
+            {_.uniq(labels).map((l) => (
+              <option value={l} key={l}>
+                {l}
+              </option>
+            ))}
+          </Select>
         </Flex>
         <Divider />
         <Button my={4} onClick={handerClaw} isLoading={isLoading}>

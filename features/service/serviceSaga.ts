@@ -15,6 +15,29 @@ function* requestClawChannel(action: PayloadAction<IClawForm>) {
   }
 }
 
+function* getApiKey() {
+  try {
+    const response: { apiKey: string[] } = yield serviceApi.getApiKey();
+    yield put(serviceAction.getApiKeySuccessfully(response.apiKey));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* updateApiKey(action: PayloadAction<string>) {
+  try {
+    const response: { apiKey: string[] } = yield serviceApi.updateApiKey(
+      action.payload
+    );
+    console.log("aaaa", response);
+    yield put(serviceAction.getApiKeySuccessfully(response.apiKey));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function* auth() {
   yield takeLatest(serviceAction.sendRequest, requestClawChannel);
+  yield takeLatest(serviceAction.getApiKey, getApiKey);
+  yield takeLatest(serviceAction.updateApiKey, updateApiKey);
 }

@@ -1,6 +1,15 @@
 import {
-  Heading, HStack, Image, Stat, StatArrow,
-  StatGroup, StatHelpText, StatNumber, Tbody, Td, Tr
+  Heading,
+  HStack,
+  Image,
+  Stat,
+  StatArrow,
+  StatGroup,
+  StatHelpText,
+  StatNumber,
+  Tbody,
+  Td,
+  Tr,
 } from "@chakra-ui/react";
 import React from "react";
 import { beautyNumberDisplay } from "../../../utils/common";
@@ -44,17 +53,19 @@ function ChannelRow({
                 w="30%"
                 boxShadow="base"
               />
-              <Heading
-                as="article"
-                fontSize={{
-                  base: "0.9rem",
-                  sm: "0.5rem",
-                  md: "0.7rem",
-                  lg: "1rem",
-                }}
-              >
-                {title}
-              </Heading>
+              <a href={urlChannel} target="_blank">
+                <Heading
+                  as="article"
+                  fontSize={{
+                    base: "0.9rem",
+                    sm: "0.5rem",
+                    md: "0.7rem",
+                    lg: "1rem",
+                  }}
+                >
+                  {title}
+                </Heading>
+              </a>
             </HStack>
           </Td>
           <Td>
