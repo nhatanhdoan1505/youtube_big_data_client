@@ -135,6 +135,14 @@ function ClawForm() {
         >
           Dashboard
         </Button>
+        <Button
+          mx={4}
+          my={4}
+          onClick={() => router.push("/admin/apiKey")}
+          colorScheme="teal"
+        >
+          API KEY
+        </Button>
       </Box>
       {channels.map((c) => (
         <Channel
