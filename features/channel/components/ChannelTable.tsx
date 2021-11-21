@@ -1,11 +1,14 @@
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
-import { Code, Divider, Table, Th, Thead, Tr } from "@chakra-ui/react";
+import { Code, Divider, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hook";
 import { IChannel } from "../../../models";
 import { formatDate } from "../../../utils/common";
 import {
-  channelAction, selectDate, selectIsDescending, selectSortBy
+  channelAction,
+  selectDate,
+  selectIsDescending,
+  selectSortBy,
 } from "../channelSlice";
 import ChannelRow from "./ChannelRow";
 
@@ -14,7 +17,7 @@ function ChannelTable(props: { channels: IChannel[] }) {
   const isDescending = useAppSelector(selectIsDescending);
   const date = useAppSelector(selectDate);
   const dispatch = useAppDispatch();
-
+  console.log({ date });
   const setSortBy = (
     sort:
       | "gapNumberVideos"
@@ -29,8 +32,12 @@ function ChannelTable(props: { channels: IChannel[] }) {
   return (
     <>
       <Divider />
-      {date ? <Code px={2} borderRadius="base">{formatDate(date)}</Code> : null}
-      <Table variant="simple">
+      {date.length > 1 ? (
+        <Code px={2} borderRadius="base">
+          {formatDate(date[0])} - {formatDate(date[1])}
+        </Code>
+      ) : null}
+      <Table variant="simple" size="sm">
         {props.channels.length !== 0 ? (
           <Thead>
             <Tr>
@@ -43,7 +50,6 @@ function ChannelTable(props: { channels: IChannel[] }) {
                 Number Videos
                 {sortBy === "numberVideos" && isDescending ? (
                   <span>
-                    {" "}
                     <ArrowDownIcon mx={3} />
                   </span>
                 ) : sortBy === "numberVideos" && !isDescending ? (
@@ -61,7 +67,6 @@ function ChannelTable(props: { channels: IChannel[] }) {
                 Gap Number Videos{" "}
                 {sortBy === "gapNumberVideos" && isDescending ? (
                   <span>
-                    {" "}
                     <ArrowDownIcon mx={3} />
                   </span>
                 ) : sortBy === "gapNumberVideos" && !isDescending ? (
@@ -79,7 +84,6 @@ function ChannelTable(props: { channels: IChannel[] }) {
                 Subscribe{" "}
                 {sortBy === "subscribe" && isDescending ? (
                   <span>
-                    {" "}
                     <ArrowDownIcon mx={3} />
                   </span>
                 ) : sortBy === "subscribe" && !isDescending ? (
@@ -97,7 +101,6 @@ function ChannelTable(props: { channels: IChannel[] }) {
                 Gap Subscribe
                 {sortBy === "gapSubcribe" && isDescending ? (
                   <span>
-                    {" "}
                     <ArrowDownIcon mx={3} />
                   </span>
                 ) : sortBy === "gapSubcribe" && !isDescending ? (
@@ -115,7 +118,6 @@ function ChannelTable(props: { channels: IChannel[] }) {
                 Views
                 {sortBy === "views" && isDescending ? (
                   <span>
-                    {" "}
                     <ArrowDownIcon mx={3} />
                   </span>
                 ) : sortBy === "views" && !isDescending ? (
@@ -133,7 +135,6 @@ function ChannelTable(props: { channels: IChannel[] }) {
                 Gap Views
                 {sortBy === "gapViews" && isDescending ? (
                   <span>
-                    {" "}
                     <ArrowDownIcon mx={3} />
                   </span>
                 ) : sortBy === "gapViews" && !isDescending ? (
@@ -149,9 +150,12 @@ function ChannelTable(props: { channels: IChannel[] }) {
         ) : (
           <></>
         )}
-        {props.channels.map((c, index) => (
-          <ChannelRow key={c.id} index={index + 1} {...c} />
-        ))}
+
+        <Tbody>
+          {props.channels.map((c, index) => (
+            <ChannelRow key={c.id} index={index + 1} {...c} />
+          ))}
+        </Tbody>
       </Table>
     </>
   );

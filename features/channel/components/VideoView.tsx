@@ -1,104 +1,115 @@
 import {
+  Button,
   Center,
-  Heading,
-  Image,
-  Stat,
-  StatArrow,
-  StatHelpText,
-  StatLabel,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Table,
   Tbody,
-  Td,
-  Text,
+  Th,
+  Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
-import { channelAction } from "../channelSlice";
-import { selectChannel } from "../channelSlice";
+import React, { useEffect, useState } from "react";
+import VideoRow from "./VideoRow";
 import { useAppDispatch, useAppSelector } from "../../../app/hook";
+import {
+  selectChannel,
+  selectVideoChart,
+  selectVideoChartId,
+  selectVideoList,
+  channelAction,
+} from "../channelSlice";
+import { optimizeVideoData } from "../../../utils/common";
+import Chart from "../components/Chart";
+import { optimizeVideoDataForChart } from "../../../utils/common";
+import { IVideo } from "../../../models";
+
+interface IVideoProps extends IVideo {
+  gapViews: string;
+}
 
 function VideoView() {
-  const dispatch = useAppDispatch();
   const channel = useAppSelector(selectChannel);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const videoChart = useAppSelector(selectVideoChart);
+  const videoChartId = useAppSelector(selectVideoChartId);
+  const videoList = useAppSelector(selectVideoList);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    videoChartId && onOpen();
+  }, [videoChartId]);
+
+  useEffect(() => {
+    channel && dispatch(channelAction.sortVideo("views"));
+  }, [channel]);
+
+  const onClickSortView = () => {
+    channel && dispatch(channelAction.sortVideo("views"));
+  };
+
+  const onClickSortGapView = () => {
+    channel && dispatch(channelAction.sortVideo("gapViews"));
+  };
 
   return (
     <>
       <Center>
+        <Drawer isOpen={isOpen} onClose={onClose} size="full" placement="top">
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerBody>
+              {videoChartId ? (
+                <Chart {...optimizeVideoDataForChart(videoChart)} />
+              ) : null}
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
         <Table
           size="sm"
           colorScheme="teal"
           w={{ base: "100%", sm: "100%", md: "100%", lg: "90%" }}
-          variant="striped"
+          variant="simple"
         >
-          <Tbody>
-            <Tr mt={3}>
-              <Td w="10px">
-                <Heading
-                  as="h6"
-                  fontSize={{ base: "10px", sm: "14px", md: "16px" }}
-                >
-                  1
-                </Heading>
-              </Td>
-              <Td w={{ base: "500px", sm: "150px", md: "120px", lg: "150px" }}>
-                <Image
-                  src="https://i.ytimg.com/vi/9agRVkYiUFc/hqdefault.jpg"
-                  w={{ base: "3px", sm: "50px", md: "100px", lg: "100px" }}
-                  h={{ base: "30px", sm: "50px", md: "100px", lg: "100px" }}
-                  borderRadius="full"
-                  shadow="inherit"
-                />
-              </Td>
-              <Td w={{ base: "170px", sm: "300px", md: "300px", lg: "600px" }}>
-                <Heading
-                  as="article"
-                  fontSize={{ base: "5px", sm: "10px", md: "16px" }}
-                >
-                  How To Regain Sculpt Details After Retopology
-                </Heading>
-              </Td>
-              <Td w="100px">
-                <Stat>
-                  <StatLabel textAlign="center" my={3}>
-                    10000
-                  </StatLabel>
-                  <StatHelpText
-                    fontSize={{ base: "10px", sm: "14px", md: "16px" }}
-                    textAlign="center"
-                  >
-                    <StatArrow type="increase" />
-                    400
-                  </StatHelpText>
-                </Stat>
-              </Td>
-              <Td w="200px">
-                <Stat>
-                  <StatLabel textAlign="center" my={3}>
-                    10000
-                  </StatLabel>
-                  <StatHelpText
-                    fontSize={{ base: "10px", sm: "14px", md: "16px" }}
-                    textAlign="center"
-                  >
-                    <StatArrow type="increase" />
-                    400
-                  </StatHelpText>
-                </Stat>
-              </Td>
-              <Td>
-                <Text textAlign="center">150/200</Text>
-              </Td>
-              <Td w="50px">
-                <Stat>
-                  <StatHelpText
-                    fontSize={{ base: "10px", sm: "14px", md: "16px" }}
-                  >
-                    <StatArrow type="increase" />
-                    400
-                  </StatHelpText>
-                </Stat>
-              </Td>
+          <Thead>
+            <Tr>
+              <Th>{`${channel ? channel.videoList.length : "No"}`}</Th>
+              <Th>Title</Th>
+              <Th onClick={onClickSortView} _hover={{ cursor: "pointer" }}>
+                View
+              </Th>
+              <Th onClick={onClickSortGapView} _hover={{ cursor: "pointer" }}>
+                Gap View
+              </Th>
+              <Th>Like/Dislike</Th>
             </Tr>
+          </Thead>
+          <Tbody>
+            {channel &&
+              videoList.map((v, index) => (
+                <VideoRow
+                  {...v}
+                  gapViews={v.gapViews}
+                  key={`${v.id}${Math.random()}`}
+                  index={(index + 1).toString()}
+                />
+              ))}
           </Tbody>
         </Table>
       </Center>

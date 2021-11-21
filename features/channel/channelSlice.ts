@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { IChannel, IPayload } from "../../models";
-import { sortChannel } from "../../utils/common";
+import { IChannel, IPayload, IVideo } from "../../models";
+import { sortChannel, sortVideo } from "../../utils/common";
+
+export interface IVideoInformation extends IVideo {
+  gapViews: string;
+}
 
 const initialState: {
   channels: IChannel[];
@@ -18,7 +22,10 @@ const initialState: {
     | "views";
   isDescending: boolean;
   channelsInitialized: IChannel[];
-  date: string;
+  date: string[];
+  videoChart: IVideo;
+  videoChartId: string;
+  videoList: IVideoInformation[];
 } = {
   channels: [],
   channel: null!,
@@ -28,14 +35,17 @@ const initialState: {
   sortBy: "views",
   isDescending: true,
   channelsInitialized: [],
-  date: "",
+  date: [],
+  videoChart: null!,
+  videoChartId: "",
+  videoList: [],
 };
 
 const channelSlice = createSlice({
   name: "channel",
   initialState,
   reducers: {
-    setDate(state, action: PayloadAction<string>) {
+    setDate(state, action: PayloadAction<string[]>) {
       state.date = action.payload;
     },
     sortChannel(
@@ -81,12 +91,28 @@ const channelSlice = createSlice({
     getChannelFail(state, action: PayloadAction) {
       state.loading = false;
     },
-    getById(state, action: PayloadAction<IChannel>) {
-      state.channel = action.payload;
-    },
-    getByIdSuccess(state, action: PayloadAction<IChannel>) {
+    getChannelById(state, action: PayloadAction<string>) {},
+    getChannelByIdSuccess(state, action: PayloadAction<IChannel>) {
       state.loading = false;
       state.channel = action.payload;
+    },
+    getVideoChart(state, action: PayloadAction<IVideo>) {
+      state.videoChart = action.payload;
+      state.videoChartId = action.payload.id;
+    },
+    resetVideoChart(state, action: PayloadAction<null>) {
+      state.videoChart = null!;
+      state.videoChartId = "";
+    },
+    sortVideo(state, action: PayloadAction<"gapViews" | "views">) {
+      state.isDescending =
+        state.sortBy === action.payload ? !state.isDescending : true;
+      state.sortBy = action.payload;
+      state.videoList = sortVideo(
+        state.channel.videoList,
+        state.sortBy,
+        state.isDescending
+      );
     },
   },
 });
@@ -102,6 +128,10 @@ export const selectSortBy = (state: RootState) => state.channel.sortBy;
 export const selectIsDescending = (state: RootState) =>
   state.channel.isDescending;
 export const selectDate = (state: RootState) => state.channel.date;
+export const selectVideoChart = (state: RootState) => state.channel.videoChart;
+export const selectVideoChartId = (state: RootState) =>
+  state.channel.videoChartId;
+export const selectVideoList = (state: RootState) => state.channel.videoList;
 
 const channelReducer = channelSlice.reducer;
 export default channelReducer;

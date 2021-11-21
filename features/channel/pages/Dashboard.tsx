@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Select, VStack
-} from "@chakra-ui/react";
+import { Box, Button, Center, HStack, Select, VStack } from "@chakra-ui/react";
 import * as _ from "lodash";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, useEffect, useState } from "react";
@@ -30,11 +24,15 @@ function Dashboard() {
   const handleChoseLabel = (event: ChangeEvent<HTMLSelectElement>) => {
     setLabel(event.target.value);
     const channelData = channels.filter((c) => c.label === event.target.value);
-    const date = channelData
-      .filter((c) => c.date.includes("|"))
-      .map((c) => c.date.split("|")[c.date.split("|").length - 1])
-      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())[0];
-      
+    const dateList = new Set(
+      channelData
+        .filter((c) => c.date.includes("|"))
+        .map((c) => c.date.split("|"))
+        .reduce((a, b) => a.concat(b), [])
+        .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
+    );
+    const date = Array.from(dateList).slice(0, 2);
+
     dispatch(channelAction.setDate(date));
     setChannelsPick(channelData);
   };

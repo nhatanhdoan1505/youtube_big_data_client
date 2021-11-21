@@ -17,13 +17,13 @@ function* fetchChannelByLabel(action: PayloadAction<IPayload>) {
   }
 }
 
-function* fetchChannelById(action: PayloadAction<IPayload>) {
+function* fetchChannelById(action: PayloadAction<string>) {
   try {
     const respone: IChannel = yield call(
       channelApi.getChannelById,
       action.payload
     );
-    yield put(channelAction.getByIdSuccess(respone));
+    yield put(channelAction.getChannelByIdSuccess(respone));
   } catch (error) {
     console.log(error);
     yield put(channelAction.getChannelFail());
@@ -53,7 +53,7 @@ function* deleteChannel(action: PayloadAction<string>) {
 
 export default function* getByChannel() {
   yield takeLatest(channelAction.getByLabel, fetchChannelByLabel);
-  yield takeLatest(channelAction.getById, fetchChannelById);
+  yield takeLatest(channelAction.getChannelById, fetchChannelById);
   yield takeLatest(channelAction.queryAllChannel, getAllChannel);
   yield takeLatest(channelAction.deleteChannel, deleteChannel);
 }

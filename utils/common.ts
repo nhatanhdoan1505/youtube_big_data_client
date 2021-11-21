@@ -1,4 +1,4 @@
-import { IChannel } from "../models";
+import { IChannel, IVideo } from "../models";
 import * as _ from "lodash";
 
 export const optimizeChannel = (channels: IChannel[]) =>
@@ -101,4 +101,72 @@ export const formatDate = (dateString: string) => {
   const minutes = ("0" + t.getMinutes()).slice(-2);
   const seconds = ("0" + t.getSeconds()).slice(-2);
   return `${date}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
+};
+
+export const optimizeVideoData = (video: IVideo[]) => {
+  const videoData = video.map((v) => {
+    let { views } = v;
+    let gapViews =
+      views.split("|").length === 1
+        ? "NEW"
+        : (
+            +_.nth(views.split("|"), -1)! - +_.nth(views.split("|"), -2)!
+          ).toString();
+    views = _.nth(views.split("|"), -1)!;
+
+    return { ...v, views, gapViews };
+  });
+  return videoData;
+};
+
+export const optimizeVideoDataForChart = (video: {
+  title: string;
+  views: string;
+  date: string;
+  id: string;
+}) => {
+  let { title, views, date } = video;
+  let viewsList = views.split("|").map((v) => +v);
+  viewsList =
+    viewsList.length >= 30 ? viewsList.slice(viewsList.length - 29) : viewsList;
+  viewsList = viewsList
+    .map((v, index) => {
+      if (index === viewsList.length - 1) return -1;
+      return viewsList[index + 1] - viewsList[index];
+    })
+    .slice(0, viewsList.length - 1);
+
+  let dateList = date
+    .split("|")
+    .map((d) => formatDate(d))
+    .slice(1);
+
+  return { title, views: viewsList, date: dateList };
+};
+
+export const getMinAndMax = (list: number[]) => {
+  return { min: _.min(list), max: _.max(list) };
+};
+
+export const sortVideo = (
+  videoList: IVideo[],
+  sortBy: "gapViews" | "views",
+  isDescending: boolean
+) => {
+  const optimizeVideo = optimizeVideoData(videoList);
+  console.log("sort", optimizeVideo);
+  if (!sortBy.includes("gap")) {
+    const sortChannelData = isDescending
+      ? optimizeVideo.sort((a, b) => +b[sortBy] - +a[sortBy])
+      : optimizeVideo.sort((a, b) => +a[sortBy] - +b[sortBy]);
+    return sortChannelData;
+  }
+  const newVideos = optimizeVideo.filter((c) => c.gapViews === "NEW");
+  const oldVideos = optimizeVideo.filter((c) => c.gapViews !== "NEW");
+
+  console.log({ newVideos, oldVideos });
+  const sortChannelData = isDescending
+    ? oldVideos.sort((a, b) => +b[sortBy] - +a[sortBy])
+    : oldVideos.sort((a, b) => +a[sortBy] - +b[sortBy]);
+  return [...sortChannelData, ...newVideos];
 };

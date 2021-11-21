@@ -13,9 +13,9 @@ const channelApi = {
     const res = await axiosClient.post(url, { label: payLoad.label });
     return res.data.data;
   },
-  async getChannelById(payLoad: IPayload): Promise<IChannel> {
+  async getChannelById(id: string): Promise<IChannel> {
     const url = "/channel/id";
-    const res = await axiosClient.post(url, { id: payLoad.id });
+    const res = await axiosClient.post(url, { id });
     return res.data.data;
   },
   async getAllChannel() {
