@@ -62,8 +62,10 @@ function ChannelRow({
               src={channelThumnail}
               alt={title}
               borderRadius="base"
-              w="30%"
               boxShadow="base"
+              maxWidth="200px"
+              minWidth="50px"
+              w="30%"
             />
 
             <Heading

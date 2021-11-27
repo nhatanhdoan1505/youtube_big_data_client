@@ -56,8 +56,10 @@ function VideoRow({
               src={thumbnail}
               alt={title}
               borderRadius="base"
-              w="20%"
               boxShadow="base"
+              maxWidth="200px"
+              minWidth="80px"
+              w="20%"
             />
             <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank">
               <Heading

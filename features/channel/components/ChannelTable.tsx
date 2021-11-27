@@ -64,7 +64,7 @@ function ChannelTable(props: { channels: IChannel[] }) {
                 color={sortBy === "gapNumberVideos" ? "red.500" : ""}
                 onClick={() => setSortBy("gapNumberVideos")}
               >
-                Gap Number Videos{" "}
+                Gap Number Videos
                 {sortBy === "gapNumberVideos" && isDescending ? (
                   <span>
                     <ArrowDownIcon mx={3} />
@@ -81,7 +81,7 @@ function ChannelTable(props: { channels: IChannel[] }) {
                 color={sortBy === "subscribe" ? "red.500" : ""}
                 onClick={() => setSortBy("subscribe")}
               >
-                Subscribe{" "}
+                Subscribe
                 {sortBy === "subscribe" && isDescending ? (
                   <span>
                     <ArrowDownIcon mx={3} />
