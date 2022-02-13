@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-function Header({ title }: { title: string }) {
+export function Header({ title }: { title: string }) {
   return (
     <>
       <Head>
@@ -10,5 +10,3 @@ function Header({ title }: { title: string }) {
     </>
   );
 }
-
-export default Header;

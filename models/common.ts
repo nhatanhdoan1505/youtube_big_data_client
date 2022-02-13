@@ -1,3 +1,20 @@
+import { NextPage } from "next";
+import { AppProps } from "next/app";
+import { ReactElement, ReactNode } from "react";
+import { EmotionCache } from "@emotion/react";
+
+export interface LayoutProps {
+  children: ReactNode;
+}
+
+export type NextPageWithLayout = NextPage & {
+  Layout?: (props: LayoutProps) => ReactElement;
+};
+
+export type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
 export interface IPayload {
   label?: string;
   channelId?: string;
@@ -19,4 +36,6 @@ export interface IClawForm {
   label: string;
 }
 
-
+export interface ILayoutProps {
+  children: ReactNode;
+}

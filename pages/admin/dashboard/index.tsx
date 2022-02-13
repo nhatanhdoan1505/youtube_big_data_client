@@ -17,7 +17,7 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hook";
 import { authAction, selectIsAdmin } from "../../../features/auth/authSlice";
 import DashBoard from "../../../features/channel/pages/Dashboard";
-import Header from "../../../component/common/Header";
+import { Header } from "../../../component/common";
 
 const Home: NextPage = () => {
   const isAdmin = useAppSelector(selectIsAdmin);
