@@ -7,7 +7,7 @@ import {
   selectChannel,
 } from "../../features/channel/channelSlice";
 import { NextPage, NextPageContext } from "next";
-import Header from "../../component/common/Header";
+import { Header } from "../../component/common/Header";
 
 const ChannelInfor: NextPage<any> = ({ query }) => {
   const [channelId, setChannelId] = useState<string>("");

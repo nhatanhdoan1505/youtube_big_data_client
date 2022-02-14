@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Header from "../../../component/common/Header";
+import { Header } from "../../../component/common/Header";
 import ApiKeyManagerLayout from "../../../features/service/components/ApiKeyManger";
 import { useAppDispatch, useAppSelector } from "../../../app/hook";
 import { authAction, selectIsAdmin } from "../../../features/auth/authSlice";
