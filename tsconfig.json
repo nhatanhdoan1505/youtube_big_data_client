@@ -19,6 +19,11 @@
       "@component/*": ["./component/*"],
       "@models/*": ["./models/*"],
       "@layout/*": ["./layout/*"],
+      "@api/*":["./api/*"],
+      "@hook/*":["./hook/*"],
+      "@utils/*":["./utils/*"],
+      "@store/*":["./store/*"],
+      "@app/*":["./app/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

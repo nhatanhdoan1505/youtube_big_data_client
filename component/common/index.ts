@@ -1,2 +1,3 @@
-export * from "./Header";
-export * from "./NavBar";
+export * from "./header";
+export * from "./footer";
+export * from "./nav-bar";

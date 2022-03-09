@@ -1,2 +1,2 @@
-export * from "./channel";
+export * from "./youtube";
 export * from "./common";

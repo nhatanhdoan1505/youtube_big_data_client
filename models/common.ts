@@ -7,35 +7,19 @@ export interface LayoutProps {
   children: ReactNode;
 }
 
-export type NextPageWithLayout = NextPage & {
+export type NextPageWithLayout<T> = NextPage<T> & {
   Layout?: (props: LayoutProps) => ReactElement;
 };
 
 export type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
+  Component: NextPageWithLayout<any>;
 };
-
-export interface IPayload {
-  label?: string;
-  channelId?: string;
-}
-
-export interface ILoginForm {
-  email: string;
-  password: string;
-}
-
-export interface LoginRes {
-  status: string;
-  msg?: string;
-  data: { token: string };
-}
-
-export interface IClawForm {
-  url: string;
-  label: string;
-}
-
 export interface ILayoutProps {
   children: ReactNode;
 }
+
+export interface IResponse<T> {
+  status: string;
+  data: T;
+}
+

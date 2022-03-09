@@ -154,7 +154,6 @@ export const sortVideo = (
   isDescending: boolean
 ) => {
   const optimizeVideo = optimizeVideoData(videoList);
-  console.log("sort", optimizeVideo);
   if (!sortBy.includes("gap")) {
     const sortChannelData = isDescending
       ? optimizeVideo.sort((a, b) => +b[sortBy] - +a[sortBy])
@@ -164,9 +163,14 @@ export const sortVideo = (
   const newVideos = optimizeVideo.filter((c) => c.gapViews === "NEW");
   const oldVideos = optimizeVideo.filter((c) => c.gapViews !== "NEW");
 
-  console.log({ newVideos, oldVideos });
   const sortChannelData = isDescending
     ? oldVideos.sort((a, b) => +b[sortBy] - +a[sortBy])
     : oldVideos.sort((a, b) => +a[sortBy] - +b[sortBy]);
   return [...sortChannelData, ...newVideos];
+};
+
+export const range = (start: number, end: number) => {
+  if (start > end) return [];
+  if (start === end) return [start];
+  return Array.from({ length: end + 1 - start }, (v, k) => k + start);
 };
