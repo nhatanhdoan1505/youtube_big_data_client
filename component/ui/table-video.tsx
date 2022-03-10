@@ -17,7 +17,7 @@ import {
   selectVideoList,
   youtubeAction,
 } from "@store/index";
-import { beautyNumberDisplay } from "@utils/index";
+import { beautyNumberDisplay, removeHtmlEntities } from "@utils/index";
 import { useEffect } from "react";
 
 export function TableVideo() {
@@ -26,6 +26,11 @@ export function TableVideo() {
   const sortTypeSelector = useAppSelector(selectSortType);
 
   const dispatch = useAppDispatch();
+
+  const handlerClickVideo = (video: ISortVideo) => {
+    dispatch(youtubeAction.setVideoInformationModal(video));
+    dispatch(youtubeAction.setIsShowModal(true));
+  };
 
   useEffect(() => {
     dispatch(
@@ -52,7 +57,10 @@ export function TableVideo() {
         {videoListSelector.map((video: ISortVideo, index: number) => (
           <Tr key={video.id}>
             <Td>{index + 1}</Td>
-            <Td>
+            <Td
+              _hover={{ cursor: "pointer" }}
+              onClick={() => handlerClickVideo(video)}
+            >
               <HStack>
                 <Image
                   src={video.thumbnail}
@@ -60,8 +68,8 @@ export function TableVideo() {
                   alt={video.title}
                   minWidth="60px"
                 />
-                <Text as="h6" maxWidth="">
-                  {video.title}
+                <Text as="h6" fontSize="0.9rem" fontWeight="semibold">
+                  {removeHtmlEntities(video.title)}
                 </Text>
               </HStack>
             </Td>

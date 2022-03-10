@@ -4,3 +4,4 @@ export * from "./hot-table";
 export * from "./footer-information";
 export * from "./footer-contact-form";
 export * from "./table-container-full";
+export * from "./modal-video";

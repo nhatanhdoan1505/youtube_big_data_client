@@ -27,6 +27,8 @@ interface IInitState {
     | "gapSubscribes"
     | "subscribe"
     | "gapViews";
+  videoInformation: ISortVideo;
+  isShowModal: boolean;
   loading: boolean;
 }
 
@@ -36,6 +38,8 @@ const initialState: IInitState = {
   totalPage: 1,
   pageNumber: 1,
   loading: false,
+  videoInformation: null!,
+  isShowModal: false,
   type: "views",
 };
 
@@ -54,6 +58,12 @@ const youtubeSlice = createSlice({
       state.videoList = action.payload.videoList!;
       state.loading = false;
     },
+    setIsShowModal(state, action: PayloadAction<boolean>) {
+      state.isShowModal = action.payload;
+    },
+    setVideoInformationModal(state, action: PayloadAction<ISortVideo>) {
+      state.videoInformation = action.payload;
+    },
   },
 });
 
@@ -63,5 +73,8 @@ export const selectPageNumber = (state: RootState) => state.youtube.pageNumber;
 export const selectTotalPage = (state: RootState) => state.youtube.totalPage;
 export const selectVideoList = (state: RootState) => state.youtube.videoList;
 export const selectSortType = (state: RootState) => state.youtube.type;
+export const selectVideoInformation = (state: RootState) =>
+  state.youtube.videoInformation;
+export const selectIsShowModal = (state: RootState) => state.youtube.isShowModal;
 
 export const youtubeReducer = youtubeSlice.reducer;

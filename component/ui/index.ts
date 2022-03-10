@@ -9,3 +9,4 @@ export * from "./copyright";
 export * from "./table-video";
 export * from "./pagination";
 export * from "./pagination-item";
+export * from "./modal-video-information";

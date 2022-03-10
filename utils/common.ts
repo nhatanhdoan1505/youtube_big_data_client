@@ -1,6 +1,21 @@
 import { IChannel, IVideo } from "../models";
 import * as _ from "lodash";
 
+const HTML_ENTITIES = {
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&apos;": "'",
+  "&cent;": "¢",
+  "&pound;": "£",
+  "&yen;": "¥",
+  "&euro;": "€",
+  "&copy;": "©",
+  "&reg;": "®",
+  "&nbsp;": "",
+};
+
 export const optimizeChannel = (channels: IChannel[]) =>
   channels.map((c) => {
     let { views, subscribe, numberVideos } = c;
@@ -173,4 +188,11 @@ export const range = (start: number, end: number) => {
   if (start > end) return [];
   if (start === end) return [start];
   return Array.from({ length: end + 1 - start }, (v, k) => k + start);
+};
+
+export const removeHtmlEntities = (str: string) => {
+  Object.keys(HTML_ENTITIES).map((e) => {
+    str = str.replace(new RegExp(e, "g"), HTML_ENTITIES[e]);
+  });
+  return str;
 };

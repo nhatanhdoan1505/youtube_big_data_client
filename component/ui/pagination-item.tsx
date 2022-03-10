@@ -1,14 +1,13 @@
-import { Button } from "@chakra-ui/react";
-import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@app/index";
+import { Button } from "@chakra-ui/react";
 import {
   selectPageNumber,
-  youtubeAction,
   selectSortType,
   selectTotalPage,
+  youtubeAction,
 } from "@store/index";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export function PaginationItem({ pageNumber }: { pageNumber: number }) {
   const router = useRouter();
@@ -18,6 +17,7 @@ export function PaginationItem({ pageNumber }: { pageNumber: number }) {
   const totalPageSelector = useAppSelector(selectTotalPage);
   const dispatch = useAppDispatch();
   const handlerClickButton = () => {
+    router.push(`/topList/topVideo/${sortTypeSelector}/${pageNumber}`);
     dispatch(
       youtubeAction.setPagination({
         pageNumber,

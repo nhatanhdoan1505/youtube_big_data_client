@@ -23,6 +23,9 @@ export interface IVideo {
   views: string;
   date: string;
   commentCount: string;
+  duration: string;
+  description: string;
+  tags: string[];
 }
 
 export interface ISortChannelResponse {
@@ -58,6 +61,7 @@ export interface ISortVideo extends IVideo {
   channelInformation: {
     urlChannel: string;
     title: string;
+    channelThumbnail: string;
   };
 }
 
