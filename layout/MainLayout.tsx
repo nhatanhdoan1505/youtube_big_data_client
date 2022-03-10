@@ -1,6 +1,6 @@
 import { Box, Container, VStack } from "@chakra-ui/react";
-import { Footer } from "@component/common/footer";
-import { Header, NavBar } from "@component/common/index";
+import { Footer } from "@component/common";
+import { Header, NavBar } from "@component/common";
 import { ILayoutProps } from "@models/common";
 import React from "react";
 
