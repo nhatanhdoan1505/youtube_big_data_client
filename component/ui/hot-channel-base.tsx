@@ -10,13 +10,13 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
-import { IHotChannel } from "@models/index";
+import { ISortChannel } from "@models/index";
 import { beautyNumberDisplay } from "@utils/index";
 
 export function HotChannelBase({
   channelList,
 }: {
-  channelList: IHotChannel[];
+  channelList: ISortChannel[];
 }) {
   return (
     <Table variant="simple" colorScheme="red">
