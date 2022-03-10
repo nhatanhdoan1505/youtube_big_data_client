@@ -3,6 +3,7 @@ import {
   GridItem,
   HStack,
   Image,
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -20,6 +21,7 @@ import { useAppDispatch, useAppSelector } from "@app/index";
 import { selectIsShowModal, youtubeAction } from "@store/index";
 import { AiFillRightCircle } from "react-icons/ai";
 import { Icon } from "@chakra-ui/react";
+import { formatDate } from "@utils/index";
 
 export function ModalVideo(videoInformation: ISortVideo) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,10 +60,15 @@ export function ModalVideo(videoInformation: ISortVideo) {
         <ModalBody>
           <Grid templateColumns="repeat(5, 1fr)">
             <GridItem colSpan={2}>
-              <Image
-                src={videoInformation.thumbnail}
-                alt={videoInformation.title}
-              />
+              <Link
+                href={`https://www.youtube.com/watch?v=${videoInformation.id}`}
+                target="_blank"
+              >
+                <Image
+                  src={videoInformation.thumbnail}
+                  alt={videoInformation.title}
+                />
+              </Link>
             </GridItem>
             <GridItem colSpan={3} px={2} w="100%">
               <VStack
@@ -70,11 +77,17 @@ export function ModalVideo(videoInformation: ISortVideo) {
                 justifyContent="space-between"
                 alignItems="flex-start"
               >
-                <Text fontSize="1rem" fontWeight="semibold">
-                  {videoInformation.title}
-                </Text>
+                <Link
+                  href={`https://www.youtube.com/watch?v=${videoInformation.id}`}
+                  target="_blank"
+                  _hover={{ cursor: "pointer" }}
+                >
+                  <Text fontSize="1rem" fontWeight="semibold">
+                    {videoInformation.title}
+                  </Text>
+                </Link>
                 <Text fontSize="0.8rem" fontWeight="medium">
-                  {new Date(videoInformation.publicAt).toLocaleString()}
+                  {formatDate(videoInformation.publicAt)}
                 </Text>
               </VStack>
             </GridItem>

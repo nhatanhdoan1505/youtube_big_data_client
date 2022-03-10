@@ -107,7 +107,7 @@ export const beautyNumberDisplay = (number: string) => {
   return beautyNumber;
 };
 
-export const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string, full = true) => {
   const t = new Date(dateString);
   const date = ("0" + t.getDate()).slice(-2);
   const month = ("0" + (t.getMonth() + 1)).slice(-2);
@@ -115,7 +115,9 @@ export const formatDate = (dateString: string) => {
   const hours = ("0" + t.getHours()).slice(-2);
   const minutes = ("0" + t.getMinutes()).slice(-2);
   const seconds = ("0" + t.getSeconds()).slice(-2);
-  return `${date}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
+  return full
+    ? `${date}/${month}/${year}, ${hours}:${minutes}:${seconds}`
+    : `${date}/${month}/${year}`;
 };
 
 export const optimizeVideoData = (video: IVideo[]) => {
@@ -135,16 +137,14 @@ export const optimizeVideoData = (video: IVideo[]) => {
 };
 
 export const optimizeVideoDataForChart = (video: {
-  title: string;
-  views: string;
+  viewsHistory: string;
   date: string;
-  id: string;
 }) => {
-  let { title, views, date } = video;
-  let viewsList = views.split("|").map((v) => +v);
+  let { viewsHistory, date } = video;
+  let viewsList = viewsHistory.split("|").map((v) => +v);
   viewsList =
     viewsList.length >= 30 ? viewsList.slice(viewsList.length - 29) : viewsList;
-  viewsList = viewsList
+  let gapViewsHistory = viewsList
     .map((v, index) => {
       if (index === viewsList.length - 1) return -1;
       return viewsList[index + 1] - viewsList[index];
@@ -153,10 +153,10 @@ export const optimizeVideoDataForChart = (video: {
 
   let dateList = date
     .split("|")
-    .map((d) => formatDate(d))
+    .map((d) => formatDate(d, false))
     .slice(1);
 
-  return { title, views: viewsList, date: dateList };
+  return { viewsHistory: viewsList, gapViewsHistory, date: dateList };
 };
 
 export const getMinAndMax = (list: number[]) => {

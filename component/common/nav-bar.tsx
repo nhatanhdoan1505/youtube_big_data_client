@@ -22,7 +22,7 @@ export function NavBar({}: Props): ReactElement {
           <Heading size="md">Youtube</Heading>
         </Link>
         <Grid templateColumns="repeat(5, 1fr)">
-          <MenuItem title="Top Video" href="/topList/topVideo/mostViews/1" />
+          <MenuItem title="Top Video" href="/topList/topVideo/views/1" />
           <MenuItem title="Top Channel" href="/" />
           <MenuItem title="Top Hashtag" href="/" />
           <MenuItem title="History" href="/" />

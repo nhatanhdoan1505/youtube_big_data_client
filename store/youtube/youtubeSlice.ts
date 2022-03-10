@@ -50,6 +50,7 @@ const youtubeSlice = createSlice({
     setPagination(state, action: PayloadAction<ISortYoutubePayload>) {
       state.pageNumber = +action.payload.pageNumber!;
       state.totalPage = +action.payload.totalPage!;
+      state.type = action.payload.type!;
     },
     getVideoSortList(state, action: PayloadAction<ISortYoutubePayload>) {
       state.loading = true;
@@ -75,6 +76,8 @@ export const selectVideoList = (state: RootState) => state.youtube.videoList;
 export const selectSortType = (state: RootState) => state.youtube.type;
 export const selectVideoInformation = (state: RootState) =>
   state.youtube.videoInformation;
-export const selectIsShowModal = (state: RootState) => state.youtube.isShowModal;
+export const selectIsShowModal = (state: RootState) =>
+  state.youtube.isShowModal;
+export const selectLoading = (state: RootState) => state.youtube.loading;
 
 export const youtubeReducer = youtubeSlice.reducer;

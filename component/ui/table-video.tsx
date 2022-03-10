@@ -39,7 +39,7 @@ export function TableVideo() {
         pageNumber: pageNumberSelector,
       })
     );
-  }, [pageNumberSelector]);
+  }, [pageNumberSelector, sortTypeSelector]);
 
   return (
     <>
@@ -57,20 +57,28 @@ export function TableVideo() {
         {videoListSelector.map((video: ISortVideo, index: number) => (
           <Tr key={video.id}>
             <Td>{index + 1}</Td>
-            <Td
-              _hover={{ cursor: "pointer" }}
-              onClick={() => handlerClickVideo(video)}
-            >
+            <Td _hover={{ cursor: "pointer" }}>
               <HStack>
                 <Image
                   src={video.thumbnail}
                   maxWidth="90px"
                   alt={video.title}
                   minWidth="60px"
+                  onClick={() => handlerClickVideo(video)}
                 />
-                <Text as="h6" fontSize="0.9rem" fontWeight="semibold">
-                  {removeHtmlEntities(video.title)}
-                </Text>
+                <VStack alignItems="flex-start">
+                  <Text
+                    as="h6"
+                    fontSize="0.9rem"
+                    fontWeight="semibold"
+                    onClick={() => handlerClickVideo(video)}
+                  >
+                    {removeHtmlEntities(video.title)}
+                  </Text>
+                  <Text as="h6" fontSize="0.6rem" fontWeight="light">
+                    {removeHtmlEntities(video.channelInformation.title)}
+                  </Text>
+                </VStack>
               </HStack>
             </Td>
             <Td>

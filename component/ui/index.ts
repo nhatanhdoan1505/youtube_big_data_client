@@ -10,3 +10,6 @@ export * from "./table-video";
 export * from "./pagination";
 export * from "./pagination-item";
 export * from "./modal-video-information";
+export * from "./line-chart";
+export * from "./video-chart";
+export * from "./link-menu-item";

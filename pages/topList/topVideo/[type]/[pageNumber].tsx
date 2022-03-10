@@ -1,5 +1,6 @@
 import { videoApi } from "@api/index";
 import { useAppDispatch, useAppSelector } from "@app/index";
+import { HStack, Link, Text } from "@chakra-ui/react";
 import { Header } from "@component/common";
 import { TableContainerFull } from "@component/container";
 import { TableVideo } from "@component/ui";
@@ -8,6 +9,7 @@ import { NextPageWithLayout } from "@models/index";
 import { selectPageNumber, selectSortType, youtubeAction } from "@store/index";
 import { GetServerSideProps, InferGetStaticPropsType } from "next";
 import { useEffect } from "react";
+import { LinkMenuItem } from "@component/ui";
 
 const SortVideos: NextPageWithLayout<
   InferGetStaticPropsType<typeof getServerSideProps>
@@ -29,7 +31,34 @@ const SortVideos: NextPageWithLayout<
   const renderPage = pageNumber ? (
     <>
       <Header title="YoutubeData - Top List" />
-      <TableContainerFull title={typeSelector}>
+      <HStack mb={6} alignItems="center" justifyContent="inherit">
+        <Text as="h1" fontSize="1.5rem" fontWeight="bold" mr={7}>
+          Top Videos
+        </Text>
+        <HStack>
+          <LinkMenuItem
+            href="/topList/topVideo/views/"
+            title="Most Views"
+            type="views"
+          />
+          <LinkMenuItem
+            href="/topList/topVideo/likes/"
+            title="Most Likes"
+            type="likes"
+          />
+          <LinkMenuItem
+            href="/topList/topVideo/commentCount/"
+            title="Most Comments"
+            type="commentCount"
+          />
+          <LinkMenuItem
+            href="/topList/topVideo/gapViews/"
+            title="Hot Now"
+            type="gapViews"
+          />
+        </HStack>
+      </HStack>
+      <TableContainerFull>
         <TableVideo />
       </TableContainerFull>
     </>
