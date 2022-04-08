@@ -12,11 +12,11 @@ export const videoApi = {
     const url = `/video/sort/${pageNumber}`;
     const res: AxiosResponse<IResponse<ISortVideoResponse>> =
       await axiosClient.post(url, { type });
-    return res.data.data.videoList;
+    return res.data.data.videoList!;
   },
 
   async getTotalSortVideos() {
-    const url = `/channel/sort/total`;
+    const url = `/video/sort/total`;
     const res: AxiosResponse<IResponse<ITotal>> = await axiosClient.get(url);
     return res.data.data;
   },

@@ -18,7 +18,7 @@ export const useHotBase = () => {
     };
     const getHotChannelBase = async () => {
       const channelHotList = await channelApi.getSortChannel({
-        page: 1,
+        pageNumber: 1,
         type: "gapSubscribes",
       });
       setHotChannelBaseList(channelHotList.slice(0, 6));

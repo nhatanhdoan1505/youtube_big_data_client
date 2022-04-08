@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { ISortVideo } from "@models/index";
-import { beautyNumberDisplay } from "@utils/index";
+import { beautyNumberDisplay, removeHtmlEntities } from "@utils/index";
 
 export function HotVideoBase({ videoList }: { videoList: ISortVideo[] }) {
   return (
@@ -30,7 +30,7 @@ export function HotVideoBase({ videoList }: { videoList: ISortVideo[] }) {
                 <HStack>
                   <Image src={v.thumbnail} maxWidth="90px" maxHeight="50px" />
                   <Text as="h6" maxWidth="">
-                    {v.title}
+                    {removeHtmlEntities(v.title)}
                   </Text>
                 </HStack>
               </Td>

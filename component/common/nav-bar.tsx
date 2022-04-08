@@ -2,10 +2,13 @@ import { Grid, Heading, HStack } from "@chakra-ui/layout";
 import React, { ReactElement } from "react";
 import { MenuItem, SearchBox } from "@component/ui";
 import { Link } from "@chakra-ui/react";
+import { useAppSelector } from "@app/index";
+import { selectYoutubeObject } from "@store/index";
 
 interface Props {}
 
 export function NavBar({}: Props): ReactElement {
+  const youtubeObjectSelector = useAppSelector(selectYoutubeObject);
   return (
     <>
       <HStack
@@ -22,11 +25,27 @@ export function NavBar({}: Props): ReactElement {
           <Heading size="md">Youtube</Heading>
         </Link>
         <Grid templateColumns="repeat(5, 1fr)">
-          <MenuItem title="Top Video" href="/topList/topVideo/views/1" />
-          <MenuItem title="Top Channel" href="/" />
-          <MenuItem title="Top Hashtag" href="/" />
-          <MenuItem title="History" href="/" />
-          <MenuItem title="Statistic" href="/" />
+          <MenuItem
+            title="Top Video"
+            href="/topList/video/views/1"
+            youtubeObject="video"
+          />
+          <MenuItem
+            title="Top Channel"
+            href="/topList/channel/views/1"
+            youtubeObject="channel"
+          />
+          <MenuItem title="Top Hashtag" href="/" youtubeObject="hashtag" />
+          {/* <MenuItem
+            title="History"
+            href="/"
+            youtubeObject={youtubeObjectSelector}
+          />
+          <MenuItem
+            title="Statistic"
+            href="/"
+            youtubeObject={youtubeObjectSelector}
+          /> */}
         </Grid>
         <SearchBox />
       </HStack>

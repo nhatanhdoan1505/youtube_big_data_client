@@ -1,16 +1,16 @@
 import { LineChart } from ".";
 
-interface IVideoChartProps {
+interface IViewsChartProps {
   viewsHistory: number[];
   gapViewsHistory: number[];
   date: string[];
 }
 
-export function VideoChart({
+export function ViewChart({
   viewsHistory,
   gapViewsHistory,
   date,
-}: IVideoChartProps) {
+}: IViewsChartProps) {
   return (
     <LineChart
       data1={viewsHistory}

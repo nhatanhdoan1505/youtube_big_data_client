@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { ISortChannel } from "@models/index";
-import { beautyNumberDisplay } from "@utils/index";
+import { beautyNumberDisplay, removeHtmlEntities } from "@utils/index";
 
 export function HotChannelBase({
   channelList,
@@ -38,7 +38,7 @@ export function HotChannelBase({
                     maxHeight="50px"
                   />
                   <Text as="h6" maxWidth="">
-                    {c.title}
+                    {removeHtmlEntities(c.title)}
                   </Text>
                 </HStack>
               </Td>

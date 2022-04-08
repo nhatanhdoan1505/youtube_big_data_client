@@ -7,6 +7,8 @@ import {
   selectVideoList,
   selectSortType,
   selectLoading,
+  selectChannelList,
+  selectYoutubeObject,
 } from "@store/index";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import { ModalVideo } from ".";
@@ -16,6 +18,10 @@ const TITLE = {
   likes: "Most Likes",
   commentCount: "Most Comments",
   gapViews: "Hot Videos",
+  subscribe: "Most Subscribers",
+  numberVideos: "Most Number Videos",
+  gapSubscribes: "Most Increased Subscribers",
+  gapNumberVideos: "Most Increased Videos",
 };
 
 export function TableContainerFull({
@@ -26,9 +32,10 @@ export function TableContainerFull({
   const videoListSelector = useAppSelector(selectVideoList);
   const totalPageSelector = useAppSelector(selectTotalPage);
   const videoInformationSelector = useAppSelector(selectVideoInformation);
-  const videoSortTypeSelector = useAppSelector(selectSortType);
+  const sortTypeSelector = useAppSelector(selectSortType);
   const loadingSelector = useAppSelector(selectLoading);
-
+  const youtubeObjectSelector = useAppSelector(selectYoutubeObject);
+  const channelListSelector = useAppSelector(selectChannelList);
   return (
     <>
       <VStack
@@ -44,7 +51,7 @@ export function TableContainerFull({
         >
           <HStack>
             <Text as="h6" fontWeight="extrabold">
-              {TITLE[videoSortTypeSelector]}
+              {TITLE[sortTypeSelector]}
             </Text>
             <HStack>
               <Icon as={AiFillCaretLeft} />
@@ -76,11 +83,13 @@ export function TableContainerFull({
         <Table variant="simple" colorScheme="red" size="sm">
           {children}
         </Table>
-        {videoListSelector.length > 0 && totalPageSelector > 1 ? (
+        {(videoListSelector.length > 0 && totalPageSelector > 1) ||
+        (channelListSelector.length > 0 && totalPageSelector > 1) ? (
           <Pagination />
         ) : null}
       </VStack>
-      {videoInformationSelector ? (
+      {(videoInformationSelector && youtubeObjectSelector === "video") ||
+      (videoInformationSelector && youtubeObjectSelector === null) ? (
         <ModalVideo {...videoInformationSelector} />
       ) : null}
     </>

@@ -1,9 +1,16 @@
 import {
   IChannel,
+  IChannelOverviewResponse,
+  IChannelTagsResponse,
+  IResponse,
   ISortChannel,
   ISortChannelResponse,
-  IResponse,
+  ISortDataPayload,
+  ISortVideo,
+  ISortVideoResponse,
   ITotal,
+  IVideoListOverviewResponse,
+  IVideoViewsDistributionResponse,
 } from "@models/index";
 import { AxiosResponse } from "axios";
 import axiosClient from "./axiosClient";
@@ -40,21 +47,99 @@ export const channelApi = {
   },
 
   async getSortChannel({
-    page,
+    pageNumber,
     type,
-  }: {
-    page: number;
-    type: "gapSubscribes" | "subscribe" | "views" | "gapViews";
-  }): Promise<ISortChannel[]> {
-    const url = `/channel/sort/${page}`;
+  }: ISortDataPayload): Promise<ISortChannel[]> {
+    const url = `/channel/sort/${pageNumber}`;
     const res: AxiosResponse<IResponse<ISortChannelResponse>> =
       await axiosClient.post(url, { type });
     return res.data.data.channelList;
   },
 
-  async getTotalSortChannels() {
+  async getTotalSortChannels(): Promise<ITotal> {
     const url = `/channel/sort/total`;
     const res: AxiosResponse<IResponse<ITotal>> = await axiosClient.get(url);
     return res.data.data;
+  },
+
+  async getChannelOverview({
+    id,
+  }: {
+    id: string;
+  }): Promise<IChannelOverviewResponse> {
+    try {
+      const response: AxiosResponse<IResponse<IChannelOverviewResponse>> =
+        await axiosClient.get(`/channel/overview/${id}`);
+      return response.data.data;
+    } catch (error) {
+      return { isExist: false };
+    }
+  },
+
+  async getChannelTags({ id }: { id: string }): Promise<IChannelTagsResponse> {
+    try {
+      const response: AxiosResponse<IResponse<IChannelTagsResponse>> =
+        await axiosClient.get(`/channel/tagsList/${id}`);
+      return response.data.data;
+    } catch (error) {
+      return { tagsList: [] };
+    }
+  },
+
+  async getVideoListOverview({
+    id,
+    limit,
+  }: {
+    id: string;
+    limit: number;
+  }): Promise<IVideoListOverviewResponse> {
+    try {
+      const url = `/channel/videoList/${id}/${limit}`;
+      const res: AxiosResponse<IResponse<IVideoListOverviewResponse>> =
+        await axiosClient.get(url);
+      return res.data.data;
+    } catch (error) {
+      return null!;
+    }
+  },
+
+  async getVideoViewsDistribution({
+    id,
+  }: {
+    id: string;
+  }): Promise<IVideoViewsDistributionResponse> {
+    try {
+      const url = `/channel/videoViewsDistribution/${id}`;
+      const res: AxiosResponse<IResponse<IVideoViewsDistributionResponse>> =
+        await axiosClient.get(url);
+      return res.data.data;
+    } catch (error) {
+      return null!;
+    }
+  },
+
+  async getVideoList({
+    id,
+    pageNumber,
+    type,
+  }: ISortDataPayload): Promise<ISortVideo[]> {
+    try {
+      const url = `/channel/videoList/${id}/${pageNumber}`;
+      const res: AxiosResponse<IResponse<ISortVideoResponse>> =
+        await axiosClient.post(url, { type });
+      return res.data.data.videoList!;
+    } catch (error) {
+      return [];
+    }
+  },
+
+  async getTotalVideo({ id }: ISortDataPayload): Promise<ITotal> {
+    try {
+      const url = `/channel/videos/total/${id}`;
+      const res: AxiosResponse<IResponse<ITotal>> = await axiosClient.get(url);
+      return res.data.data;
+    } catch (error) {
+      return {} as ITotal;
+    }
   },
 };

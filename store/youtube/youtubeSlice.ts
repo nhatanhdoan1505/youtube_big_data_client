@@ -1,18 +1,35 @@
-import { ISortChannel, ISortVideo } from "@models/index";
+import { ISortChannel, ISortVideo, IChannelOverview } from "@models/index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/index";
 
 interface ISortYoutubePayload {
   videoList?: ISortVideo[];
-  pageNumber: number;
+  channelList?: ISortChannel[];
+  youtubeObject?: "video" | "channel" | "hashtag";
+  pageNumber?: number;
   totalPage?: number;
-  type:
+  type?:
     | "views"
     | "likes"
     | "commentCount"
-    | "gapSubscribes"
+    | "gapViews"
     | "subscribe"
-    | "gapViews";
+    | "numberVideos"
+    | "gapSubscribes"
+    | "gapNumberVideos"
+    | "overview"
+    | "topVideo"
+    | "allVideo"
+    | "dailyStat"
+    | "history"
+    | "videoHistory"
+    | "about"
+    | "oldest"
+    | "newest";
+  channelOverview?: IChannelOverview;
+  videoListOverview?: ISortVideo[];
+  videoViewsDistribution?: { label: string[]; videoCount: number[] };
+  id?: string;
 }
 
 interface IInitState {
@@ -20,16 +37,31 @@ interface IInitState {
   channelList: ISortChannel[];
   totalPage: number;
   pageNumber: number;
+  youtubeObject: "video" | "channel" | "hashtag";
   type:
     | "views"
     | "likes"
     | "commentCount"
-    | "gapSubscribes"
+    | "gapViews"
     | "subscribe"
-    | "gapViews";
+    | "numberVideos"
+    | "gapSubscribes"
+    | "gapNumberVideos"
+    | "overview"
+    | "topVideo"
+    | "allVideo"
+    | "dailyStat"
+    | "history"
+    | "videoHistory"
+    | "about"
+    | "oldest"
+    | "newest";
   videoInformation: ISortVideo;
   isShowModal: boolean;
   loading: boolean;
+  channelOverview: IChannelOverview;
+  videoListOverview: ISortVideo[];
+  videoViewsDistribution: { label: string[]; videoCount: number[] };
 }
 
 const initialState: IInitState = {
@@ -41,18 +73,28 @@ const initialState: IInitState = {
   videoInformation: null!,
   isShowModal: false,
   type: "views",
+  youtubeObject: null!,
+  channelOverview: null!,
+  videoListOverview: [],
+  videoViewsDistribution: null!,
 };
 
 const youtubeSlice = createSlice({
   name: "youtube",
   initialState,
   reducers: {
+    setYoutubeObject(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.youtubeObject = action.payload.youtubeObject!;
+    },
+    setType(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.type = action.payload.type!;
+    },
     setPagination(state, action: PayloadAction<ISortYoutubePayload>) {
       state.pageNumber = +action.payload.pageNumber!;
       state.totalPage = +action.payload.totalPage!;
       state.type = action.payload.type!;
     },
-    getVideoSortList(state, action: PayloadAction<ISortYoutubePayload>) {
+    preSetVideoSortList(state, action: PayloadAction<ISortYoutubePayload>) {
       state.loading = true;
     },
     setVideoSortList(state, action: PayloadAction<ISortYoutubePayload>) {
@@ -64,6 +106,23 @@ const youtubeSlice = createSlice({
     },
     setVideoInformationModal(state, action: PayloadAction<ISortVideo>) {
       state.videoInformation = action.payload;
+    },
+    preSetChannelSortList(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.loading = true;
+    },
+    setChannelSortList(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.channelList = action.payload.channelList!;
+      state.loading = false;
+    },
+    setChannelOverview(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.channelOverview = action.payload.channelOverview!;
+    },
+    preSetVideoListOverview(
+      state,
+      action: PayloadAction<ISortYoutubePayload>
+    ) {},
+    setVideoListOverview(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.videoListOverview = action.payload.videoListOverview!;
     },
   },
 });
@@ -79,5 +138,15 @@ export const selectVideoInformation = (state: RootState) =>
 export const selectIsShowModal = (state: RootState) =>
   state.youtube.isShowModal;
 export const selectLoading = (state: RootState) => state.youtube.loading;
+export const selectChannelList = (state: RootState) =>
+  state.youtube.channelList;
+export const selectYoutubeObject = (state: RootState) =>
+  state.youtube.youtubeObject;
+export const selectChannelOverview = (state: RootState) =>
+  state.youtube.channelOverview;
+export const selectVideoListOverview = (state: RootState) =>
+  state.youtube.videoListOverview;
+export const selectVideoViewDistribution = (state: RootState) =>
+  state.youtube.videoViewsDistribution;
 
 export const youtubeReducer = youtubeSlice.reducer;

@@ -5,3 +5,6 @@ export * from "./footer-information";
 export * from "./footer-contact-form";
 export * from "./table-container-full";
 export * from "./modal-video";
+export * from "./channel-overview";
+export * from "./chart-channel-overview";
+export * from "./channel-information";

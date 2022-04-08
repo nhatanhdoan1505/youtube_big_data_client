@@ -5,6 +5,8 @@ import {
   selectSortType,
   selectTotalPage,
   youtubeAction,
+  selectYoutubeObject,
+  selectChannelOverview,
 } from "@store/index";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,9 +17,20 @@ export function PaginationItem({ pageNumber }: { pageNumber: number }) {
   const pageNumberSelector = useAppSelector(selectPageNumber);
   const sortTypeSelector = useAppSelector(selectSortType);
   const totalPageSelector = useAppSelector(selectTotalPage);
+  const youtubeObjectSelector = useAppSelector(selectYoutubeObject);
+  const channelOverviewSelector = useAppSelector(selectChannelOverview);
   const dispatch = useAppDispatch();
   const handlerClickButton = () => {
-    router.push(`/topList/topVideo/${sortTypeSelector}/${pageNumber}`);
+    if (!youtubeObjectSelector) {
+      router.push(
+        `/channel/${sortTypeSelector}/${channelOverviewSelector.id}/${pageNumber}`
+      );
+    } else {
+      router.push(
+        `/topList/${youtubeObjectSelector}/${sortTypeSelector}/${pageNumber}`
+      );
+    }
+
     dispatch(
       youtubeAction.setPagination({
         pageNumber,

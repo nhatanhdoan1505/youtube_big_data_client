@@ -1,8 +1,8 @@
 import { Grid, GridItem, VStack, Text } from "@chakra-ui/react";
 import { ISortVideo } from "@models/index";
 import { beautyNumberDisplay } from "@utils/index";
-import { VideoChart } from ".";
-import { optimizeVideoDataForChart } from "@utils/index";
+import { ViewChart } from ".";
+import { optimizeViewDataForChart, formatDuration } from "@utils/index";
 
 export function ModalVideoInformation({
   views,
@@ -48,18 +48,20 @@ export function ModalVideoInformation({
           <VStack>
             <Text fontWeight="medium">Comments</Text>
             <Text fontWeight="thin">
-              {beautyNumberDisplay(commentCount.toString())}
+              {beautyNumberDisplay(commentCount.toString()) === "-1"
+                ? "-"
+                : beautyNumberDisplay(commentCount.toString())}
             </Text>
           </VStack>
         </GridItem>
         <GridItem>
           <VStack>
             <Text fontWeight="medium">Video Duration</Text>
-            <Text fontWeight="thin">{beautyNumberDisplay(``)}</Text>
+            <Text fontWeight="thin">{formatDuration(+duration)}</Text>
           </VStack>
         </GridItem>
       </Grid>
-      <VideoChart {...optimizeVideoDataForChart({ viewsHistory, date })} />
+      <ViewChart {...optimizeViewDataForChart({ viewsHistory, date })} />
     </VStack>
   );
 }

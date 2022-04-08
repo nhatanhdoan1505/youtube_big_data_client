@@ -44,17 +44,22 @@ export function ModalVideo(videoInformation: ISortVideo) {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader backgroundColor="#4a4a4a">
-          <HStack alignItems="center" fontSize="0.8rem">
-            <Image
-              src="https://yt3.ggpht.com/ytc/AKedOLQxUEO9NcX8w8qLnme3pyzOSifRagvrLGv4nJfhQHXYRHZ2A7rAa59q1O0a_FYp=s800-c-k-c0x00ffffff-no-rj"
-              alt={videoInformation.channelInformation.title}
-              maxWidth="30px"
-            />
-            <Text color="white">
-              {videoInformation.channelInformation.title}
-            </Text>
-            <Icon as={AiFillRightCircle} color="white" />
-          </HStack>
+          <Link
+            href={`/channel/overview/${videoInformation.channelInformation.id}`}
+            _hover={{ textDecoration: "none" }}
+          >
+            <HStack alignItems="center" fontSize="0.8rem">
+              <Image
+                src={videoInformation.channelInformation.channelThumbnail}
+                alt={videoInformation.channelInformation.title}
+                maxWidth="30px"
+              />
+              <Text color="white">
+                {videoInformation.channelInformation.title}
+              </Text>
+              <Icon as={AiFillRightCircle} color="white" />
+            </HStack>
+          </Link>
           <ModalCloseButton color="white" />
         </ModalHeader>
         <ModalBody>

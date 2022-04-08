@@ -18,7 +18,7 @@ export function HotTable() {
       minChildWidth='500px'
     >
       <Box>
-        <HotElement title="Hot Now Video" href="/topList/topVideo/gapViews/1">
+        <HotElement title="Hot Now Video" href="/topList/video/gapViews/1">
           <HotVideoBase videoList={hotVideoBaseList} />
         </HotElement>
       </Box>

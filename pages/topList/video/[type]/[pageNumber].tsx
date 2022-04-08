@@ -1,24 +1,22 @@
 import { videoApi } from "@api/index";
-import { useAppDispatch, useAppSelector } from "@app/index";
-import { HStack, Link, Text } from "@chakra-ui/react";
+import { useAppDispatch } from "@app/index";
+import { HStack, Text } from "@chakra-ui/react";
 import { Header } from "@component/common";
 import { TableContainerFull } from "@component/container";
-import { TableVideo } from "@component/ui";
+import { LinkMenuItem, TableVideo } from "@component/ui";
 import { MainLayout } from "@layout/index";
 import { NextPageWithLayout } from "@models/index";
-import { selectPageNumber, selectSortType, youtubeAction } from "@store/index";
+import { youtubeAction } from "@store/index";
 import { GetServerSideProps, InferGetStaticPropsType } from "next";
 import { useEffect } from "react";
-import { LinkMenuItem } from "@component/ui";
 
 const SortVideos: NextPageWithLayout<
   InferGetStaticPropsType<typeof getServerSideProps>
-> = ({ pageNumber, totalPage, type }) => {
+> = ({ pageNumber, totalPage, type, youtubeObject }) => {
   const dispatch = useAppDispatch();
-  const pageNumberSelector = useAppSelector(selectPageNumber);
-  const typeSelector = useAppSelector(selectSortType);
 
   useEffect(() => {
+    dispatch(youtubeAction.setYoutubeObject({ youtubeObject }));
     dispatch(
       youtubeAction.setPagination({
         pageNumber,
@@ -37,22 +35,22 @@ const SortVideos: NextPageWithLayout<
         </Text>
         <HStack>
           <LinkMenuItem
-            href="/topList/topVideo/views/"
+            href="/topList/video/views/"
             title="Most Views"
             type="views"
           />
           <LinkMenuItem
-            href="/topList/topVideo/likes/"
+            href="/topList/video/likes/"
             title="Most Likes"
             type="likes"
           />
           <LinkMenuItem
-            href="/topList/topVideo/commentCount/"
+            href="/topList/video/commentCount/"
             title="Most Comments"
             type="commentCount"
           />
           <LinkMenuItem
-            href="/topList/topVideo/gapViews/"
+            href="/topList/video/gapViews/"
             title="Hot Now"
             type="gapViews"
           />
@@ -77,11 +75,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     return { notFound: true };
 
   const { totalPage } = await videoApi.getTotalSortVideos();
+  if (+pageNumber! > totalPage) return { notFound: true };
   return {
     props: {
       pageNumber,
       totalPage,
       type,
+      youtubeObject: "video",
     },
   };
 };

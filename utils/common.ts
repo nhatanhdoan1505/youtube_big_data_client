@@ -16,6 +16,32 @@ const HTML_ENTITIES = {
   "&nbsp;": "",
 };
 
+export const VIDEO_VIEW_DISTRIBUTION = {
+  "~100": 100,
+  "~500": 500,
+  "~1000": 1000,
+  "~5K": 5000,
+  "~10K": 10000,
+  "~30K": 30000,
+  "~50K": 50000,
+  "~100K": 100000,
+  "~200K": 200000,
+  "~300K": 300000,
+  "~400K": 400000,
+  "~500K": 500000,
+  "~1M": 1000000,
+  "1.5M": 1500000,
+  "~2M": 2000000,
+  "~3M": 3000000,
+  "~5M": 5000000,
+  "~10M": 10000000,
+  "~20M": 20000000,
+  "~30M": 30000000,
+  "~50M": 50000000,
+  "75M": 75000000,
+  "~100M": 100000000,
+};
+
 export const optimizeChannel = (channels: IChannel[]) =>
   channels.map((c) => {
     let { views, subscribe, numberVideos } = c;
@@ -136,7 +162,7 @@ export const optimizeVideoData = (video: IVideo[]) => {
   return videoData;
 };
 
-export const optimizeVideoDataForChart = (video: {
+export const optimizeViewDataForChart = (video: {
   viewsHistory: string;
   date: string;
 }) => {
@@ -157,6 +183,64 @@ export const optimizeVideoDataForChart = (video: {
     .slice(1);
 
   return { viewsHistory: viewsList, gapViewsHistory, date: dateList };
+};
+
+export const optimizeSubscribesDataForChart = (channel: {
+  subscribesHistory: string;
+  date: string;
+}) => {
+  let { subscribesHistory, date } = channel;
+  let subscribesList = subscribesHistory.split("|").map((v) => +v);
+  subscribesList =
+    subscribesList.length >= 30
+      ? subscribesList.slice(subscribesList.length - 29)
+      : subscribesList;
+  let gapSubscribesHistory = subscribesList
+    .map((v, index) => {
+      if (index === subscribesList.length - 1) return -1;
+      return subscribesList[index + 1] - subscribesList[index];
+    })
+    .slice(0, subscribesList.length - 1);
+
+  let dateList = date
+    .split("|")
+    .map((d) => formatDate(d, false))
+    .slice(1);
+
+  return {
+    subscribesHistory: subscribesList,
+    gapSubscribesHistory,
+    date: dateList,
+  };
+};
+
+export const optimizeNumberVideosDataForChart = (channel: {
+  numberVideosHistory: string;
+  date: string;
+}) => {
+  let { numberVideosHistory, date } = channel;
+  let numberVideosList = numberVideosHistory.split("|").map((v) => +v);
+  numberVideosList =
+    numberVideosList.length >= 30
+      ? numberVideosList.slice(numberVideosList.length - 29)
+      : numberVideosList;
+  let gapNumberVideosHistory = numberVideosList
+    .map((v, index) => {
+      if (index === numberVideosList.length - 1) return -1;
+      return numberVideosList[index + 1] - numberVideosList[index];
+    })
+    .slice(0, numberVideosList.length - 1);
+
+  let dateList = date
+    .split("|")
+    .map((d) => formatDate(d, false))
+    .slice(1);
+
+  return {
+    numberVideosHistory: numberVideosList,
+    gapNumberVideosHistory,
+    date: dateList,
+  };
 };
 
 export const getMinAndMax = (list: number[]) => {
@@ -195,4 +279,38 @@ export const removeHtmlEntities = (str: string) => {
     str = str.replace(new RegExp(e, "g"), HTML_ENTITIES[e]);
   });
   return str;
+};
+
+export const formatDuration = (duration: number) => {
+  let hours = Math.floor(duration / 3600);
+  let minutes = Math.floor((duration - hours * 3600) / 60);
+  let seconds = duration - hours * 3600 - minutes * 60;
+  return `${hours > 0 ? `${hours} : ` : ""}${
+    minutes >= 10 ? `${minutes} : ` : `0${minutes} : `
+  }${seconds >= 10 ? seconds : `0${seconds}`}`;
+};
+
+export const optimizeVideoViewDistribution = (viewList: number[]) => {
+  let videoViewDistribution = VIDEO_VIEW_DISTRIBUTION;
+  let videoViewDistributionKey = Object.keys(viewList);
+  for (let i in videoViewDistribution) {
+    videoViewDistribution[i] = 0;
+  }
+  for (let i = 0; i < viewList.length; i++) {
+    for (let j = videoViewDistributionKey.length - 1; i >= 1; i--) {
+      if (
+        viewList[i] <= +videoViewDistributionKey[j] &&
+        viewList[i] > +videoViewDistributionKey[j - 1]
+      ) {
+        videoViewDistribution[j]++;
+      }
+      if (viewList[i] < +videoViewDistributionKey[0]) {
+        videoViewDistribution[0]++;
+      }
+    }
+  }
+  return {
+    data2: Object.keys(videoViewDistribution),
+    data1: Object.values(videoViewDistribution),
+  };
 };

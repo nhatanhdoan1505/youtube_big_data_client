@@ -9,6 +9,8 @@ export interface IChannel {
   date: string;
   channelThumbnail: string;
   numberVideos: string;
+  bannerExternalUrl: string;
+  publishedAt: string;
   videoList: [IVideo];
 }
 
@@ -34,19 +36,36 @@ export interface ISortChannelResponse {
   pageNumber: number;
 }
 
+export interface IChannelInformationResponse {
+  channel: ISortChannel;
+}
 export interface ISortChannel extends IChannel {
-  gapViews: string;
-  gapSubscribes: string;
-  gapsNumberVideos: string;
+  gapViews: number;
+  gapSubscribes: number;
+  gapNumberVideos: number;
   viewsHistory: string;
   subscribesHistory: string;
   numberVideosHistory: string;
 }
 
 export interface ISortVideoResponse {
+  videoList?: [ISortVideo];
+  totalPage?: number;
+  pageNumber?: number;
+}
+
+export interface IVideoListOverviewResponse {
   videoList: [ISortVideo];
-  totalPage: number;
-  pageNumber: number;
+  videoViewsDistribution: {
+    label: string[];
+    videoCount: number[];
+  };
+}
+
+export interface IVideoViewsDistributionResponse {
+  videoViewsDistribution: {
+    [key: number]: number;
+  };
 }
 
 export interface ISortVideo extends IVideo {
@@ -60,8 +79,14 @@ export interface ISortVideo extends IVideo {
   dislikesHistory: string;
   channelInformation: {
     urlChannel: string;
+    id: string;
+    subscribe: string;
+    views: string;
     title: string;
+    numberVideos: string;
+    date: string;
     channelThumbnail: string;
+    bannerExternalUrl: string;
   };
 }
 
@@ -79,12 +104,39 @@ export interface ISystemStat {
 }
 
 export interface ISortDataPayload {
-  type:
+  type?:
     | "views"
     | "likes"
     | "commentCount"
-    | "gapSubscribes"
+    | "gapViews"
     | "subscribe"
-    | "gapViews";
-  pageNumber: number;
+    | "numberVideos"
+    | "gapSubscribes"
+    | "gapNumberVideos";
+  pageNumber?: number;
+  id?: string;
+}
+
+export interface IChannelOverviewPayload {
+  id: string;
+}
+export interface IChannelOverview extends ISortChannel {
+  viewsPerDay: number;
+  subscribePerDay: number;
+  durationPerVideo: number;
+  uploadPerWeek: number;
+  subscribeGrowPer10K: number;
+  rankVideoViews: number;
+  rankSubscribe: number;
+}
+export interface IChannelOverviewResponse {
+  isExist: boolean;
+  channelOverview?: IChannelOverview;
+}
+
+export interface ITagsEntry {
+  tags: number;
+}
+export interface IChannelTagsResponse {
+  tagsList: ITagsEntry[];
 }

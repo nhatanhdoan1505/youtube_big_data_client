@@ -1,8 +1,8 @@
+import { useAppDispatch, useAppSelector } from "@app/index";
 import { Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "@app/index";
-import { selectSortType, youtubeAction, selectTotalPage } from "@store/index";
+import { selectSortType, selectTotalPage, youtubeAction } from "@store/index";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export function LinkMenuItem({
   href,
@@ -11,7 +11,22 @@ export function LinkMenuItem({
 }: {
   href: string;
   title: string;
-  type: "views" | "likes" | "commentCount" | "gapViews";
+  type:
+    | "views"
+    | "likes"
+    | "commentCount"
+    | "gapViews"
+    | "subscribe"
+    | "numberVideos"
+    | "gapSubscribes"
+    | "gapNumberVideos"
+    | "overview"
+    | "topVideo"
+    | "allVideo"
+    | "dailyStat"
+    | "history"
+    | "videoHistory"
+    | "about";
 }) {
   const router = useRouter();
   const sortTypeSelector = useAppSelector(selectSortType);
@@ -44,6 +59,7 @@ export function LinkMenuItem({
       color={isActive ? "black" : "#9b9b9b"}
       pb={3}
       onClick={handlerClick}
+      textAlign="center"
     >
       {title}
     </Text>

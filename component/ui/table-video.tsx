@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "@app/index";
 import {
   HStack,
   Image,
+  Link,
   Tbody,
   Td,
   Text,
@@ -12,18 +13,26 @@ import {
 } from "@chakra-ui/react";
 import { ISortVideo } from "@models/index";
 import {
+  selectChannelOverview,
   selectPageNumber,
   selectSortType,
   selectVideoList,
+  selectYoutubeObject,
   youtubeAction,
 } from "@store/index";
-import { beautyNumberDisplay, removeHtmlEntities } from "@utils/index";
+import {
+  beautyNumberDisplay,
+  formatDate,
+  removeHtmlEntities,
+} from "@utils/index";
 import { useEffect } from "react";
 
 export function TableVideo() {
   const videoListSelector = useAppSelector(selectVideoList);
   const pageNumberSelector = useAppSelector(selectPageNumber);
   const sortTypeSelector = useAppSelector(selectSortType);
+  const youtubeObjectSelector = useAppSelector(selectYoutubeObject);
+  const channelOverviewSelector = useAppSelector(selectChannelOverview);
 
   const dispatch = useAppDispatch();
 
@@ -33,24 +42,34 @@ export function TableVideo() {
   };
 
   useEffect(() => {
-    dispatch(
-      youtubeAction.getVideoSortList({
-        type: sortTypeSelector,
-        pageNumber: pageNumberSelector,
-      })
-    );
+    if (!youtubeObjectSelector && channelOverviewSelector) {
+      dispatch(
+        youtubeAction.preSetVideoSortList({
+          type: sortTypeSelector,
+          pageNumber: pageNumberSelector,
+          id: channelOverviewSelector.id,
+        })
+      );
+    } else {
+      dispatch(
+        youtubeAction.preSetVideoSortList({
+          type: sortTypeSelector,
+          pageNumber: pageNumberSelector,
+        })
+      );
+    }
   }, [pageNumberSelector, sortTypeSelector]);
 
   return (
     <>
       <Thead>
         <Tr>
-          <Th>Rank</Th>
+          <Th>No</Th>
           <Th>Title</Th>
           <Th>Views</Th>
           <Th>Likes</Th>
-          <Th>DisLikes</Th>
           <Th>Comments</Th>
+          <Th>Published</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -75,28 +94,43 @@ export function TableVideo() {
                   >
                     {removeHtmlEntities(video.title)}
                   </Text>
-                  <Text as="h6" fontSize="0.6rem" fontWeight="light">
-                    {removeHtmlEntities(video.channelInformation.title)}
-                  </Text>
+                  <Link
+                    href={`/channel/overview/${video.channelInformation.id}`}
+                    _hover={{ textDecoration: "none" }}
+                  >
+                    <Text as="h6" fontSize="0.6rem" fontWeight="light">
+                      {removeHtmlEntities(video.channelInformation.title)}
+                    </Text>
+                  </Link>
                 </VStack>
               </HStack>
             </Td>
             <Td>
               <VStack>
-                <Text>{beautyNumberDisplay(video.views.toString())}</Text>
-                <Text color="#0484d8">
+                <Text textAlign="center">
+                  {beautyNumberDisplay(video.views.toString())}
+                </Text>
+                <Text color="#0484d8" textAlign="center">
                   +{beautyNumberDisplay(video.gapViews.toString())}
                 </Text>
               </VStack>
             </Td>
             <Td>
-              <Text>{beautyNumberDisplay(video.likes.toString())}</Text>
+              <Text textAlign="center">
+                {beautyNumberDisplay(video.likes.toString()) === "-1"
+                  ? "-"
+                  : beautyNumberDisplay(video.likes.toString())}
+              </Text>
             </Td>
             <Td>
-              <Text>{beautyNumberDisplay(video.dislikes.toString())}</Text>
+              <Text textAlign="center">
+                {beautyNumberDisplay(video.commentCount.toString()) === "-1"
+                  ? "-"
+                  : beautyNumberDisplay(video.commentCount.toString())}
+              </Text>
             </Td>
             <Td>
-              <Text>{beautyNumberDisplay(video.commentCount.toString())}</Text>
+              <Text>{formatDate(video.publicAt)}</Text>
             </Td>
           </Tr>
         ))}

@@ -1,43 +1,19 @@
-import { Line } from "react-chartjs-2";
-import { getMinAndMax } from "@utils/index";
+import { Bar } from "react-chartjs-2";
 
 interface IChartProp {
   data1: number[];
-  data2: number[];
-  yLabel1: string;
-  yLabel2: string;
-  xLabel: string[];
+  data2: string[];
+  label: string;
 }
 
-export function LineChart({
-  data1,
-  data2,
-  xLabel,
-  yLabel1,
-  yLabel2,
-}: IChartProp) {
+export function BarChart({ data1, data2, label }: IChartProp) {
   return (
     <>
-      <Line
+      <Bar
         data={{
-          labels: xLabel,
+          labels: data2,
           datasets: [
-            {
-              label: yLabel1,
-              data: data1,
-              borderColor: "rgba(185, 22, 71)",
-              fill: false,
-              cubicInterpolationMode: "monotone",
-              tension: 0.4,
-            },
-            {
-              label: yLabel2,
-              data: data2,
-              borderColor: "rgba(1, 146, 103)",
-              fill: false,
-              cubicInterpolationMode: "monotone",
-              tension: 0.4,
-            },
+            { data: data1, backgroundColor: "rgba(185, 22, 71)", label },
           ],
         }}
         options={{
@@ -70,9 +46,7 @@ export function LineChart({
               //     display: true,
               //     text: yLabel,
               //   },
-              type: "logarithmic",
               ticks: {
-                // Include a dollar sign in the ticks
                 callback: function (value, index, ticks) {
                   return +value >= 1000000000
                     ? `${(+value / 1000000000).toFixed(1)}B`
