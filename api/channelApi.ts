@@ -1,18 +1,23 @@
 import {
   IChannel,
   IChannelOverviewResponse,
+  IChannelSubscriberAverageResponse,
+  IChannelSubscriberStatistic,
+  IChannelSubscriberStatisticResponse,
   IChannelTagsResponse,
+  IChannelUploadStatisticResponse,
   IResponse,
   ISortChannel,
-  ISortChannelResponse,
   ISortDataPayload,
   ISortVideo,
   ISortVideoResponse,
   ITotal,
   IVideoListOverviewResponse,
+  IChannelLabelResponse,
   IVideoViewsDistributionResponse,
 } from "@models/index";
 import { AxiosResponse } from "axios";
+import { ISortChannelResponse } from "./../models/youtube";
 import axiosClient from "./axiosClient";
 
 interface IPayload {
@@ -141,5 +146,65 @@ export const channelApi = {
     } catch (error) {
       return {} as ITotal;
     }
+  },
+
+  async getVideoDeleted({ id }: ISortDataPayload): Promise<ISortVideo[]> {
+    try {
+      const url = `/channel/videoDeleted/${id}`;
+      const res: AxiosResponse<IResponse<ISortVideoResponse>> =
+        await axiosClient.get(url);
+      return res.data.data.videoList!;
+    } catch (error) {
+      return [];
+    }
+  },
+
+  async getChannelUpload(): Promise<IChannelUploadStatisticResponse> {
+    const url = `/channel/upload/statistic`;
+    const res: AxiosResponse<IResponse<IChannelUploadStatisticResponse>> =
+      await axiosClient.get(url);
+    return res.data.data;
+  },
+
+  async getChannelByUpload({
+    subscribersGap,
+    uploadGap,
+  }: ISortDataPayload): Promise<ISortChannel[]> {
+    const url = `/channel/upload/sort`;
+    const res: AxiosResponse<IResponse<ISortChannelResponse>> =
+      await axiosClient.post(url, { subscribersGap, uploadGap });
+    return res.data.data.channelList;
+  },
+
+  async getChannelSubscriberStatistic(): Promise<IChannelSubscriberStatistic> {
+    const url = `/channel/subscriber/statistic`;
+    const res: AxiosResponse<IResponse<IChannelSubscriberStatisticResponse>> =
+      await axiosClient.get(url);
+
+    return res.data.data.channelSubscriber!;
+  },
+
+  async getChannelSubscriberAverage(): Promise<number> {
+    const url = `/channel/averageSubscriber`;
+    const res: AxiosResponse<IResponse<IChannelSubscriberAverageResponse>> =
+      await axiosClient.get(url);
+
+    return res.data.data.averageChannelSubscriber!;
+  },
+
+  async getChannelBySubscriber({
+    subscribeScope,
+  }: ISortDataPayload): Promise<ISortChannel[]> {
+    const url = `/channel/subscriber/sort`;
+    const res: AxiosResponse<IResponse<ISortChannelResponse>> =
+      await axiosClient.post(url, { subscribeScope });
+    return res.data.data.channelList!;
+  },
+
+  async getChannelLabel(): Promise<string[]> {
+    const url = `/channel/label/`;
+    const res: AxiosResponse<IResponse<IChannelLabelResponse>> =
+      await axiosClient.get(url);
+    return res.data.data.labelList!;
   },
 };

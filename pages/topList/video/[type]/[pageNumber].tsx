@@ -1,12 +1,19 @@
 import { videoApi } from "@api/index";
-import { useAppDispatch } from "@app/index";
+import { useAppDispatch, useAppSelector } from "@app/index";
 import { HStack, Text } from "@chakra-ui/react";
 import { Header } from "@component/common";
 import { TableContainerFull } from "@component/container";
 import { LinkMenuItem, TableVideo } from "@component/ui";
 import { MainLayout } from "@layout/index";
 import { NextPageWithLayout } from "@models/index";
-import { youtubeAction } from "@store/index";
+import {
+  selectLoading,
+  selectPageNumber,
+  selectSortType,
+  selectYoutubeObject,
+  youtubeAction,
+} from "@store/index";
+import { getCookie } from "@utils/index";
 import { GetServerSideProps, InferGetStaticPropsType } from "next";
 import { useEffect } from "react";
 
@@ -14,6 +21,10 @@ const SortVideos: NextPageWithLayout<
   InferGetStaticPropsType<typeof getServerSideProps>
 > = ({ pageNumber, totalPage, type, youtubeObject }) => {
   const dispatch = useAppDispatch();
+  const pageNumberSelector = useAppSelector(selectPageNumber);
+  const sortTypeSelector = useAppSelector(selectSortType);
+  const loadingSelector = useAppSelector(selectLoading);
+  const youtubeObjectSelector = useAppSelector(selectYoutubeObject);
 
   useEffect(() => {
     dispatch(youtubeAction.setYoutubeObject({ youtubeObject }));
@@ -25,6 +36,22 @@ const SortVideos: NextPageWithLayout<
       })
     );
   }, []);
+
+  useEffect(() => {
+    if (
+      ["views", "likes", "commentCount", "gapViews"].includes(
+        sortTypeSelector
+      ) &&
+      youtubeObjectSelector === "video" &&
+      !loadingSelector
+    )
+      dispatch(
+        youtubeAction.preSetVideoSortList({
+          type: sortTypeSelector,
+          pageNumber: pageNumberSelector,
+        })
+      );
+  }, [pageNumberSelector, sortTypeSelector]);
 
   const renderPage = pageNumber ? (
     <>
@@ -65,7 +92,11 @@ const SortVideos: NextPageWithLayout<
   return renderPage;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
+  const token = getCookie("token", req.headers.cookie) as string;
   const { pageNumber, type } = query;
   if (!+pageNumber!) return { notFound: true };
   if (
@@ -74,8 +105,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   )
     return { notFound: true };
 
-  const { totalPage } = await videoApi.getTotalSortVideos();
+  const { totalPage } = await videoApi.getTotalSortVideos({
+    config: { headers: { Authorization: token } },
+  });
   if (+pageNumber! > totalPage) return { notFound: true };
+
   return {
     props: {
       pageNumber,

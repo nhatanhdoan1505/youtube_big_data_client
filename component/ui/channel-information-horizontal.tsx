@@ -22,14 +22,17 @@ export function ChannelInformationHorizontal() {
           {beautyNumberDisplay(channelOverviewSelector.views.toString())}
         </Text>
         <Text fontWeight="thin">
-          {beautyNumberDisplay(channelOverviewSelector.viewsPerDay.toString())}{" "}
-          / Day
+          {beautyNumberDisplay(channelOverviewSelector.viewsPerDay.toString())}/
+          Day
         </Text>
       </VStack>
       <VStack>
         <Text fontWeight="bold">Subscribers</Text>
         <Text fontWeight="semibold">
-          {beautyNumberDisplay(channelOverviewSelector.subscribe.toString())}
+          {beautyNumberDisplay(channelOverviewSelector.subscribe.toString()) ===
+          "-1"
+            ? null
+            : beautyNumberDisplay(channelOverviewSelector.subscribe.toString())}
         </Text>
         <Text fontWeight="thin">
           {beautyNumberDisplay(

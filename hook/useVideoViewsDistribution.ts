@@ -1,8 +1,7 @@
-import { channelApi, systemApi } from "@api/index";
-import { ISystemStat } from "@models/index";
-import { useEffect, useState } from "react";
+import { channelApi } from "@api/index";
 import { useAppSelector } from "@app/index";
 import { selectChannelOverview } from "@store/index";
+import { useEffect, useState } from "react";
 
 export const useVideoViewsDistribution = () => {
   const channelOverviewSelector = useAppSelector(selectChannelOverview);

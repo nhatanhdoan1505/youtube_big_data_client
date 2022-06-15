@@ -15,8 +15,8 @@ export function NumberVideosChart({
     <LineChart
       data1={numberVideosHistory}
       data2={gapNumberVideosHistory}
-      yLabel1="Views"
-      yLabel2="Increase views"
+      yLabel1="Number Videos"
+      yLabel2="Increase Number Videos"
       xLabel={date}
     />
   );

@@ -8,12 +8,7 @@ import {
   ViewChart,
 } from "@component/ui";
 import { useChannelTags } from "@hook/index";
-import {
-  selectChannelOverview,
-  selectVideoListOverview,
-  selectVideoViewDistribution,
-  youtubeAction,
-} from "@store/index";
+import { selectChannelOverview, youtubeAction } from "@store/index";
 import {
   beautyNumberDisplay,
   optimizeNumberVideosDataForChart,
@@ -26,11 +21,6 @@ export function ChartChannelOverview() {
   const channelOverviewSelector = useAppSelector(selectChannelOverview);
   const { channelTagList } = useChannelTags();
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(
-      youtubeAction.preSetVideoListOverview({ id: channelOverviewSelector.id })
-    );
-  }, []);
 
   return (
     <VStack w="100%">
@@ -68,7 +58,11 @@ export function ChartChannelOverview() {
               <Text fontWeight="semibold">
                 {beautyNumberDisplay(
                   channelOverviewSelector.subscribe.toString()
-                )}
+                ) === "-1"
+                  ? "NOT PUBLIC"
+                  : beautyNumberDisplay(
+                      channelOverviewSelector.subscribe.toString()
+                    )}
               </Text>
             </VStack>
             <SubscribeChart

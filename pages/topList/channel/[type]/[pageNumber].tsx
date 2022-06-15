@@ -6,7 +6,13 @@ import { TableContainerFull } from "@component/container";
 import { LinkMenuItem, TableChannel } from "@component/ui";
 import { MainLayout } from "@layout/index";
 import { NextPageWithLayout } from "@models/index";
-import { selectPageNumber, selectSortType, youtubeAction } from "@store/index";
+import {
+  selectLoading,
+  selectPageNumber,
+  selectSortType,
+  selectYoutubeObject,
+  youtubeAction,
+} from "@store/index";
 import { GetServerSideProps, InferGetStaticPropsType } from "next";
 import { useEffect } from "react";
 
@@ -15,7 +21,9 @@ const SortChannels: NextPageWithLayout<
 > = ({ pageNumber, totalPage, type, youtubeObject }) => {
   const dispatch = useAppDispatch();
   const pageNumberSelector = useAppSelector(selectPageNumber);
-  const typeSelector = useAppSelector(selectSortType);
+  const sortTypeSelector = useAppSelector(selectSortType);
+  const loadingSelector = useAppSelector(selectLoading);
+  const youtubeObjectSelector = useAppSelector(selectYoutubeObject);
 
   useEffect(() => {
     dispatch(youtubeAction.setYoutubeObject({ youtubeObject }));
@@ -27,6 +35,27 @@ const SortChannels: NextPageWithLayout<
       })
     );
   }, []);
+
+  useEffect(() => {
+    if (
+      [
+        "views",
+        "subscribe",
+        "numberVideos",
+        "gapSubscribes",
+        "gapViews",
+        "gapNumberVideos",
+      ].includes(sortTypeSelector) &&
+      youtubeObjectSelector === "channel" &&
+      !loadingSelector
+    )
+      dispatch(
+        youtubeAction.preSetChannelSortList({
+          type: sortTypeSelector,
+          pageNumber: pageNumberSelector,
+        })
+      );
+  }, [pageNumberSelector, sortTypeSelector]);
 
   const renderPage = pageNumber ? (
     <>
@@ -53,7 +82,7 @@ const SortChannels: NextPageWithLayout<
           />
           <LinkMenuItem
             href="/topList/channel/gapSubscribes/"
-            title="Mot Increased Subscribers"
+            title="Most Increased Subscribers"
             type="gapSubscribes"
           />
           <LinkMenuItem

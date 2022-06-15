@@ -1,5 +1,5 @@
-import { videoApi, channelApi } from "@api/index";
-import { ISortVideo, ISortChannel } from "@models/index";
+import { channelApi, videoApi } from "@api/index";
+import { ISortChannel, ISortVideo } from "@models/index";
 import { useEffect, useState } from "react";
 
 export const useHotBase = () => {

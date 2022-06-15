@@ -15,15 +15,21 @@ import {
 import { ModalVideo } from "@component/container";
 import { useVideoHotListBase } from "@hook/index";
 import { ISortVideo } from "@models/index";
-import { selectVideoInformation, youtubeAction } from "@store/index";
+import {
+  selectChannelOverview,
+  selectVideoInformation,
+  youtubeAction,
+} from "@store/index";
 import {
   beautyNumberDisplay,
   formatDate,
   removeHtmlEntities,
 } from "@utils/index";
+import { useRouter } from "next/router";
 
 export function VideoHotListBase() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handlerClickVideo = (video: ISortVideo) => {
     dispatch(youtubeAction.setVideoInformationModal(video));
@@ -31,13 +37,20 @@ export function VideoHotListBase() {
   };
   const { hotVideoBaseList } = useVideoHotListBase();
   const videoInformationSelector = useAppSelector(selectVideoInformation);
+  const channelOverviewSelector = useAppSelector(selectChannelOverview);
   return (
     <VStack border="1px solid #d8d8d8" p={4} borderRadius="8px" w="100%">
       <HStack w="100%" alignItems="center" justifyContent="space-between">
         <Text fontWeight="bold" fontSize="2xl">
           Top Videos
         </Text>
-        <Button colorScheme="pink" size="sm">
+        <Button
+          colorScheme="pink"
+          size="sm"
+          onClick={() =>
+            router.push(`/channel/topVideo/${channelOverviewSelector.id}/1`)
+          }
+        >
           More
         </Button>
       </HStack>

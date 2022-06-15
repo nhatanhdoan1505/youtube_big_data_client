@@ -1,16 +1,16 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
-import { Provider } from "react-redux";
 import { store } from "@app/index";
-import { AppPropsWithLayout } from "@models/index";
+import { ChakraProvider } from "@chakra-ui/react";
 import { EmptyLayout } from "@layout/EmptyLayout";
+import { AppPropsWithLayout } from "@models/index";
+import { Provider } from "react-redux";
+import "../styles/globals.css";
+import { theme } from "@utils/index";
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const Layout = Component.Layout ?? EmptyLayout;
   return (
     <Provider store={store}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

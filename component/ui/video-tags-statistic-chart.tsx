@@ -1,19 +1,18 @@
+import { IVideoTagsStatisticForChart } from "@hook/index";
 import { Bar } from "react-chartjs-2";
-import { useAppSelector } from "@app/index";
-import { selectChannelOverview } from "@store/index";
-import { useVideoViewsDistribution } from "@hook/index";
-import { Box } from "@chakra-ui/react";
 
-export function VideoViewsDistribution() {
-  const { videoCount, labelList } = useVideoViewsDistribution();
-
+export function TagsStatisticChart({
+  videoTagsStatistic,
+}: {
+  videoTagsStatistic: IVideoTagsStatisticForChart;
+}) {
   return (
     <Bar
       data={{
-        labels: labelList,
+        labels: videoTagsStatistic.tags,
         datasets: [
           {
-            data: videoCount,
+            data: videoTagsStatistic.videoCount,
             backgroundColor: "rgba(185, 22, 71)",
             label: "Video Count",
           },
@@ -41,7 +40,7 @@ export function VideoViewsDistribution() {
             display: true,
             title: {
               display: true,
-              text: "Video Views",
+              text: "Video Tags",
             },
             // ticks: {
             //   callback: function (value, index, ticks) {

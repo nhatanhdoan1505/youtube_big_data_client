@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { EmotionCache } from "@emotion/react";
+import { io, Socket } from "socket.io-client";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -23,3 +24,4 @@ export interface IResponse<T> {
   data: T;
 }
 
+export type SocketClient = ReturnType<typeof io>;

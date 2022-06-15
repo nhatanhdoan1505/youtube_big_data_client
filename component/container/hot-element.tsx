@@ -15,7 +15,7 @@ export function HotElement({ title, href, children }) {
         justifyContent="space-between"
         px={3}
       >
-        <Text as="h4" fontWeight="bold" color="#4a4a4a">
+        <Text as="h4" fontWeight="bold" >
           {title}
         </Text>
         <Button colorScheme="pink" size="sm" onClick={handlerClickMore}>

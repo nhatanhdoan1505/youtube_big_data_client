@@ -1,8 +1,8 @@
 import { channelApi } from "@api/index";
-import { IChannelTagsResponse } from "@models/index";
-import { useEffect, useState } from "react";
 import { useAppSelector } from "@app/index";
+import { IChannelTagsResponse } from "@models/index";
 import { selectChannelOverview } from "@store/index";
+import { useEffect, useState } from "react";
 
 interface IChannelTagsForChart {
   tagsNumber: number[];

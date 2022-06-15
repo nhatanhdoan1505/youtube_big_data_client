@@ -1,4 +1,5 @@
 export interface IChannel {
+  _id: string;
   label: string;
   urlChannel: string;
   id: string;
@@ -11,10 +12,14 @@ export interface IChannel {
   numberVideos: string;
   bannerExternalUrl: string;
   publishedAt: string;
+  description: string;
   videoList: [IVideo];
+  tags: string;
+  isAvailable: boolean;
 }
 
 export interface IVideo {
+  _id: string;
   thumbnail: string;
   id: string;
   title: string;
@@ -36,6 +41,9 @@ export interface ISortChannelResponse {
   pageNumber: number;
 }
 
+export interface IChannelLabelResponse {
+  labelList: string[];
+}
 export interface IChannelInformationResponse {
   channel: ISortChannel;
 }
@@ -46,6 +54,74 @@ export interface ISortChannel extends IChannel {
   viewsHistory: string;
   subscribesHistory: string;
   numberVideosHistory: string;
+}
+
+export interface IChannelUploadStatisticResponse {
+  channelUploadStatistics: IChannelUploadStatistic;
+  channelUploadAverage: IChannelUploadAverage;
+}
+
+export interface IChannelUploadStatistic {
+  [key: number]: { [key: string]: number };
+}
+
+export interface IChannelUploadAverage {
+  [key: number]: number;
+}
+
+export interface IVideoViewAverageResponse {
+  averageVideoView: number;
+}
+export interface IVideoViewsStatistic {
+  [key: number]: number;
+}
+export interface IVideoViewsStatisticResponse {
+  videoViews: IVideoDurationStatistic;
+}
+
+export interface IChannelSubscriberAverageResponse {
+  averageChannelSubscriber: number;
+}
+export interface IChannelSubscriberStatistic {
+  [key: number]: number;
+}
+export interface IChannelSubscriberStatisticResponse {
+  channelSubscriber: IVideoDurationStatistic;
+}
+
+export interface IVideoDurationStatistic {
+  [key: number]: number;
+}
+export interface IVideoDurationStatisticResponse {
+  videoDurationStatistics: IVideoDurationStatistic;
+  recommendedDuration: string;
+  averageViewsRecommendedDuration: string;
+}
+
+export interface IVideoTagsStatisticResponse {
+  videoTagsStatistics: IVideoTagsStatistic;
+  averageViewsRecommendedTags: number;
+  recommendedTags: number;
+}
+
+export interface IVideoTagsStatistic {
+  [key: string]: number;
+}
+export interface IVideoTagsSortResponse {
+  tagsList: [IVideoTagsAndKeywordSort];
+  keywordList: [IVideoTagsAndKeywordSort];
+}
+
+export interface IVideoTagsAndKeywordSort {
+  _id: string;
+  count: number;
+}
+
+export interface IVideoTagsSortPosition extends IVideoTagsAndKeywordSort {
+  top: number;
+  left: number;
+  fontSize: number;
+  color: string;
 }
 
 export interface ISortVideoResponse {
@@ -87,6 +163,7 @@ export interface ISortVideo extends IVideo {
     date: string;
     channelThumbnail: string;
     bannerExternalUrl: string;
+    description: string;
   };
 }
 
@@ -113,8 +190,17 @@ export interface ISortDataPayload {
     | "numberVideos"
     | "gapSubscribes"
     | "gapNumberVideos";
+  allVideoSortType?: "newest" | "oldest" | "popular";
   pageNumber?: number;
   id?: string;
+  tag?: string;
+  keyword?: string;
+  duration?: number;
+  viewScope?: number[];
+  numberTags?: number;
+  subscribersGap?: number[];
+  uploadGap?: number[];
+  subscribeScope?: number[];
 }
 
 export interface IChannelOverviewPayload {

@@ -1,6 +1,5 @@
-import { Box, Container, VStack } from "@chakra-ui/react";
-import { Footer } from "@component/common";
-import { Header, NavBar } from "@component/common";
+import { Box, Container, useColorModeValue, VStack } from "@chakra-ui/react";
+import { Footer, WithSubNavigation } from "@component/common";
 import { ILayoutProps } from "@models/common";
 import React from "react";
 
@@ -8,8 +7,14 @@ export function MainLayout({ children }: ILayoutProps) {
   return (
     <Container w="100%" maxWidth={{ lg: "3718px" }}>
       <VStack minHeight="100vh" w="100%">
-        <NavBar />
-        <Box as="main" flexGrow={1} w="100%" py="100px">
+        <WithSubNavigation />
+        <Box
+          as="main"
+          flexGrow={1}
+          w="100%"
+          py="100px"
+          bg={useColorModeValue("white.500", "white.200")}
+        >
           {children}
         </Box>
         <Footer />

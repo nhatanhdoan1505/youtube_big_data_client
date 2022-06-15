@@ -1,11 +1,17 @@
-import { ISortChannel, ISortVideo, IChannelOverview } from "@models/index";
+import {
+  ISortChannel,
+  ISortVideo,
+  IChannelOverview,
+  IVideoTagsAndKeywordSort,
+} from "@models/index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/index";
 
-interface ISortYoutubePayload {
+export interface ISortYoutubePayload {
   videoList?: ISortVideo[];
+  videoDeleted?: ISortVideo[];
   channelList?: ISortChannel[];
-  youtubeObject?: "video" | "channel" | "hashtag";
+  youtubeObject?: "video" | "channel" | "hashtag" | "statistic";
   pageNumber?: number;
   totalPage?: number;
   type?:
@@ -25,19 +31,45 @@ interface ISortYoutubePayload {
     | "videoHistory"
     | "about"
     | "oldest"
-    | "newest";
+    | "newest"
+    | "hashtag"
+    | "keyword"
+    | "videoDuration"
+    | "videoView"
+    | "tagsTrend"
+    | "upload"
+    | "channelSubscriber"
+    | "totalView"
+    | "thumbnail"
+    | "myPageOverview"
+    | "vsTrend"
+    | "vsCompetitor"
+    | "editProfile";
   channelOverview?: IChannelOverview;
-  videoListOverview?: ISortVideo[];
   videoViewsDistribution?: { label: string[]; videoCount: number[] };
   id?: string;
+  allVideoSortType?: "popular" | "oldest" | "newest";
+  hashtagAndKeyword?: IVideoTagsAndKeywordSort[];
+  searchHashtagAndKeyword?: IVideoTagsAndKeywordSort;
+  isFirstSearchHashtagAndKeyword?: boolean;
+  tag?: string;
+  keyword?: string;
+  duration?: number;
+  viewScope?: number[];
+  loading?: boolean;
+  numberTags?: number;
+  averageUploadScope?: number[];
+  averageSubscriberScope?: number[];
+  subscribeScope?: number[];
 }
 
 interface IInitState {
   videoList: ISortVideo[];
+  videoDeleted: ISortVideo[];
   channelList: ISortChannel[];
   totalPage: number;
   pageNumber: number;
-  youtubeObject: "video" | "channel" | "hashtag";
+  youtubeObject: "video" | "channel" | "hashtag" | "statistic";
   type:
     | "views"
     | "likes"
@@ -55,28 +87,48 @@ interface IInitState {
     | "videoHistory"
     | "about"
     | "oldest"
-    | "newest";
+    | "newest"
+    | "hashtag"
+    | "keyword"
+    | "videoDuration"
+    | "videoView"
+    | "tagsTrend"
+    | "upload"
+    | "channelSubscriber"
+    | "totalView"
+    | "thumbnail"
+    | "myPageOverview"
+    | "vsTrend"
+    | "vsCompetitor"
+    | "editProfile";
   videoInformation: ISortVideo;
   isShowModal: boolean;
   loading: boolean;
   channelOverview: IChannelOverview;
-  videoListOverview: ISortVideo[];
   videoViewsDistribution: { label: string[]; videoCount: number[] };
+  allVideoSortType: "newest" | "oldest" | "popular";
+  hashtagAndKeyword: IVideoTagsAndKeywordSort[];
+  searchHashtagAndKeyword: IVideoTagsAndKeywordSort;
+  isFirstSetSearchHashtagAndKeyword: boolean;
 }
 
 const initialState: IInitState = {
   videoList: [],
+  videoDeleted: [],
   channelList: [],
   totalPage: 1,
   pageNumber: 1,
   loading: false,
   videoInformation: null!,
   isShowModal: false,
-  type: "views",
+  type: null!,
   youtubeObject: null!,
   channelOverview: null!,
-  videoListOverview: [],
   videoViewsDistribution: null!,
+  allVideoSortType: null!,
+  hashtagAndKeyword: [],
+  searchHashtagAndKeyword: null!,
+  isFirstSetSearchHashtagAndKeyword: true,
 };
 
 const youtubeSlice = createSlice({
@@ -89,10 +141,13 @@ const youtubeSlice = createSlice({
     setType(state, action: PayloadAction<ISortYoutubePayload>) {
       state.type = action.payload.type!;
     },
+    setLoading(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.loading = action.payload.loading!;
+    },
     setPagination(state, action: PayloadAction<ISortYoutubePayload>) {
       state.pageNumber = +action.payload.pageNumber!;
       state.totalPage = +action.payload.totalPage!;
-      state.type = action.payload.type!;
+      state.type = action.payload.type ? action.payload.type : state.type;
     },
     preSetVideoSortList(state, action: PayloadAction<ISortYoutubePayload>) {
       state.loading = true;
@@ -117,12 +172,39 @@ const youtubeSlice = createSlice({
     setChannelOverview(state, action: PayloadAction<ISortYoutubePayload>) {
       state.channelOverview = action.payload.channelOverview!;
     },
-    preSetVideoListOverview(
+    setAllVideoSortType(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.allVideoSortType = action.payload.allVideoSortType!;
+      state.loading = false;
+    },
+    preSetVideoDeleted(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.loading = true;
+    },
+    setVideoDeleted(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.videoDeleted = action.payload.videoDeleted!;
+      state.loading = false;
+    },
+    preSetHashtagAndKeyword(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.loading = true;
+    },
+    setHashtagAndKeyword(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.hashtagAndKeyword = action.payload.hashtagAndKeyword!;
+      state.loading = false;
+    },
+    setSearchHashtagAndKeyword(
       state,
       action: PayloadAction<ISortYoutubePayload>
-    ) {},
-    setVideoListOverview(state, action: PayloadAction<ISortYoutubePayload>) {
-      state.videoListOverview = action.payload.videoListOverview!;
+    ) {
+      state.searchHashtagAndKeyword = action.payload.searchHashtagAndKeyword!;
+    },
+    setIsFirstSetSearchHashtagAndKeyword(
+      state,
+      action: PayloadAction<ISortYoutubePayload>
+    ) {
+      state.isFirstSetSearchHashtagAndKeyword =
+        action.payload.isFirstSearchHashtagAndKeyword!;
+    },
+    preSetVideoListByTag(state, action: PayloadAction<ISortYoutubePayload>) {
+      state.loading = true;
     },
   },
 });
@@ -144,9 +226,17 @@ export const selectYoutubeObject = (state: RootState) =>
   state.youtube.youtubeObject;
 export const selectChannelOverview = (state: RootState) =>
   state.youtube.channelOverview;
-export const selectVideoListOverview = (state: RootState) =>
-  state.youtube.videoListOverview;
 export const selectVideoViewDistribution = (state: RootState) =>
   state.youtube.videoViewsDistribution;
+export const selectAllVideoSortType = (state: RootState) =>
+  state.youtube.allVideoSortType;
+export const selectVideoDeleted = (state: RootState) =>
+  state.youtube.videoDeleted;
+export const selectHashtagAndKeyword = (state: RootState) =>
+  state.youtube.hashtagAndKeyword;
+export const selectSearchHashtagAndKeyword = (state: RootState) =>
+  state.youtube.searchHashtagAndKeyword;
+export const selectIsFirstSetSearchHashtagAndKeyword = (state: RootState) =>
+  state.youtube.isFirstSetSearchHashtagAndKeyword;
 
 export const youtubeReducer = youtubeSlice.reducer;

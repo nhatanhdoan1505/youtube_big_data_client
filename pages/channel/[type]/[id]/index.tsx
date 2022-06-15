@@ -1,6 +1,14 @@
 import { channelApi } from "@api/index";
 import { useAppDispatch, useAppSelector } from "@app/index";
-import { Box, Container, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  HStack,
+  Image,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Header } from "@component/common";
 import { ChannelInformation, ChannelOverview } from "@component/container";
 import { LinkMenuItem } from "@component/ui";
@@ -54,7 +62,12 @@ const ChannelInformationPage: NextPageWithLayout<
                 maxHeight="60px"
                 borderRadius="50%"
               />
-              <Text fontWeight="bold">{channelOverview.title}</Text>
+              <Link
+                href={`https://www.youtube.com/channel/${channelOverview.id}`}
+                target="_blank"
+              >
+                <Text fontWeight="bold">{channelOverview.title}</Text>
+              </Link>
             </HStack>
             <HStack>
               <LinkMenuItem
@@ -63,25 +76,25 @@ const ChannelInformationPage: NextPageWithLayout<
                 type="overview"
               />
               <LinkMenuItem
-                href={`/channel/topVideo/${channelOverview.id}/1`}
+                href={`/channel/topVideo/${channelOverview.id}/`}
                 title="Top Videos"
                 type="topVideo"
               />
               <LinkMenuItem
-                href={`/channel/allVideo/${channelOverview.id}/1`}
+                href={`/channel/allVideo/${channelOverview.id}/`}
                 title="All Videos"
                 type="allVideo"
               />
-              <LinkMenuItem
+              {/* <LinkMenuItem
                 href={`/channel/dailyStat/${channelOverview.id}/`}
                 title="Daily Stat"
                 type="dailyStat"
-              />
-              <LinkMenuItem
+              /> */}
+              {/* <LinkMenuItem
                 href={`/channel/overview/${channelOverview.id}/`}
                 title="History"
                 type="history"
-              />
+              /> */}
               <LinkMenuItem
                 href={`/channel/videoHistory/${channelOverview.id}/`}
                 title="Video History"
@@ -111,8 +124,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       "overview",
       "topVideo",
       "allVideo",
-      "dailyStat",
-      "history",
+      // "dailyStat",
+      // "history",
       "videoHistory",
       "about",
     ].includes(type)
@@ -126,7 +139,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       props: { type, channelOverview: channelOverview.channelOverview },
     };
   }
-
   return { notFound: true };
 };
 

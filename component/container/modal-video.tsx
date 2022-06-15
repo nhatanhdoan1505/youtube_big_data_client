@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector } from "@app/index";
 import { selectIsShowModal, youtubeAction } from "@store/index";
 import { AiFillRightCircle } from "react-icons/ai";
 import { Icon } from "@chakra-ui/react";
-import { formatDate } from "@utils/index";
+import { formatDate, removeHtmlEntities } from "@utils/index";
 
 export function ModalVideo(videoInformation: ISortVideo) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -55,7 +55,7 @@ export function ModalVideo(videoInformation: ISortVideo) {
                 maxWidth="30px"
               />
               <Text color="white">
-                {videoInformation.channelInformation.title}
+                {removeHtmlEntities(videoInformation.channelInformation.title)}
               </Text>
               <Icon as={AiFillRightCircle} color="white" />
             </HStack>
@@ -88,7 +88,7 @@ export function ModalVideo(videoInformation: ISortVideo) {
                   _hover={{ cursor: "pointer" }}
                 >
                   <Text fontSize="1rem" fontWeight="semibold">
-                    {videoInformation.title}
+                    {removeHtmlEntities(videoInformation.title)}
                   </Text>
                 </Link>
                 <Text fontSize="0.8rem" fontWeight="medium">

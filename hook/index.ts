@@ -4,3 +4,8 @@ export * from "./useChannelOverview";
 export * from "./useChannelTags";
 export * from "./useVideoViewsDistribution";
 export * from "./useVideoHotListBase";
+export * from "./useVideoDurationStatistic";
+export * from "./useVideoViewsStatistic";
+export * from "./useVideoTagsStatistic";
+export * from "./useChannelUploadStatistic";
+export * from "./useChannelSubscriberStatistic";

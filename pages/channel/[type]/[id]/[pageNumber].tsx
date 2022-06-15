@@ -2,32 +2,96 @@ import { channelApi } from "@api/index";
 import { useAppDispatch, useAppSelector } from "@app/index";
 import { Box, Container, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { Header } from "@component/common";
-import { ChannelInformation, ChannelOverview } from "@component/container";
+import { ChannelInformation } from "@component/container";
 import { LinkMenuItem } from "@component/ui";
 import { MainLayout } from "@layout/index";
 import { IChannelOverview, NextPageWithLayout } from "@models/index";
-import { youtubeAction } from "@store/index";
+import {
+  selectAllVideoSortType,
+  selectChannelOverview,
+  selectLoading,
+  selectPageNumber,
+  selectSortType,
+  selectYoutubeObject,
+  youtubeAction,
+} from "@store/index";
 import { GetServerSideProps, InferGetStaticPropsType } from "next";
 import { useEffect } from "react";
-import { selectChannelOverview } from "@store/index";
 
 const ChannelVideoListPage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getServerSideProps>
 > = ({
   type,
   channelOverview,
+  totalPage,
+  pageNumber,
+  allVideoSortType,
 }: {
   type: never;
   channelOverview: IChannelOverview;
+  totalPage: number;
+  pageNumber: number;
+  allVideoSortType: "oldest" | "newest" | "popular";
 }) => {
   const dispatch = useAppDispatch();
   const channelOverviewSelector = useAppSelector(selectChannelOverview);
+  const pageNumberSelector = useAppSelector(selectPageNumber);
+  const sortTypeSelector = useAppSelector(selectSortType);
+  const youtubeObjectSelector = useAppSelector(selectYoutubeObject);
+  const allVideoSortTypeSelector = useAppSelector(selectAllVideoSortType);
+  const loadingSelector = useAppSelector(selectLoading);
 
   useEffect(() => {
     dispatch(youtubeAction.setYoutubeObject({ youtubeObject: null! }));
     dispatch(youtubeAction.setType({ type }));
     dispatch(youtubeAction.setChannelOverview({ channelOverview }));
+    dispatch(
+      youtubeAction.setPagination({
+        pageNumber,
+        totalPage,
+      })
+    );
+    if (allVideoSortType) {
+      dispatch(youtubeAction.setAllVideoSortType({ allVideoSortType }));
+    }
   }, []);
+
+  useEffect(() => {
+    if (
+      !youtubeObjectSelector &&
+      channelOverviewSelector &&
+      ["topVideo", "allVideo"].includes(sortTypeSelector) &&
+      !loadingSelector
+    ) {
+      if (sortTypeSelector === "allVideo" && allVideoSortTypeSelector) {
+        dispatch(
+          youtubeAction.preSetVideoSortList({
+            type: sortTypeSelector,
+            allVideoSortType: allVideoSortTypeSelector,
+            pageNumber: pageNumberSelector,
+            id: channelOverviewSelector.id,
+          })
+        );
+        return;
+      }
+      if (sortTypeSelector === "topVideo") {
+        dispatch(
+          youtubeAction.preSetVideoSortList({
+            type: sortTypeSelector,
+            pageNumber: pageNumberSelector,
+            id: channelOverviewSelector.id,
+          })
+        );
+        return;
+      }
+    }
+  }, [
+    sortTypeSelector,
+    channelOverviewSelector,
+    allVideoSortTypeSelector,
+    youtubeObjectSelector,
+    pageNumberSelector,
+  ]);
 
   const renderPage = (
     <>
@@ -58,37 +122,37 @@ const ChannelVideoListPage: NextPageWithLayout<
             </HStack>
             <HStack>
               <LinkMenuItem
-                href="/topList/video/views/"
+                href={`/channel/overview/${channelOverview.id}/`}
                 title="Overview"
                 type="overview"
               />
               <LinkMenuItem
-                href="/topList/video/likes/"
+                href={`/channel/topVideo/${channelOverview.id}/`}
                 title="Top Videos"
                 type="topVideo"
               />
               <LinkMenuItem
-                href="/topList/video/commentCount/"
+                href={`/channel/allVideo/${channelOverview.id}/`}
                 title="All Videos"
                 type="allVideo"
               />
-              <LinkMenuItem
-                href="/topList/video/gapViews/"
+              {/* <LinkMenuItem
+                href={`/channel/dailyStat/${channelOverview.id}/`}
                 title="Daily Stat"
                 type="dailyStat"
-              />
-              <LinkMenuItem
-                href="/topList/video/gapViews/"
+              /> */}
+              {/* <LinkMenuItem
+                href={`/channel/overview/${channelOverview.id}/`}
                 title="History"
                 type="history"
-              />
+              /> */}
               <LinkMenuItem
-                href="/topList/video/gapViews/"
+                href={`/channel/videoHistory/${channelOverview.id}/`}
                 title="Video History"
                 type="videoHistory"
               />
               <LinkMenuItem
-                href="/topList/video/gapViews/"
+                href={`/channel/about/${channelOverview.id}/`}
                 title="About"
                 type="about"
               />
@@ -110,13 +174,30 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   if (typeof id === "string") {
     const channelOverview = await channelApi.getChannelOverview({ id: id });
+
     if (!channelOverview.isExist) return { notFound: true };
 
     const { totalPage } = await channelApi.getTotalVideo({ id });
     if (+pageNumber! > totalPage) return { notFound: true };
 
+    if (
+      query.allVideoSortType &&
+      !["oldest", "newest", "popular"].includes(
+        query.allVideoSortType as string
+      )
+    )
+      return { notFound: true };
+
     return {
-      props: { pageNumber, totalPage, type: "gapViews" },
+      props: {
+        pageNumber,
+        totalPage,
+        type,
+        allVideoSortType: query.allVideoSortType
+          ? query.allVideoSortType
+          : "newest",
+        channelOverview: channelOverview.channelOverview,
+      },
     };
   }
 

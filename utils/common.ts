@@ -1,5 +1,5 @@
-import { IChannel, IVideo } from "../models";
 import * as _ from "lodash";
+import { IVideo } from "../models";
 
 const HTML_ENTITIES = {
   "&amp;": "&",
@@ -15,6 +15,11 @@ const HTML_ENTITIES = {
   "&reg;": "®",
   "&nbsp;": "",
 };
+
+interface IPosition {
+  x: number;
+  y: number;
+}
 
 export const VIDEO_VIEW_DISTRIBUTION = {
   "~100": 100,
@@ -42,83 +47,8 @@ export const VIDEO_VIEW_DISTRIBUTION = {
   "~100M": 100000000,
 };
 
-export const optimizeChannel = (channels: IChannel[]) =>
-  channels.map((c) => {
-    let { views, subscribe, numberVideos } = c;
-    let gapViews = views.includes("|")
-      ? (
-          +_.nth(views.split("|"), -1)! - +_.nth(views.split("|"), -2)!
-        ).toString()
-      : "New";
-    let gapSubcribe = subscribe.includes("|")
-      ? (
-          +_.nth(subscribe.split("|"), -1)! - +_.nth(subscribe.split("|"), -2)!
-        ).toString()
-      : "New";
-    let gapNumberVideos = numberVideos.includes("|")
-      ? (
-          +_.nth(numberVideos.split("|"), -1)! -
-          +_.nth(numberVideos.split("|"), -2)!
-        ).toString()
-      : "New";
-
-    views = _.nth(views.split("|"), -1)!;
-    subscribe = _.nth(subscribe.split("|"), -1)!;
-    numberVideos = _.nth(numberVideos.split("|"), -1)!;
-    return {
-      ...c,
-      gapViews,
-      gapSubcribe,
-      gapNumberVideos,
-      views,
-      subscribe,
-      numberVideos,
-    };
-  });
-
-export const getPreviousChannelStatictis = (channels: IChannel[]) =>
-  channels
-    .filter((c) => c.date.split("|").length < 2)
-    .map((c) => {
-      let { views, subscribe, numberVideos } = c;
-      views = _.nth(views.split("|"), -2)!;
-      subscribe = _.nth(subscribe.split("|"), -2)!;
-      numberVideos = _.nth(numberVideos.split("|"))!;
-      return {
-        ...c,
-        views,
-        subscribe,
-        numberVideos,
-      };
-    });
-
-export const sortChannel = (
-  channelData: IChannel[],
-  sortBy:
-    | "gapNumberVideos"
-    | "gapViews"
-    | "gapSubcribe"
-    | "subscribe"
-    | "numberVideos"
-    | "views",
-  isDescending: boolean
-) => {
-  const cleanChannelData = optimizeChannel(channelData);
-  if (!sortBy.includes("gap")) {
-    const sortChannelData = isDescending
-      ? cleanChannelData.sort((a, b) => +b[sortBy] - +a[sortBy])
-      : cleanChannelData.sort((a, b) => +a[sortBy] - +b[sortBy]);
-    return sortChannelData;
-  }
-  const newChannels = cleanChannelData.filter((c) => c.gapViews === "NEW");
-  const oldChannels = cleanChannelData.filter((c) => c.gapViews !== "NEW");
-  const sortChannelData = isDescending
-    ? oldChannels.sort((a, b) => +b[sortBy] - +a[sortBy])
-    : oldChannels.sort((a, b) => +a[sortBy] - +b[sortBy]);
-  return [...sortChannelData, ...newChannels];
-};
-
 export const beautyNumberDisplay = (number: string) => {
+  number = Math.round(+number).toString();
   if (!number) return "-1";
   const indexStart = number.length % 3;
   let beautyNumber = "";
@@ -281,7 +211,7 @@ export const removeHtmlEntities = (str: string) => {
   return str;
 };
 
-export const formatDuration = (duration: number) => {
+export const formatDuration = (duration: number): string => {
   let hours = Math.floor(duration / 3600);
   let minutes = Math.floor((duration - hours * 3600) / 60);
   let seconds = duration - hours * 3600 - minutes * 60;
@@ -313,4 +243,86 @@ export const optimizeVideoViewDistribution = (viewList: number[]) => {
     data2: Object.keys(videoViewDistribution),
     data1: Object.values(videoViewDistribution),
   };
+};
+
+export const getViewsVideoDeleted = ({
+  viewsHistory,
+  likesHistory,
+}: {
+  viewsHistory: string;
+  likesHistory: string;
+}): { views: number; likes: number } => {
+  let viewsHistoryList = viewsHistory.split("|").map((v) => +v);
+  let likeHistoryList = likesHistory.split("|").map((v) => +v);
+  let views = 0;
+  let likes = 0;
+  for (let i = viewsHistoryList.length - 1; i >= 0; i--) {
+    if (viewsHistoryList[i] >= 0) {
+      views = viewsHistoryList[i];
+      break;
+    }
+  }
+  for (let i = likeHistoryList.length - 1; i >= 0; i--) {
+    if (likeHistoryList[i] >= 0) {
+      likes = likeHistoryList[i];
+      break;
+    }
+  }
+  return { views, likes };
+};
+
+export const formatChannelTags = (tags: string): string[] => {
+  let tagList: string[] = [];
+  let pivotList: number[] = [];
+  let _tag: string[] = [];
+  for (let i in tags as any) {
+    if (tags[i] === '"') pivotList.push(+i);
+  }
+  for (let i = 0; i < pivotList.length; i += 2) {
+    let tag = tags.slice(pivotList[i] + 1, pivotList[i + 1]);
+    tagList.push(tag);
+    _tag.push(`"${tag}"`);
+  }
+  for (let i of _tag) {
+    tags = tags.replace(i, "");
+  }
+  tagList = [...tagList, ...tags.split(" ")].filter((t) => t !== "");
+
+  return tagList;
+};
+
+export const splitTextByKeyword = ({
+  text,
+  keyword,
+}: {
+  text: string;
+  keyword: string;
+}): string[] => {
+  let str = text.toLowerCase();
+  let kw = keyword.toLowerCase();
+  let index = str.indexOf(kw);
+  let start = text.slice(0, index);
+  let end = text.slice(index + kw.length);
+  return [start, text.slice(index, index + kw.length), end];
+};
+
+export const setCookie = (name, value, days = null) => {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+};
+
+export const getCookie = (name, cookie) => {
+  var nameEQ = name + "=";
+  var ca = cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == " ") c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
 };
