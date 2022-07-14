@@ -9,3 +9,5 @@ export * from "./useVideoViewsStatistic";
 export * from "./useVideoTagsStatistic";
 export * from "./useChannelUploadStatistic";
 export * from "./useChannelSubscriberStatistic";
+export * from "./useVsCompetitorViews";
+export * from "./useVsCompetitorSubscriber";

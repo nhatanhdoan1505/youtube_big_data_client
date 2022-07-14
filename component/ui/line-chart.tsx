@@ -1,44 +1,34 @@
+import * as randomColor from "randomcolor";
 import { Line } from "react-chartjs-2";
-import { getMinAndMax } from "@utils/index";
 
 interface IChartProp {
-  data1: number[];
-  data2: number[];
-  yLabel1: string;
-  yLabel2: string;
+  data: number[][];
+  yLabel: string[];
   xLabel: string[];
 }
 
-export function LineChart({
-  data1,
-  data2,
-  xLabel,
-  yLabel1,
-  yLabel2,
-}: IChartProp) {
+export function LineChart({ data, xLabel, yLabel }: IChartProp) {
+  const competitorColor = [
+    "rgb(55, 125, 113)",
+    "rgb(251, 161, 161)",
+    "rgb(249, 76, 102)",
+  ];
   return (
     <>
       <Line
         data={{
           labels: xLabel,
-          datasets: [
-            {
-              label: yLabel1,
-              data: data1,
-              borderColor: "rgba(185, 22, 71)",
-              fill: false,
-              cubicInterpolationMode: "monotone",
-              tension: 0.4,
-            },
-            {
-              label: yLabel2,
-              data: data2,
-              borderColor: "rgba(1, 146, 103)",
-              fill: false,
-              cubicInterpolationMode: "monotone",
-              tension: 0.4,
-            },
-          ],
+          datasets: data.map((d, index) => ({
+            label: yLabel[index],
+            data: d,
+            borderColor:
+              data.length <= 3
+                ? competitorColor.slice(0, data.length)
+                : randomColor({ luminosity: "bright", format: "rgb" }),
+            fill: false,
+            cubicInterpolationMode: "monotone",
+            tension: 0.4,
+          })),
         }}
         options={{
           responsive: true,

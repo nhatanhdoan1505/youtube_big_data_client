@@ -10,7 +10,7 @@ import {
   Th,
   Thead,
   Tr,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { ISortChannel } from "@models/index";
 import { selectChannelList, selectLoading } from "@store/index";

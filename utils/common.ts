@@ -115,6 +115,23 @@ export const optimizeViewDataForChart = (video: {
   return { viewsHistory: viewsList, gapViewsHistory, date: dateList };
 };
 
+export const optimizeChannelCompetitor = ({
+  viewList,
+  date,
+}: {
+  viewList: string[];
+  date: string[];
+}) => {
+  let d = date
+    .map((v) => v.split("|"))
+    .sort((a, b) => a.length - b.length)[0]
+    .map((d) => formatDate(d, false));
+  let data = viewList
+    .map((v) => v.split("|").map((views) => +views))
+    .map((v) => v.slice(v.length - d.length));
+  return { data, date: d };
+};
+
 export const optimizeSubscribesDataForChart = (channel: {
   subscribesHistory: string;
   date: string;

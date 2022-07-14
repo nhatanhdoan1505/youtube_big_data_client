@@ -1,8 +1,8 @@
-import { HStack, Text } from "@chakra-ui/layout";
-import { useRouter } from "next/router";
-import React, { ReactElement, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@app/index";
+import { HStack, Text } from "@chakra-ui/layout";
 import { selectYoutubeObject, youtubeAction } from "@store/index";
+import { useRouter } from "next/router";
+import { ReactElement, useEffect, useState } from "react";
 
 interface Props {
   title: string;

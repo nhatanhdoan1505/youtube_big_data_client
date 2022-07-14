@@ -1,5 +1,5 @@
 import { useAppSelector } from "@app/index";
-import { HStack, Image, Link, VStack, Text } from "@chakra-ui/react";
+import { HStack, Image, Link, Text, VStack } from "@chakra-ui/react";
 import { ChartChannelOverview } from "@component/container";
 import { selectChannelOverview } from "@store/youtube";
 import { ChannelInformationHorizontal, ChannelRankHorizontal } from ".";

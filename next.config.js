@@ -6,4 +6,8 @@ module.exports = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-}
+  env: {
+    STRIPE_PUBLIC:
+      "pk_test_51LDPUsJ8XE3hrjLvVJKpRe0BlfyX6gtzmLhNjyMdE4GPnTHRnNppjzd7IlP62VSFk8rBXqlp3fdgsamw1eMOywPD00fp2DswNO",
+  },
+};

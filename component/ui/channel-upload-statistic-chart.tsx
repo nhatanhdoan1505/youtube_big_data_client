@@ -1,4 +1,4 @@
-import { VStack, Text } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 import { IChannelUploadStatisticForChart } from "@hook/index";
 import { beautyNumberDisplay } from "@utils/index";
 import { Pie } from "react-chartjs-2";

@@ -23,17 +23,12 @@ import { FirebaseUser } from "@models/user";
 import {
   selectFirebaseUser,
   selectIsUpdateUser,
+  selectUserProfile,
   userAction,
   youtubeAction,
 } from "@store/index";
 import { setCookie } from "@utils/index";
-import {
-  getIdToken,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { getIdToken, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DesktopNav, MobileNav } from ".";
@@ -44,14 +39,11 @@ export function WithSubNavigation() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
-
-  const [isUserSignIn, setUserSignIn] = useState<boolean>(false);
-
   const firebaseUserSelector = useAppSelector(selectFirebaseUser);
-  const isUpdateUserSelector = useAppSelector(selectIsUpdateUser);
-
   const [currentUid, setCurrentUid] = useState<string>(null!);
-
+  const isUpdateUserSelector = useAppSelector(selectIsUpdateUser);
+  const userProfileSelector = useAppSelector(selectUserProfile);
+  const [isSetToken, setIsSetToken] = useState<boolean>(false);
   const setToken = async (user: FirebaseUser) => {
     try {
       const token = await getIdToken(user, true);
@@ -62,25 +54,23 @@ export function WithSubNavigation() {
     }
   };
 
-  onAuthStateChanged(auth, (firebaseUser) => {
-    console.log("Check");
-    if (firebaseUser) {
-      setUserSignIn(true);
-      if (!firebaseUserSelector) {
-        console.log("Has firebase user");
-        dispatch(userAction.setIsUpdateUser({ isUpdateUser: false }));
-        dispatch(
-          userAction.setFirebaseUser({
-            firebaseUser,
-          })
-        );
-        setToken(firebaseUser);
+  useEffect(() => {
+    onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        if (!firebaseUserSelector) {
+          dispatch(userAction.setIsUpdateUser({ isUpdateUser: false }));
+          dispatch(
+            userAction.setFirebaseUser({
+              firebaseUser,
+            })
+          );
+          return;
+        }
       }
-
-      return;
-    }
-    setUserSignIn(false);
-  });
+      dispatch(userAction.setFirebaseUser({ firebaseUser: null! }));
+      dispatch(userAction.setUserProfile({ userProfile: null! }));
+    });
+  }, []);
 
   useEffect(() => {
     if (firebaseUserSelector) {
@@ -100,16 +90,15 @@ export function WithSubNavigation() {
     }
   }, [firebaseUserSelector, currentUid]);
 
-  const signInWithGoogle = async () => {
-    let googleProvider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, googleProvider);
-      setCurrentUid(null!);
-      dispatch(userAction.setIsUpdateUser({ isUpdateUser: false }));
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    const getUserProfile = async () => {
+      await setToken(firebaseUserSelector);
+      dispatch(userAction.preSetUserProfile({}));
+    };
+    if (isUpdateUserSelector && firebaseUserSelector) {
+      getUserProfile();
     }
-  };
+  }, [isUpdateUserSelector]);
 
   const onClickSignOut = async () => {
     try {
@@ -120,6 +109,12 @@ export function WithSubNavigation() {
           firebaseUser: null!,
         })
       );
+      dispatch(userAction.setFirebaseUser({ firebaseUser: null! }));
+      dispatch(userAction.setUserProfile({ userProfile: null! }));
+
+      localStorage.setItem("token", "");
+      setCookie("token", "");
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -189,12 +184,12 @@ export function WithSubNavigation() {
           <Button onClick={toggleColorMode}>
             {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
-          {!firebaseUserSelector ? (
+          {!userProfileSelector ? (
             <Button
               fontSize={"sm"}
               fontWeight={400}
               variant={"link"}
-              onClick={signInWithGoogle}
+              onClick={() => router.push("/login")}
             >
               Sign In
             </Button>
@@ -202,7 +197,7 @@ export function WithSubNavigation() {
             <Menu>
               <MenuButton>
                 <Image
-                  src={firebaseUserSelector.photoURL!}
+                  src={userProfileSelector.photoUrl!}
                   minWidth="30px"
                   borderRadius="50%"
                 />

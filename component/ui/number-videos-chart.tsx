@@ -13,10 +13,8 @@ export function NumberVideosChart({
 }: INumberVideosChartProps) {
   return (
     <LineChart
-      data1={numberVideosHistory}
-      data2={gapNumberVideosHistory}
-      yLabel1="Number Videos"
-      yLabel2="Increase Number Videos"
+      data={[numberVideosHistory, gapNumberVideosHistory]}
+      yLabel={["Number Videos", "Increase Number Videos"]}
       xLabel={date}
     />
   );

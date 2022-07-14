@@ -1,12 +1,5 @@
 import { useAppDispatch } from "@app/index";
-import {
-  Divider,
-  HStack,
-  Select,
-  SimpleGrid,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Divider, HStack, Select, SimpleGrid, VStack } from "@chakra-ui/react";
 import { useChannelUploadStatistic } from "@hook/index";
 import { youtubeAction } from "@store/index";
 import { beautyNumberDisplay } from "@utils/index";

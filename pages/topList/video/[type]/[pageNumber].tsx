@@ -108,6 +108,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const { totalPage } = await videoApi.getTotalSortVideos({
     config: { headers: { Authorization: token } },
   });
+  
   if (+pageNumber! > totalPage) return { notFound: true };
 
   return {

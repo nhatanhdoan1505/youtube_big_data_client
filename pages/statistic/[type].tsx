@@ -1,13 +1,13 @@
 import { useAppDispatch } from "@app/index";
-import { Box, Container, HStack, VStack, Text } from "@chakra-ui/react";
+import { Container, HStack, Text } from "@chakra-ui/react";
 import { Header } from "@component/common";
+import { Statistic } from "@component/container";
+import { LinkMenuItem } from "@component/ui";
 import { MainLayout } from "@layout/index";
 import { NextPageWithLayout } from "@models/index";
 import { youtubeAction } from "@store/index";
 import { GetServerSideProps, InferGetStaticPropsType } from "next";
 import { useEffect } from "react";
-import { Statistic } from "@component/container";
-import { LinkMenuItem } from "@component/ui";
 
 const StatisticPage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getServerSideProps>
@@ -29,6 +29,21 @@ const StatisticPage: NextPageWithLayout<
           </Text>
           <HStack>
             <LinkMenuItem
+              href="/statistic/upload/"
+              title="Upload"
+              type="upload"
+            />
+            <LinkMenuItem
+              href="/statistic/tagsTrend/"
+              title="Tags Trend"
+              type="tagsTrend"
+            />
+            <LinkMenuItem
+              href="/statistic/channelSubscriber/"
+              title="Subscriber"
+              type="channelSubscriber"
+            />
+            <LinkMenuItem
               href="/statistic/videoDuration/"
               title="Video Duration"
               type="videoDuration"
@@ -37,21 +52,6 @@ const StatisticPage: NextPageWithLayout<
               href="/statistic/videoView/"
               title="Video Views"
               type="videoView"
-            />
-            <LinkMenuItem
-              href="/statistic/tagsTrend/"
-              title="Tags Trend"
-              type="tagsTrend"
-            />
-            <LinkMenuItem
-              href="/statistic/upload/"
-              title="Upload"
-              type="upload"
-            />
-            <LinkMenuItem
-              href="/statistic/channelSubscriber/"
-              title="Subscriber"
-              type="channelSubscriber"
             />
             {/* <LinkMenuItem
               href="/statistic/totalView/"

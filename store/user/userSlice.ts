@@ -10,6 +10,8 @@ export interface IUserPayload {
   channel?: string;
   competitorChannel?: string[];
   userLoading?: boolean;
+  config?: any;
+  isFirst?: boolean;
 }
 
 interface IInitState {
@@ -17,6 +19,7 @@ interface IInitState {
   isUpdateUser: boolean;
   userProfile: IUserProfile;
   userLoading: boolean;
+  isFirst: boolean;
 }
 
 const initialState: IInitState = {
@@ -24,6 +27,7 @@ const initialState: IInitState = {
   isUpdateUser: false,
   userProfile: null!,
   userLoading: false,
+  isFirst: true,
 };
 
 const userSlice = createSlice({
@@ -32,6 +36,9 @@ const userSlice = createSlice({
   reducers: {
     setLoading(state, action: PayloadAction<IUserPayload>) {
       state.userLoading = action.payload.userLoading!;
+    },
+    setIsFirst(state, action: PayloadAction<IUserPayload>) {
+      state.isFirst = action.payload.isFirst!;
     },
     setFirebaseUser(state, action: PayloadAction<IUserPayload>) {
       state.firebaseUser = action.payload.firebaseUser!;
@@ -56,5 +63,6 @@ export const selectFirebaseUser = (state: RootState) => state.user.firebaseUser;
 export const selectIsUpdateUser = (state: RootState) => state.user.isUpdateUser;
 export const selectUserProfile = (state: RootState) => state.user.userProfile;
 export const selectUserLoading = (state: RootState) => state.user.userLoading;
+export const selectIsFirst = (state: RootState) => state.user.isFirst;
 
 export const userReducer = userSlice.reducer;

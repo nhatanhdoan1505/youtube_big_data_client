@@ -1,5 +1,5 @@
-import axiosClient from "./axiosClient";
-
-const serviceApi = {};
-
-export default serviceApi;
+export const checkExpiredToken = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+  const date = localStorage.getItem("date");
+};

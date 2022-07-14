@@ -36,3 +36,7 @@ export * from "./channel-subscriber-statistic-chart";
 export * from "./server-status";
 export * from "./edit-profile";
 export * from "./my-channel-overview";
+export * from "./views-competitor-chart";
+export * from "./vsCompetitor";
+export * from "./hidden-pannel";
+export * from "./premium-modal";

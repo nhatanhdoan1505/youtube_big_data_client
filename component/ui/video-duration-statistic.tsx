@@ -1,11 +1,10 @@
 import { useAppDispatch } from "@app/index";
-import { Text, VStack, Divider } from "@chakra-ui/react";
+import { Divider, Text, VStack } from "@chakra-ui/react";
 import { useVideoDurationStatistic } from "@hook/index";
 import { youtubeAction } from "@store/index";
 import { beautyNumberDisplay } from "@utils/index";
 import { useEffect } from "react";
-import { TableVideo } from ".";
-import { DurationStatisticChart } from ".";
+import { DurationStatisticChart, TableVideo } from ".";
 
 export function DurationStatistic() {
   const { videoDurationStatistic } = useVideoDurationStatistic();

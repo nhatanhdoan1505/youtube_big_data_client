@@ -231,7 +231,7 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Statistics",
-    href: "/statistic/videoDuration/",
+    href: "/statistic/upload/",
     youtubeObject: "statistic",
   },
 ];

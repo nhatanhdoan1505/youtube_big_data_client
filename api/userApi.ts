@@ -23,6 +23,7 @@ export const userApi = {
       const url = "/user/profile";
       const userData: AxiosResponse<IResponse<IUserProfileResponse>> =
         await axiosClient.get(url, config);
+  
       return userData.data.data.userData;
     } catch (error) {
       return null!;
@@ -34,8 +35,8 @@ export const userApi = {
     competitorChannel,
     config,
   }: {
-    channel: string;
-    competitorChannel: string[];
+    channel?: string;
+    competitorChannel?: string[];
     config?: AxiosRequestConfig;
   }): Promise<boolean> {
     try {
@@ -48,6 +49,16 @@ export const userApi = {
       return true;
     } catch (error) {
       return false;
+    }
+  },
+
+  async getCheckoutLink(): Promise<string> {
+    try {
+      const url = "/user/checkoutLink";
+      const res = await axiosClient.post(url);
+      return res.data.data.checkoutLink as string;
+    } catch (error) {
+      return null!;
     }
   },
 };

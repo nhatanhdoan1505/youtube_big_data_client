@@ -17,4 +17,13 @@ export interface IUserProfileResponse {
 export interface IUserProfile extends IUser {
   channel: ISortChannel;
   competitorChannel: ISortChannel[];
+  payment?: IPayment[];
+  isPremium?: boolean;
+  isAdmin?: boolean;
+}
+export interface IPayment {
+  date: Date;
+  title: "MONTHLY" | "YEARLY";
+  method: string;
+  price: number;
 }

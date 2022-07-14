@@ -8,7 +8,7 @@ import {
   Th,
   Thead,
   Tr,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { ISortChannel } from "@models/index";
 import { beautyNumberDisplay, removeHtmlEntities } from "@utils/index";
@@ -36,6 +36,7 @@ export function HotChannelBase({
                     src={c.channelThumbnail}
                     maxWidth="90px"
                     maxHeight="50px"
+                    borderRadius="50%"
                   />
                   <Text as="h6" maxWidth="">
                     {removeHtmlEntities(c.title)}

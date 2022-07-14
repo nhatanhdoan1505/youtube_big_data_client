@@ -1,7 +1,7 @@
 import { useAppSelector } from "@app/index";
-import { EditProfile, MyChannelOverview } from "@component/ui";
+import { VStack } from "@chakra-ui/react";
+import { EditProfile, MyChannelOverview, VsCompetitor } from "@component/ui";
 import { selectChannelOverview, selectSortType } from "@store/index";
-import { Link, Text, VStack } from "@chakra-ui/react";
 
 export function MyChannelPage() {
   const sortTypeSelector = useAppSelector(selectSortType);
@@ -14,14 +14,14 @@ export function MyChannelPage() {
         ) : sortTypeSelector === "vsTrend" ? (
           <h1>vsTrend</h1>
         ) : sortTypeSelector === "vsCompetitor" ? (
-          <h1>vsCompetitor</h1>
+          <VsCompetitor />
         ) : sortTypeSelector === "editProfile" ? (
           <>
             <EditProfile />
           </>
         ) : null}
       </VStack>
-      <Link
+      {/* <Link
         href={`/channel/overview/${channelOverviewSelector.id}`}
         target="_blank"
         py={10}
@@ -29,7 +29,7 @@ export function MyChannelPage() {
         color="red"
       >
         More Detail
-      </Link>
+      </Link> */}
     </VStack>
   );
 

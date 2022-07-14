@@ -8,7 +8,7 @@ import {
   Th,
   Thead,
   Tr,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { ISortVideo } from "@models/index";
 import { beautyNumberDisplay, removeHtmlEntities } from "@utils/index";

@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { Pagination } from "@component/ui";
+import { HiddenPanel, Pagination } from "@component/ui";
 import {
   selectAllVideoSortType,
   selectChannelList,
@@ -17,6 +17,7 @@ import {
   selectLoading,
   selectSortType,
   selectTotalPage,
+  selectUserProfile,
   selectVideoInformation,
   selectVideoList,
   selectYoutubeObject,
@@ -61,6 +62,7 @@ export function TableContainerFull({
   const channelListSelector = useAppSelector(selectChannelList);
   const allVideoSortTypeSelector = useAppSelector(selectAllVideoSortType);
   const channelOverviewSelector = useAppSelector(selectChannelOverview);
+  const userProfileSelector = useAppSelector(selectUserProfile);
 
   const dispatch = useAppDispatch();
 
@@ -86,6 +88,7 @@ export function TableContainerFull({
         px={5}
         borderRadius="8px"
         w="100%"
+        position="relative"
       >
         <HStack
           alignItems="center"
@@ -113,62 +116,63 @@ export function TableContainerFull({
             </HStack>
           </HStack>
           <HStack>
-            {sortTypeSelector === "allVideo" ? (
-              <>
-                <Button
-                  colorScheme={
-                    allVideoSortTypeSelector === "popular" ? "red" : "gray"
-                  }
-                  size="sm"
-                  onClick={() => onClickAllVideoSortType("popular")}
-                >
-                  Popular
-                </Button>
-                <Button
-                  colorScheme={
-                    allVideoSortTypeSelector === "oldest" ? "red" : "gray"
-                  }
-                  size="sm"
-                  onClick={() => onClickAllVideoSortType("oldest")}
-                >
-                  Oldest
-                </Button>
-                <Button
-                  colorScheme={
-                    allVideoSortTypeSelector === "newest" ? "red" : "gray"
-                  }
-                  size="sm"
-                  onClick={() => onClickAllVideoSortType("newest")}
-                >
-                  Newest
-                </Button>
-              </>
-            ) : sortTypeSelector === "videoHistory" ? (
-              <>
-                <InputGroup size="md">
-                  <Input pr="4.5rem" type="text" placeholder="Search" />
-                  <InputRightElement
-                    width="4.5rem"
-                    _hover={{ cursor: "pointer" }}
+            {
+              sortTypeSelector === "allVideo" ? (
+                <>
+                  <Button
+                    colorScheme={
+                      allVideoSortTypeSelector === "popular" ? "red" : "gray"
+                    }
+                    size="sm"
+                    onClick={() => onClickAllVideoSortType("popular")}
                   >
-                    <Icon h="1.75rem" size="sm" as={AiOutlineSearch} />
-                  </InputRightElement>
-                </InputGroup>
-              </>
-            ) : null
-            // (
-            //   <>
-            //     <Button colorScheme="gray" size="sm">
-            //       Daily
-            //     </Button>
-            //     <Button colorScheme="facebook" size="sm">
-            //       Weekly
-            //     </Button>
-            //     <Button colorScheme="linkedin" size="sm">
-            //       Monthly
-            //     </Button>
-            //   </>
-            // )
+                    Popular
+                  </Button>
+                  <Button
+                    colorScheme={
+                      allVideoSortTypeSelector === "oldest" ? "red" : "gray"
+                    }
+                    size="sm"
+                    onClick={() => onClickAllVideoSortType("oldest")}
+                  >
+                    Oldest
+                  </Button>
+                  <Button
+                    colorScheme={
+                      allVideoSortTypeSelector === "newest" ? "red" : "gray"
+                    }
+                    size="sm"
+                    onClick={() => onClickAllVideoSortType("newest")}
+                  >
+                    Newest
+                  </Button>
+                </>
+              ) : sortTypeSelector === "videoHistory" ? (
+                <>
+                  <InputGroup size="md">
+                    <Input pr="4.5rem" type="text" placeholder="Search" />
+                    <InputRightElement
+                      width="4.5rem"
+                      _hover={{ cursor: "pointer" }}
+                    >
+                      <Icon h="1.75rem" size="sm" as={AiOutlineSearch} />
+                    </InputRightElement>
+                  </InputGroup>
+                </>
+              ) : null
+              // (
+              //   <>
+              //     <Button colorScheme="gray" size="sm">
+              //       Daily
+              //     </Button>
+              //     <Button colorScheme="facebook" size="sm">
+              //       Weekly
+              //     </Button>
+              //     <Button colorScheme="linkedin" size="sm">
+              //       Monthly
+              //     </Button>
+              //   </>
+              // )
             }
           </HStack>
         </HStack>
@@ -179,12 +183,18 @@ export function TableContainerFull({
         (channelListSelector.length > 0 && totalPageSelector > 1) ? (
           <Pagination />
         ) : null}
+        {(!loadingSelector &&
+          userProfileSelector &&
+          !userProfileSelector.isPremium) ||
+        !userProfileSelector ? (
+          <HiddenPanel />
+        ) : null}
+        {(videoInformationSelector &&
+          ["hashtag", "video", "statistic"].includes(youtubeObjectSelector)) ||
+        (videoInformationSelector && youtubeObjectSelector === null) ? (
+          <ModalVideo {...videoInformationSelector} />
+        ) : null}
       </VStack>
-      {(videoInformationSelector &&
-        ["hashtag", "video", "statistic"].includes(youtubeObjectSelector)) ||
-      (videoInformationSelector && youtubeObjectSelector === null) ? (
-        <ModalVideo {...videoInformationSelector} />
-      ) : null}
     </>
   );
 }

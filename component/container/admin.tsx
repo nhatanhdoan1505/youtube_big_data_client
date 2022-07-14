@@ -1,25 +1,23 @@
 import { channelApi } from "@api/index";
+import { useAppDispatch, useAppSelector } from "@app/index";
 import {
   Box,
   Button,
   Center,
   Divider,
-  FormLabel,
   HStack,
-  Select,
-  Switch,
-  Textarea,
-  VStack,
   Input,
+  Select,
   Text,
+  Textarea,
   useClipboard,
+  VStack,
 } from "@chakra-ui/react";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { SocketContext } from "@context/socket";
 import { ServerStatus } from "@component/ui/index";
+import { SocketContext } from "@context/socket";
 import { EVENT } from "@models/socket";
-import { useAppDispatch, useAppSelector } from "@app/index";
 import { adminAction, selectAdminLoading } from "@store/index";
+import { useContext, useEffect, useState } from "react";
 
 export function Admin() {
   const [service, setService] = useState<1 | 2 | 3>(1);

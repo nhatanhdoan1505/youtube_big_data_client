@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@app/index";
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Button,
   HStack,
@@ -15,6 +16,8 @@ import {
   Table,
   TableContainer,
   Tag,
+  Tbody,
+  Td,
   Text,
   Th,
   Thead,
@@ -24,8 +27,9 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { selectUserLoading, selectUserProfile, userAction } from "@store/index";
-import { useEffect, useState } from "react";
-import { AddIcon } from "@chakra-ui/icons";
+import { formatDate } from "@utils/common";
+import { useState } from "react";
+import { PremiumModal } from ".";
 
 export function EditProfile() {
   const userProfileSelector = useAppSelector(selectUserProfile);
@@ -33,6 +37,8 @@ export function EditProfile() {
 
   const [newChannel, setNewChannel] = useState<string>("");
   const [isCompetitor, setIsCompetitor] = useState<boolean>(false);
+
+  const [premiumModal, setPremiumModal] = useState<boolean>(false);
 
   const AVATAR_GRAY =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARMAAAC3CAMAAAAGjUrGAAAADFBMVEWYmZuCg4WZmpxvcHGW7YJ5AAABTklEQVR4nO3QwQ3DMAwAMavef+cEfUW4FcgReO6w3TM/tnlPDl9Oykk5KSflpJyUk3JSTspJOSkn5aSclJNyUk7KSTkpJ+WknJSTclJOykk5KSflpJyUk3JSTspJOSkn5aSclJNyUk7KSTkpJ+WknJSTclJOykk5KSflpJyUk3JSTspJOSkn5aSclJNyUk7KSTkpJ+WknJSTclJOykk5KSflpJyUk3JSTspJOSkn5aSclJNyUk7KSTkpJ+WknJSTclJOykk5KSflpJyUk3JSTspJOSkn5aSclJNyUk7KSTkpJ+WknJSTclJOykk5KSflpJyUk3JSTspJOSkn5aSclJNyUk7KSTkpJ+WknJSTclJOykk5KSflpJyUk3JSTspJOSkn5aSclJNyUk7KSTkpJ+WknJSTclJOykk5KSflpJyUk3JSTspJ/U/Y5txhuw874Aqpr4CHoAAAAABJRU5ErkJggg==";
@@ -65,6 +71,7 @@ export function EditProfile() {
   };
 
   const editMyChannel = () => {
+    dispatch(userAction.setIsFirst({ isFirst: false }));
     dispatch(
       userAction.preUpdateUserProfile({
         channel: newChannel,
@@ -81,11 +88,6 @@ export function EditProfile() {
     onOpen();
   };
 
-  const onClickEditMyChannel = () => {
-    setIsCompetitor(false);
-    onOpen();
-  };
-
   const warningAvailble = (
     <Tooltip label="Channel is not availabel.We'll try to update soon!!">
       <Tag>Warning</Tag>
@@ -95,21 +97,22 @@ export function EditProfile() {
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  return (
+  const render = userProfileSelector ? (
     <VStack w="100%">
       <HStack w="100%" boxShadow="base" borderRadius="8px" p={3}>
         <Image
           src={
-            userProfileSelector
+            userProfileSelector && userProfileSelector.channel
               ? userProfileSelector.channel.channelThumbnail
               : AVATAR_GRAY
           }
           alt={userProfileSelector?.channel?.title}
-          maxWidth="60px"
+          w="50px"
+          h="50px"
           borderRadius="50%"
         />
         <Text fontSize="xl" fontWeight="extrabold">
-          {userProfileSelector?.channel.title}
+          {userProfileSelector.channel ? userProfileSelector.channel.title : ""}
         </Text>
       </HStack>
       <VStack
@@ -135,26 +138,38 @@ export function EditProfile() {
         <HStack alignItems="center" w="100%">
           <Image
             src={
-              userProfileSelector
+              userProfileSelector && userProfileSelector.channel
                 ? userProfileSelector.channel.channelThumbnail
                 : AVATAR_GRAY
             }
             alt={userProfileSelector?.channel?.title}
-            maxWidth="40px"
+            w="40px"
+            h="40px"
             borderRadius="50%"
           />
           <InputGroup>
             <InputLeftAddon children="https://www.youtube.com/channel/" />
-            <Input type="text" fontSize="sm" disabled />
+            <Input
+              type="text"
+              fontSize="sm"
+              disabled
+              value={
+                userProfileSelector.channel
+                  ? userProfileSelector.channel.id
+                  : ""
+              }
+            />
           </InputGroup>
           <Button variant="outline" onClick={onOpen}>
             Edit
           </Button>
-          <Text color="red" fontSize="5px">
-            {userProfileSelector.channel.isAvailable === false
-              ? "Channel is not available in this system. We'll try to update soon!!"
-              : null}
-          </Text>
+          {userProfileSelector.channel ? (
+            <Text color="red" fontSize="5px">
+              {userProfileSelector.channel.isAvailable === false
+                ? "Channel is not available in this system. We'll try to update soon!!"
+                : null}
+            </Text>
+          ) : null}
         </HStack>
       </VStack>
       <VStack
@@ -210,7 +225,9 @@ export function EditProfile() {
       >
         <HStack justifyContent="space-between" w="100%">
           <Text fontWeight="bold">Billing Details</Text>
-          <Button colorScheme="red">Up to Premium</Button>
+          <Button colorScheme="red" onClick={() => setPremiumModal(true)}>
+            Up to Premium
+          </Button>
         </HStack>
         <TableContainer w="100%">
           <Table variant="simple">
@@ -222,6 +239,18 @@ export function EditProfile() {
                 <Th>Price</Th>
               </Tr>
             </Thead>
+            <Tbody>
+              {userProfileSelector && userProfileSelector.payment
+                ? userProfileSelector.payment.map((p) => (
+                    <Tr>
+                      <Td>{formatDate(p.date.toString())}</Td>
+                      <Td>{p.title.toUpperCase()}</Td>
+                      <Td>{p.method.toUpperCase()}</Td>
+                      <Td isNumeric>{p.price}$</Td>
+                    </Tr>
+                  ))
+                : null}
+            </Tbody>
           </Table>
         </TableContainer>
       </VStack>
@@ -251,6 +280,20 @@ export function EditProfile() {
           </HStack>
         </ModalContent>
       </Modal>
+      <Modal
+        blockScrollOnMount={false}
+        isOpen={premiumModal}
+        onClose={() => setPremiumModal(false)}
+        size="lg"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalHeader>Premium Account</ModalHeader>
+          <PremiumModal />
+        </ModalContent>
+      </Modal>
     </VStack>
-  );
+  ) : null;
+  return render;
 }

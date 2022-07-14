@@ -1,13 +1,13 @@
 import { useAppDispatch, useAppSelector } from "@app/index";
 import { Button } from "@chakra-ui/react";
 import {
+  selectAllVideoSortType,
+  selectChannelOverview,
   selectPageNumber,
   selectSortType,
   selectTotalPage,
-  youtubeAction,
   selectYoutubeObject,
-  selectChannelOverview,
-  selectAllVideoSortType,
+  youtubeAction,
 } from "@store/index";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

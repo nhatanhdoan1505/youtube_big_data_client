@@ -66,22 +66,22 @@ const SortChannels: NextPageWithLayout<
         </Text>
         <HStack>
           <LinkMenuItem
-            href="/topList/channel/views/"
+            href="/topList/channel/views"
             title="Most Views"
             type="views"
           />
           <LinkMenuItem
-            href="/topList/channel/subscribe/"
+            href="/topList/channel/subscribe"
             title="Most Subscribers"
             type="subscribe"
           />
           <LinkMenuItem
-            href="/topList/channel/numberVideos/"
+            href="/topList/channel/numberVideos"
             title="Most Number Videos"
             type="numberVideos"
           />
           <LinkMenuItem
-            href="/topList/channel/gapSubscribes/"
+            href="/topList/channel/gapSubscribes"
             title="Most Increased Subscribers"
             type="gapSubscribes"
           />
@@ -91,7 +91,7 @@ const SortChannels: NextPageWithLayout<
             type="gapViews"
           />
           <LinkMenuItem
-            href="/topList/channel/gapNumberVideos/"
+            href="/topList/channel/gapNumberVideos"
             title="Most Increased Videos"
             type="gapNumberVideos"
           />

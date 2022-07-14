@@ -1,12 +1,11 @@
 import { videoApi } from "@api/index";
 import { useAppDispatch } from "@app/index";
-import { Box, VStack, Text, Select, Divider } from "@chakra-ui/react";
+import { Box, Divider, Select, Text, VStack } from "@chakra-ui/react";
 import { useVideoViewsStatistic } from "@hook/index";
 import { youtubeAction } from "@store/index";
 import { beautyNumberDisplay } from "@utils/index";
 import { useEffect, useState } from "react";
-import { VideoViewStatisticChart } from ".";
-import { TableVideo } from ".";
+import { TableVideo, VideoViewStatisticChart } from ".";
 
 export function VideoViewsStatistic() {
   const { videoViewsStatistic } = useVideoViewsStatistic();

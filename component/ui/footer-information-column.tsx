@@ -1,9 +1,8 @@
-import { GridItem, Grid, VStack, Text, HStack } from "@chakra-ui/react";
-import { Icon } from "@chakra-ui/react";
+import { Grid, GridItem, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import {
   AiFillTwitterCircle,
   AiOutlineFacebook,
-  AiOutlineInstagram,
+  AiOutlineInstagram
 } from "react-icons/ai";
 
 export function FooterInformationColumn() {

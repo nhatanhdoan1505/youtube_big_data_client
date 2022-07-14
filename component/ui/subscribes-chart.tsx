@@ -13,10 +13,8 @@ export function SubscribeChart({
 }: ISubscribesChartProps) {
   return (
     <LineChart
-      data1={subscribesHistory}
-      data2={gapSubscribesHistory}
-      yLabel1="Subscribes"
-      yLabel2="Increase subscribes"
+      data={[subscribesHistory,gapSubscribesHistory]}
+      yLabel={["Subscribes","Increase subscribes"]}
       xLabel={date}
     />
   );

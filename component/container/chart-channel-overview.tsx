@@ -8,14 +8,13 @@ import {
   ViewChart,
 } from "@component/ui";
 import { useChannelTags } from "@hook/index";
-import { selectChannelOverview, youtubeAction } from "@store/index";
+import { selectChannelOverview } from "@store/index";
 import {
   beautyNumberDisplay,
   optimizeNumberVideosDataForChart,
   optimizeSubscribesDataForChart,
   optimizeViewDataForChart,
 } from "@utils/index";
-import { useEffect } from "react";
 
 export function ChartChannelOverview() {
   const channelOverviewSelector = useAppSelector(selectChannelOverview);

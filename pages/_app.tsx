@@ -1,6 +1,6 @@
 import { store } from "@app/index";
 import { ChakraProvider } from "@chakra-ui/react";
-import { EmptyLayout } from "@layout/EmptyLayout";
+import { EmptyLayout } from "@layout/empty-layout";
 import { AppPropsWithLayout } from "@models/index";
 import { Provider } from "react-redux";
 import "../styles/globals.css";

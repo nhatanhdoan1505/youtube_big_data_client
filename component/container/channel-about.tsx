@@ -1,13 +1,12 @@
 import { useAppSelector } from "@app/index";
 import {
-  Text,
+  Badge,
+  Box,
   Grid,
   GridItem,
-  HStack,
-  VStack,
-  Badge,
   SimpleGrid,
-  Box,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import { selectChannelOverview } from "@store/index";
 import { formatChannelTags } from "@utils/index";

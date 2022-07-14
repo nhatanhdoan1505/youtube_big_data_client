@@ -25,6 +25,7 @@ function* updateUserProfile(action: PayloadAction<IUserPayload>) {
     if (res) {
       const userProfile = yield call(userApi.getUserProfile, {});
       yield put(userAction.setUserProfile({ userProfile }));
+      yield put(userAction.setIsFirst({ isFirst: true }));
     }
   } catch (error) {
     console.log(error);
@@ -35,6 +36,7 @@ function* getUserProfile(action: PayloadAction<IUserPayload>) {
   try {
     const userProfile = yield call(userApi.getUserProfile, {});
     yield put(userAction.setUserProfile({ userProfile }));
+    yield put(userAction.setIsFirst({ isFirst: true }));
   } catch (error) {
     console.log(error);
   }

@@ -1,4 +1,4 @@
-import { SimpleGrid, GridItem, Box } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import { HotChannelBase, HotVideoBase } from "@component/ui";
 import { useHotBase } from "@hook/index";
 import { HotElement } from ".";
@@ -15,7 +15,7 @@ export function HotTable() {
       px={2}
       borderRadius="8px"
       spacing={3}
-      minChildWidth='500px'
+      minChildWidth="500px"
     >
       <Box>
         <HotElement title="Hot Now Video" href="/topList/video/gapViews/1">

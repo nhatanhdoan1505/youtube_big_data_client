@@ -1,7 +1,9 @@
+import { useAppDispatch, useAppSelector } from "@app/index";
 import {
   Grid,
   GridItem,
   HStack,
+  Icon,
   Image,
   Link,
   Modal,
@@ -14,14 +16,11 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { ISortVideo } from "@models/index";
 import { ModalVideoInformation } from "@component/ui";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@app/index";
+import { ISortVideo } from "@models/index";
 import { selectIsShowModal, youtubeAction } from "@store/index";
-import { AiFillRightCircle } from "react-icons/ai";
-import { Icon } from "@chakra-ui/react";
 import { formatDate, removeHtmlEntities } from "@utils/index";
+import { AiFillRightCircle } from "react-icons/ai";
 
 export function ModalVideo(videoInformation: ISortVideo) {
   const { isOpen, onOpen, onClose } = useDisclosure();

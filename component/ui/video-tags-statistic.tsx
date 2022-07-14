@@ -1,21 +1,20 @@
 import { useAppDispatch } from "@app/index";
 import {
-  Text,
-  VStack,
   Divider,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import { useVideoTagsStatistic } from "@hook/index";
 import { youtubeAction } from "@store/index";
 import { beautyNumberDisplay } from "@utils/index";
-import { useEffect, useState } from "react";
-import { TableVideo } from ".";
-import { TagsStatisticChart } from ".";
 import * as _ from "lodash";
+import { useEffect, useState } from "react";
+import { TableVideo, TagsStatisticChart } from ".";
 
 export function VideoTagsStatistic() {
   const { videoTagsStatistic } = useVideoTagsStatistic();
@@ -48,7 +47,7 @@ export function VideoTagsStatistic() {
       }, 1000);
       return;
     }
-    
+
     dispatch(
       youtubeAction.preSetVideoSortList({
         type: "tagsTrend",

@@ -1,17 +1,17 @@
 import { useAppDispatch, useAppSelector } from "@app/index";
 import {
+  Badge,
   HStack,
+  Image,
+  Link,
+  Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
-  Image,
   VStack,
-  Text,
-  Link,
-  Badge,
-  Table,
 } from "@chakra-ui/react";
 import { ISortVideo } from "@models/index";
 import {

@@ -1,13 +1,12 @@
 import { useAppSelector } from "@app/index";
-import { VStack, Text, Box } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import {
   ChannelSubscriberStatistic,
   ChannelUploadStatistic,
   DurationStatistic,
-  TableVideo,
+  VideoTagsStatistic,
   VideoViewsStatistic,
 } from "@component/ui";
-import { VideoTagsStatistic } from "@component/ui";
 import { selectSortType } from "@store/index";
 import { TableContainerFull } from ".";
 

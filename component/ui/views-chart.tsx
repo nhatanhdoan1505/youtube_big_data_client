@@ -13,10 +13,8 @@ export function ViewChart({
 }: IViewsChartProps) {
   return (
     <LineChart
-      data1={viewsHistory}
-      data2={gapViewsHistory}
-      yLabel1="Views"
-      yLabel2="Increase views"
+      data={[viewsHistory, gapViewsHistory]}
+      yLabel={["Views", "Increase views"]}
       xLabel={date}
     />
   );

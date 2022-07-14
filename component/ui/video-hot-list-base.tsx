@@ -1,16 +1,16 @@
 import { useAppDispatch, useAppSelector } from "@app/index";
 import {
+  Button,
   HStack,
+  Image,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
-  Image,
-  Text,
   VStack,
-  Button,
 } from "@chakra-ui/react";
 import { ModalVideo } from "@component/container";
 import { useVideoHotListBase } from "@hook/index";

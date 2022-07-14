@@ -1,8 +1,11 @@
-import { Grid, GridItem, VStack, Text } from "@chakra-ui/react";
+import { Grid, GridItem, Text, VStack } from "@chakra-ui/react";
 import { ISortVideo } from "@models/index";
-import { beautyNumberDisplay } from "@utils/index";
+import {
+  beautyNumberDisplay,
+  formatDuration,
+  optimizeViewDataForChart,
+} from "@utils/index";
 import { ViewChart } from ".";
-import { optimizeViewDataForChart, formatDuration } from "@utils/index";
 
 export function ModalVideoInformation({
   views,

@@ -1,8 +1,7 @@
-import { Text, SimpleGrid, VStack } from "@chakra-ui/react";
-import { ISortChannel } from "@models/index";
-import { beautyNumberDisplay, formatDate, formatDuration } from "@utils/index";
 import { useAppSelector } from "@app/index";
+import { SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { selectChannelOverview } from "@store/index";
+import { beautyNumberDisplay, formatDate, formatDuration } from "@utils/index";
 
 export function ChannelInformationHorizontal() {
   const channelOverviewSelector = useAppSelector(selectChannelOverview);

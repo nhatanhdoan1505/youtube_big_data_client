@@ -1,5 +1,5 @@
-import { Grid, GridItem, VStack, Text, Box, Divider } from "@chakra-ui/react";
 import { useAppSelector } from "@app/index";
+import { Box, Grid, GridItem, Text, VStack } from "@chakra-ui/react";
 import { selectChannelOverview } from "@store/index";
 
 export function ChannelRankHorizontal() {

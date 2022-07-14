@@ -1,7 +1,7 @@
+import { Search2Icon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/input";
 import { HStack } from "@chakra-ui/layout";
-import React, { ReactElement } from "react";
-import { Search2Icon } from "@chakra-ui/icons";
+import { ReactElement } from "react";
 
 interface Props {}
 
