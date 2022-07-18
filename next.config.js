@@ -9,5 +9,6 @@ module.exports = {
   env: {
     STRIPE_PUBLIC:
       "pk_test_51LDPUsJ8XE3hrjLvVJKpRe0BlfyX6gtzmLhNjyMdE4GPnTHRnNppjzd7IlP62VSFk8rBXqlp3fdgsamw1eMOywPD00fp2DswNO",
+    SERVER_ADDRESS: "207.148.78.192",
   },
 };
