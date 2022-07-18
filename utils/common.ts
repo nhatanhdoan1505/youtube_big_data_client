@@ -101,7 +101,7 @@ export const optimizeViewDataForChart = (video: {
   viewsList =
     viewsList.length >= 30 ? viewsList.slice(viewsList.length - 29) : viewsList;
   let gapViewsHistory = viewsList
-    .map((v, index) => {
+    .map((index) => {
       if (index === viewsList.length - 1) return -1;
       return viewsList[index + 1] - viewsList[index];
     })
@@ -143,7 +143,7 @@ export const optimizeSubscribesDataForChart = (channel: {
       ? subscribesList.slice(subscribesList.length - 29)
       : subscribesList;
   let gapSubscribesHistory = subscribesList
-    .map((v, index) => {
+    .map((index) => {
       if (index === subscribesList.length - 1) return -1;
       return subscribesList[index + 1] - subscribesList[index];
     })
@@ -172,7 +172,7 @@ export const optimizeNumberVideosDataForChart = (channel: {
       ? numberVideosList.slice(numberVideosList.length - 29)
       : numberVideosList;
   let gapNumberVideosHistory = numberVideosList
-    .map((v, index) => {
+    .map((index) => {
       if (index === numberVideosList.length - 1) return -1;
       return numberVideosList[index + 1] - numberVideosList[index];
     })
@@ -222,7 +222,7 @@ export const range = (start: number, end: number) => {
 };
 
 export const removeHtmlEntities = (str: string) => {
-  Object.keys(HTML_ENTITIES).map((e) => {
+  Object.keys(HTML_ENTITIES).forEach((e) => {
     str = str.replace(new RegExp(e, "g"), HTML_ENTITIES[e]);
   });
   return str;
@@ -324,9 +324,9 @@ export const splitTextByKeyword = ({
 };
 
 export const setCookie = (name, value, days = null) => {
-  var expires = "";
+  let expires = "";
   if (days) {
-    var date = new Date();
+    let date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = "; expires=" + date.toUTCString();
   }
@@ -334,10 +334,9 @@ export const setCookie = (name, value, days = null) => {
 };
 
 export const getCookie = (name, cookie) => {
-  var nameEQ = name + "=";
-  var ca = cookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
+  let nameEQ = name + "=";
+  let ca = cookie.split(";");
+  for (let c of ca) {
     while (c.charAt(0) == " ") c = c.substring(1, c.length);
     if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
   }

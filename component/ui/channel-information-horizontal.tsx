@@ -6,7 +6,7 @@ import { beautyNumberDisplay, formatDate, formatDuration } from "@utils/index";
 export function ChannelInformationHorizontal() {
   const channelOverviewSelector = useAppSelector(selectChannelOverview);
 
-  const render = channelOverviewSelector ? (
+  return channelOverviewSelector ? (
     <SimpleGrid
       spacing="40px"
       columns={7}
@@ -76,5 +76,4 @@ export function ChannelInformationHorizontal() {
       </VStack>
     </SimpleGrid>
   ) : null;
-  return render;
 }

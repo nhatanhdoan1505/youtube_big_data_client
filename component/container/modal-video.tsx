@@ -23,7 +23,7 @@ import { formatDate, removeHtmlEntities } from "@utils/index";
 import { AiFillRightCircle } from "react-icons/ai";
 
 export function ModalVideo(videoInformation: ISortVideo) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onClose } = useDisclosure();
   const isShowModalSelector = useAppSelector(selectIsShowModal);
   const dispatch = useAppDispatch();
 

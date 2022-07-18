@@ -19,7 +19,6 @@ import {
 export function ChartChannelOverview() {
   const channelOverviewSelector = useAppSelector(selectChannelOverview);
   const { channelTagList } = useChannelTags();
-  const dispatch = useAppDispatch();
 
   return (
     <VStack w="100%">

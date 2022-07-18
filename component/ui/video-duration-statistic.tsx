@@ -33,7 +33,7 @@ export function DurationStatistic() {
     }
   }, [videoDurationStatistic]);
 
-  const render = videoDurationStatistic ? (
+  return videoDurationStatistic ? (
     <VStack w="100%">
       <VStack w="100%">
         <VStack w="100%" alignItems="start" m={5} px={6}>
@@ -65,5 +65,4 @@ export function DurationStatistic() {
       </VStack>
     </VStack>
   ) : null;
-  return render;
 }

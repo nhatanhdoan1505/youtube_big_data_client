@@ -34,11 +34,10 @@ const AdminPage: NextPageWithLayout<
   return render;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  req,
-}) => {
-  const token = getCookie("token", req.headers.cookie) as string;
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const token = req.headers.cookie
+    ? (getCookie("token", req.headers.cookie) as string)
+    : ("" as string);
   const userProfile = await userApi.getUserProfile({
     config: { headers: { Authorization: token } },
   });

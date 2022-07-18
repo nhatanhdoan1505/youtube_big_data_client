@@ -40,32 +40,12 @@ export function Login() {
   const firebaseUserSelector = useAppSelector(selectFirebaseUser);
   const [isUserSignIn, setIsUserSignIn] = useState<boolean>(false);
 
-  // const setToken = async (user: FirebaseUser) => {
-  //   try {
-  //     const token = await getIdToken(user, true);
-  //     localStorage.setItem("token", token);
-  //     setCookie("token", token);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   onAuthStateChanged(auth, (firebaseUser) => {
     if (firebaseUser) {
       setIsUserSignIn(true);
-      // if (!firebaseUserSelector) {
-      //   dispatch(userAction.setIsUpdateUser({ isUpdateUser: false }));
-      //   dispatch(
-      //     userAction.setFirebaseUser({
-      //       firebaseUser,
-      //     })
-      //   );
-      //   setToken(firebaseUser);
-      //   router.push("/");
-      // }
       return router.push("/");
     }
-    // setIsUserSignIn(false);
   });
 
   const signInWithGoogle = async () => {
@@ -89,24 +69,6 @@ export function Login() {
       console.log(error);
     }
   };
-
-  // useEffect(() => {
-  //   if (firebaseUserSelector) {
-  //     setCurrentUid(firebaseUserSelector.uid!);
-  //   }
-  // }, [firebaseUserSelector]);
-
-  // useEffect(() => {
-  //   if (firebaseUserSelector && currentUid && !isUpdateUserSelector) {
-  //     const { uid, displayName, email, photoURL } = firebaseUserSelector;
-  //     dispatch(
-  //       userAction.updateUser({
-  //         user: { uid, name: displayName!, email: email!, photoUrl: photoURL! },
-  //       })
-  //     );
-  //     dispatch(userAction.setIsUpdateUser({ isUpdateUser: true }));
-  //   }
-  // }, [firebaseUserSelector, currentUid]);
 
   return (
     <HStack

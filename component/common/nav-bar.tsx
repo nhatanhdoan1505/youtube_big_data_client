@@ -43,7 +43,6 @@ export function WithSubNavigation() {
   const [currentUid, setCurrentUid] = useState<string>(null!);
   const isUpdateUserSelector = useAppSelector(selectIsUpdateUser);
   const userProfileSelector = useAppSelector(selectUserProfile);
-  const [isSetToken, setIsSetToken] = useState<boolean>(false);
   const setToken = async (user: FirebaseUser) => {
     try {
       const token = await getIdToken(user, true);

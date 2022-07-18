@@ -1,7 +1,6 @@
-import { channelApi } from "./../api/channelApi";
-import { videoApi } from "@api/index";
 import * as randomColor from "randomcolor";
 import { useEffect, useState } from "react";
+import { channelApi } from "./../api/channelApi";
 import { IChannelSubscriberStatistic } from "./../models/youtube";
 
 export interface IChannelSubscriberStatisticForChart {
@@ -19,7 +18,7 @@ export const useChannelSubscriberStatistic = () => {
   const optimizeChannelSubscriberStatistic = (
     channelSubscriberStatistic: IChannelSubscriberStatistic
   ): IChannelSubscriberStatisticForChart => {
-    let subscriber = Object.keys(channelSubscriberStatistic) as string[];
+    let subscriber = Object.keys(channelSubscriberStatistic);
     let subscriberGap = [...subscriber].map((c) => +c);
     const channelCount = Object.values(channelSubscriberStatistic) as number[];
     let totalChannelCount = channelCount.reduce((a, b) => +a + +b, 0);
@@ -35,10 +34,10 @@ export const useChannelSubscriberStatistic = () => {
           : `~${+subscriber[i]}`
       } Subscribers (${percentage[i].toFixed(2)}%)`;
     }
-    let color = subscriber.map((v) =>
+    let color = subscriber.map(() =>
       randomColor({ luminosity: "bright", format: "rgb" })
     );
-    
+
     return { channelCount, percentage, color, subscriber, subscriberGap };
   };
 

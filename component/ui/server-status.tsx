@@ -23,7 +23,7 @@ export function ServerStatus() {
     dispatch(adminAction.setLoading({ loading: !serverStatus.ready }));
   }, [serverStatus]);
 
-  const render = serverStatus ? (
+  return serverStatus ? (
     <VStack>
       <HStack w="100%" justifyContent="flex-start">
         <Text fontWeight="bold">
@@ -52,5 +52,4 @@ export function ServerStatus() {
       ) : null}
     </VStack>
   ) : null;
-  return render;
 }

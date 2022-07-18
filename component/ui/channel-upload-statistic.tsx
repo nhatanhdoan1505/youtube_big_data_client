@@ -57,56 +57,53 @@ export function ChannelUploadStatistic() {
     );
   }, [averageUploadScope, averageSubscriberScope]);
 
-  const render =
-    channelUploadStatistic && channelUploadStatistic.length > 0 ? (
-      <VStack>
-        <SimpleGrid columns={3} spacing={10}>
-          {channelUploadStatistic.map((c) => (
-            <ChannelUploadStatisticChart {...c} key={c.videoCount[0]} />
-          ))}
-        </SimpleGrid>
-        <Divider />
-        <Divider />
-        <>
-          <VStack w="100%" mt={5}>
-            <HStack>
-              <Select
-                placeholder={`${beautyNumberDisplay("50000")} Subscribers`}
-                onChange={(e) => {
-                  if (+e.target.value === averageSubscriberScope[0]) return;
-                  setAverageSubscriberScope([+e.target.value]);
-                }}
-              >
-                {SUBSCRIBER_SCOPE.map((v) => (
+  return channelUploadStatistic && channelUploadStatistic.length > 0 ? (
+    <VStack>
+      <SimpleGrid columns={3} spacing={10}>
+        {channelUploadStatistic.map((c) => (
+          <ChannelUploadStatisticChart {...c} key={c.videoCount[0]} />
+        ))}
+      </SimpleGrid>
+      <Divider />
+      <Divider />
+      <>
+        <VStack w="100%" mt={5}>
+          <HStack>
+            <Select
+              placeholder={`${beautyNumberDisplay("50000")} Subscribers`}
+              onChange={(e) => {
+                if (+e.target.value === averageSubscriberScope[0]) return;
+                setAverageSubscriberScope([+e.target.value]);
+              }}
+            >
+              {SUBSCRIBER_SCOPE.map((v) => (
+                <option value={v} key={v}>
+                  {beautyNumberDisplay(v.toString())} Subscribers
+                </option>
+              ))}
+              <option value={3000001}>Over 3,000,000 Subscribers</option>
+            </Select>
+            <Select
+              placeholder={`~${averageUploadScope[0]}`}
+              onChange={(e) => {
+                if (+e.target.value === averageSubscriberScope[0]) return;
+                setAverageSubscriberScope([+e.target.value]);
+              }}
+            >
+              {UPLOAD_SCOPE.map((v, index) =>
+                index === UPLOAD_SCOPE.length - 1 ? (
                   <option value={v} key={v}>
-                    {beautyNumberDisplay(v.toString())} Subscribers
+                    {10}~
                   </option>
-                ))}
-                <option value={3000001}>Over 3,000,000 Subscribers</option>
-              </Select>
-              <Select
-                placeholder={`~${averageUploadScope[0]}`}
-                onChange={(e) => {
-                  if (+e.target.value === averageSubscriberScope[0]) return;
-                  setAverageSubscriberScope([+e.target.value]);
-                }}
-              >
-                {UPLOAD_SCOPE.map((v, index) =>
-                  index === UPLOAD_SCOPE.length - 1 ? (
-                    <option value={v} key={v}>
-                      {10}~
-                    </option>
-                  ) : (
-                    <option value={v}>~{v}</option>
-                  )
-                )}
-              </Select>
-            </HStack>
-            <TableChannel />
-          </VStack>
-        </>
-      </VStack>
-    ) : null;
-
-  return render;
+                ) : (
+                  <option value={v}>~{v}</option>
+                )
+              )}
+            </Select>
+          </HStack>
+          <TableChannel />
+        </VStack>
+      </>
+    </VStack>
+  ) : null;
 }

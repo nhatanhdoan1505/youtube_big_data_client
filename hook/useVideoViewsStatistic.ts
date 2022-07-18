@@ -34,7 +34,7 @@ export const useVideoViewsStatistic = () => {
           : `~${+views[i]}`
       } Views (${percentage[i].toFixed(2)}%)`;
     }
-    let color = views.map((v) =>
+    let color = views.map(() =>
       randomColor({ luminosity: "bright", format: "rgb" })
     );
     return { videoCount, percentage, color, views, viewsGap };

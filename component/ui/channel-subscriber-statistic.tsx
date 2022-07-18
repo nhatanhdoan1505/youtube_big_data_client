@@ -52,83 +52,81 @@ export function ChannelSubscriberStatistic() {
     }
   }, [subscribeScope]);
 
-  const render =
-    channelSubscriberStatistic && averageChannelSubscriber ? (
+  return channelSubscriberStatistic && averageChannelSubscriber ? (
+    <VStack w="100%">
+      <Text fontWeight="medium" my={5}>
+        Average -{" "}
+        <Text display="inline" color="red.400" fontWeight="light">
+          {beautyNumberDisplay(averageChannelSubscriber.toString())}
+        </Text>{" "}
+        subscribers
+      </Text>
+      <Box maxWidth="600px" w="100%">
+        <ChannelSubscriberStatisticChart
+          channelSubscriberStatistic={channelSubscriberStatistic}
+        />
+      </Box>
+      <Divider />
+      <Divider />
       <VStack w="100%">
-        <Text fontWeight="medium" my={5}>
-          Average -{" "}
-          <Text display="inline" color="red.400" fontWeight="light">
-            {beautyNumberDisplay(averageChannelSubscriber.toString())}
-          </Text>{" "}
-          subscribers
-        </Text>
-        <Box maxWidth="600px" w="100%">
-          <ChannelSubscriberStatisticChart
-            channelSubscriberStatistic={channelSubscriberStatistic}
-          />
-        </Box>
-        <Divider />
-        <Divider />
-        <VStack w="100%">
-          {subscribeScope.length > 0 && (
-            <VStack>
-              <Text fontWeight="bold" mt={10}>
-                Top Channel Has Subscribers{" "}
-                {subscribeScope[0] ===
-                channelSubscriberStatistic.subscriberGap[
-                  channelSubscriberStatistic.subscriberGap.length - 1
-                ]
-                  ? "Larger"
-                  : "Average"}{" "}
-                of{" "}
-                <Text display="inline" color="red.400">
-                  {subscribeScope[0] === 50000001
-                    ? "5,000,000"
-                    : beautyNumberDisplay(subscribeScope[0].toString())}
-                  {subscribeScope[1]
-                    ? ` ~ ${beautyNumberDisplay(subscribeScope[1].toString())}`
-                    : null}
-                </Text>{" "}
-              </Text>
-              <Select
-                placeholder={`${beautyNumberDisplay(
-                  subscribeScope[0].toString()
-                )} subscribers`}
-                onChange={(e) => {
-                  if (+e.target.value === subscribeScope[0]) return;
-                  if (
-                    +e.target.value ===
-                    channelSubscriberStatistic.subscriberGap[
-                      channelSubscriberStatistic.subscriberGap.length - 1
-                    ]
-                  ) {
-                    setSubscribeScope([+e.target.value]);
-                    return;
-                  }
-                  setSubscribeScope([
-                    +e.target.value,
-                    channelSubscriberStatistic.subscriberGap[
-                      channelSubscriberStatistic.subscriberGap.indexOf(
-                        +e.target.value
-                      ) + 1
-                    ],
-                  ]);
-                }}
-              >
-                {channelSubscriberStatistic.subscriberGap.map((v) => (
-                  <option value={v} key={v}>
-                    {v === 50000001
-                      ? "Over 5,000,000"
-                      : beautyNumberDisplay(v.toString())}{" "}
-                    Subscribers
-                  </option>
-                ))}
-              </Select>
-            </VStack>
-          )}
-          <TableChannel />
-        </VStack>
+        {subscribeScope.length > 0 && (
+          <VStack>
+            <Text fontWeight="bold" mt={10}>
+              Top Channel Has Subscribers{" "}
+              {subscribeScope[0] ===
+              channelSubscriberStatistic.subscriberGap[
+                channelSubscriberStatistic.subscriberGap.length - 1
+              ]
+                ? "Larger"
+                : "Average"}{" "}
+              of{" "}
+              <Text display="inline" color="red.400">
+                {subscribeScope[0] === 50000001
+                  ? "5,000,000"
+                  : beautyNumberDisplay(subscribeScope[0].toString())}
+                {subscribeScope[1]
+                  ? ` ~ ${beautyNumberDisplay(subscribeScope[1].toString())}`
+                  : null}
+              </Text>{" "}
+            </Text>
+            <Select
+              placeholder={`${beautyNumberDisplay(
+                subscribeScope[0].toString()
+              )} subscribers`}
+              onChange={(e) => {
+                if (+e.target.value === subscribeScope[0]) return;
+                if (
+                  +e.target.value ===
+                  channelSubscriberStatistic.subscriberGap[
+                    channelSubscriberStatistic.subscriberGap.length - 1
+                  ]
+                ) {
+                  setSubscribeScope([+e.target.value]);
+                  return;
+                }
+                setSubscribeScope([
+                  +e.target.value,
+                  channelSubscriberStatistic.subscriberGap[
+                    channelSubscriberStatistic.subscriberGap.indexOf(
+                      +e.target.value
+                    ) + 1
+                  ],
+                ]);
+              }}
+            >
+              {channelSubscriberStatistic.subscriberGap.map((v) => (
+                <option value={v} key={v}>
+                  {v === 50000001
+                    ? "Over 5,000,000"
+                    : beautyNumberDisplay(v.toString())}{" "}
+                  Subscribers
+                </option>
+              ))}
+            </Select>
+          </VStack>
+        )}
+        <TableChannel />
       </VStack>
-    ) : null;
-  return render;
+    </VStack>
+  ) : null;
 }

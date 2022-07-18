@@ -47,7 +47,7 @@ export function BarChart({ data1, data2, label }: IChartProp) {
               //     text: yLabel,
               //   },
               ticks: {
-                callback: function (value, index, ticks) {
+                callback: function (value) {
                   return +value >= 1000000000
                     ? `${(+value / 1000000000).toFixed(1)}B`
                     : +value >= 1000000

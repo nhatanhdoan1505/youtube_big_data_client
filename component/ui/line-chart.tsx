@@ -63,7 +63,7 @@ export function LineChart({ data, xLabel, yLabel }: IChartProp) {
               type: "logarithmic",
               ticks: {
                 // Include a dollar sign in the ticks
-                callback: function (value, index, ticks) {
+                callback: function (value) {
                   return +value >= 1000000000
                     ? `${(+value / 1000000000).toFixed(1)}B`
                     : +value >= 1000000

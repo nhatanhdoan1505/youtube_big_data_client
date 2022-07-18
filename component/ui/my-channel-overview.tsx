@@ -6,7 +6,7 @@ import { ChannelInformationHorizontal, ChannelRankHorizontal } from ".";
 
 export function MyChannelOverview() {
   const channelOverviewSelector = useAppSelector(selectChannelOverview);
-  const render = channelOverviewSelector ? (
+  return channelOverviewSelector ? (
     <VStack>
       <HStack justifyContent="flex-start" alignItems="center" w="100%" py={5}>
         <Image
@@ -28,5 +28,4 @@ export function MyChannelOverview() {
       <ChartChannelOverview />
     </VStack>
   ) : null;
-  return render;
 }

@@ -14,7 +14,6 @@ export function ModalVideoInformation({
   commentCount,
   duration,
   gapViews,
-  title,
   date,
 }: ISortVideo) {
   return (

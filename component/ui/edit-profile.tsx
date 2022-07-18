@@ -33,7 +33,6 @@ import { PremiumModal } from ".";
 
 export function EditProfile() {
   const userProfileSelector = useAppSelector(selectUserProfile);
-  const userLoadingSelector = useAppSelector(selectUserLoading);
 
   const [newChannel, setNewChannel] = useState<string>("");
   const [isCompetitor, setIsCompetitor] = useState<boolean>(false);
@@ -97,7 +96,7 @@ export function EditProfile() {
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const render = userProfileSelector ? (
+  return userProfileSelector ? (
     <VStack w="100%">
       <HStack w="100%" boxShadow="base" borderRadius="8px" p={3}>
         <Image
@@ -295,5 +294,4 @@ export function EditProfile() {
       </Modal>
     </VStack>
   ) : null;
-  return render;
 }

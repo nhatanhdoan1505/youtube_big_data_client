@@ -5,7 +5,7 @@ import { ReactElement } from "react";
 
 interface Props {}
 
-export function SearchBox({}: Props): ReactElement {
+export function SearchBox(): ReactElement {
   return (
     <>
       <HStack backgroundColor="white" borderRadius="base" px={2}>

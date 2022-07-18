@@ -96,7 +96,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
   req,
 }) => {
-  const token = getCookie("token", req.headers.cookie) as string;
+  const token = req.headers.cookie
+    ? (getCookie("token", req.headers.cookie) as string)
+    : ("" as string);
   const { pageNumber, type } = query;
   if (!+pageNumber!) return { notFound: true };
   if (
@@ -108,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const { totalPage } = await videoApi.getTotalSortVideos({
     config: { headers: { Authorization: token } },
   });
-  
+
   if (+pageNumber! > totalPage) return { notFound: true };
 
   return {
