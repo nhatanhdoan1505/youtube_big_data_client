@@ -73,7 +73,7 @@ export function WithSubNavigation() {
 
   useEffect(() => {
     if (firebaseUserSelector) {
-      setCurrentUid(firebaseUserSelector.uid!);
+      setCurrentUid(firebaseUserSelector.uid);
     }
   }, [firebaseUserSelector]);
 

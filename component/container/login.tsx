@@ -8,16 +8,13 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FirebaseUser } from "@models/user";
 import {
   selectFirebaseUser,
   selectIsUpdateUser,
   userAction,
 } from "@store/user";
-import { setCookie } from "@utils/common";
 import {
   FacebookAuthProvider,
-  getIdToken,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
@@ -39,7 +36,6 @@ export function Login() {
   const [currentUid, setCurrentUid] = useState<string>(null!);
   const firebaseUserSelector = useAppSelector(selectFirebaseUser);
   const [isUserSignIn, setIsUserSignIn] = useState<boolean>(false);
-
 
   onAuthStateChanged(auth, (firebaseUser) => {
     if (firebaseUser) {

@@ -33,43 +33,16 @@ const MyPage: NextPageWithLayout<
   isExpired: boolean;
 }) => {
   const dispatch = useAppDispatch();
-  const firebaseUserSelector = useAppSelector(selectFirebaseUser);
   const userProfileSelector = useAppSelector(selectUserProfile);
   const [isActiveChannel, setIsActiveChannel] = useState<boolean>(false);
   const isFirstSelector = useAppSelector(selectIsFirst);
-
-  const [isSignIn, setIsSignIn] = useState<boolean>(false);
-  const [waiter, setWaiter] = useState<any>(null!);
   const router = useRouter();
 
   useEffect(() => {
     dispatch(youtubeAction.setYoutubeObject({ youtubeObject: null! }));
     dispatch(userAction.setUserProfile({ userProfile }));
+    dispatch(youtubeAction.setType({ type }));
   }, []);
-
-  useEffect(() => {
-    if (firebaseUserSelector) {
-      setIsSignIn(true);
-      clearTimeout(waiter);
-      return;
-    }
-    setWaiter(
-      setTimeout(() => {
-        if (firebaseUserSelector) {
-          setIsSignIn(true);
-          return;
-        }
-        router.push("/");
-      }, 5000)
-    );
-  }, [firebaseUserSelector]);
-
-  useEffect(() => {
-    if (isSignIn) {
-      dispatch(youtubeAction.setType({ type }));
-      dispatch(youtubeAction.setYoutubeObject({ youtubeObject: null! }));
-    }
-  }, [isSignIn]);
 
   useEffect(() => {
     if (isExpired) {
@@ -110,9 +83,9 @@ const MyPage: NextPageWithLayout<
     ) {
       getChannelOverview();
     }
-  }, [isFirstSelector]);
+  }, [isFirstSelector, userProfileSelector]);
 
-  return isSignIn && !isExpired ? (
+  return  !isExpired ? (
     <>
       <Container maxWidth="1024px" p={0}>
         <Header title={`YoutubeData - Member`} />

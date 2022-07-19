@@ -77,7 +77,7 @@ export const formatDate = (dateString: string, full = true) => {
 };
 
 export const optimizeVideoData = (video: IVideo[]) => {
-  const videoData = video.map((v) => {
+  return video.map((v) => {
     let { views } = v;
     let gapViews =
       views.split("|").length === 1
@@ -89,7 +89,6 @@ export const optimizeVideoData = (video: IVideo[]) => {
 
     return { ...v, views, gapViews };
   });
-  return videoData;
 };
 
 export const optimizeViewDataForChart = (video: {
@@ -99,9 +98,9 @@ export const optimizeViewDataForChart = (video: {
   let { viewsHistory, date } = video;
   let viewsList = viewsHistory.split("|").map((v) => +v);
   viewsList =
-    viewsList.length >= 30 ? viewsList.slice(viewsList.length - 29) : viewsList;
+    viewsList.length >= 30 ? viewsList.slice(viewsList.length - 30) : viewsList;
   let gapViewsHistory = viewsList
-    .map((index) => {
+    .map((_v, index) => {
       if (index === viewsList.length - 1) return -1;
       return viewsList[index + 1] - viewsList[index];
     })
@@ -112,7 +111,7 @@ export const optimizeViewDataForChart = (video: {
     .map((d) => formatDate(d, false))
     .slice(1);
 
-  return { viewsHistory: viewsList, gapViewsHistory, date: dateList };
+  return { viewsHistory: viewsList.slice(1), gapViewsHistory, date: dateList };
 };
 
 export const optimizeChannelCompetitor = ({
@@ -194,31 +193,10 @@ export const getMinAndMax = (list: number[]) => {
   return { min: _.min(list), max: _.max(list) };
 };
 
-export const sortVideo = (
-  videoList: IVideo[],
-  sortBy: "gapViews" | "views",
-  isDescending: boolean
-) => {
-  const optimizeVideo = optimizeVideoData(videoList);
-  if (!sortBy.includes("gap")) {
-    const sortChannelData = isDescending
-      ? optimizeVideo.sort((a, b) => +b[sortBy] - +a[sortBy])
-      : optimizeVideo.sort((a, b) => +a[sortBy] - +b[sortBy]);
-    return sortChannelData;
-  }
-  const newVideos = optimizeVideo.filter((c) => c.gapViews === "NEW");
-  const oldVideos = optimizeVideo.filter((c) => c.gapViews !== "NEW");
-
-  const sortChannelData = isDescending
-    ? oldVideos.sort((a, b) => +b[sortBy] - +a[sortBy])
-    : oldVideos.sort((a, b) => +a[sortBy] - +b[sortBy]);
-  return [...sortChannelData, ...newVideos];
-};
-
 export const range = (start: number, end: number) => {
   if (start > end) return [];
   if (start === end) return [start];
-  return Array.from({ length: end + 1 - start }, (v, k) => k + start);
+  return Array.from({ length: end + 1 - start }, (_v, k) => k + start);
 };
 
 export const removeHtmlEntities = (str: string) => {

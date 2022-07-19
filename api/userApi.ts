@@ -1,5 +1,9 @@
-import { IResponse, IUserProfile, IUserProfileResponse } from "@models/index";
-import { IUser } from "@models/index";
+import {
+  IResponse,
+  IUserProfile,
+  IUserProfileResponse,
+  IUser,
+} from "@models/index";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import axiosClient from "./axiosClient";
 
@@ -23,7 +27,7 @@ export const userApi = {
       const url = "/user/profile";
       const userData: AxiosResponse<IResponse<IUserProfileResponse>> =
         await axiosClient.get(url, config);
-  
+
       return userData.data.data.userData;
     } catch (error) {
       return null!;
@@ -41,11 +45,7 @@ export const userApi = {
   }): Promise<boolean> {
     try {
       const url = "/user/profile";
-      const res = await axiosClient.post(
-        url,
-        { channel, competitorChannel },
-        config
-      );
+      await axiosClient.post(url, { channel, competitorChannel }, config);
       return true;
     } catch (error) {
       return false;
