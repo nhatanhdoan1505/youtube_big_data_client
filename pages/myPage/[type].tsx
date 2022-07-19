@@ -78,6 +78,7 @@ const MyPage: NextPageWithLayout<
     };
     if (
       userProfileSelector &&
+      userProfileSelector.channel &&
       userProfileSelector.channel.isAvailable !== false &&
       isFirstSelector
     ) {
@@ -85,7 +86,7 @@ const MyPage: NextPageWithLayout<
     }
   }, [isFirstSelector, userProfileSelector]);
 
-  return  !isExpired ? (
+  return !isExpired ? (
     <>
       <Container maxWidth="1024px" p={0}>
         <Header title={`YoutubeData - Member`} />
