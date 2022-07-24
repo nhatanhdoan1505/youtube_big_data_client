@@ -79,7 +79,8 @@ export function WithSubNavigation() {
 
   useEffect(() => {
     if (firebaseUserSelector && currentUid && !isUpdateUserSelector) {
-      const { uid, displayName, email, photoURL } = firebaseUserSelector;
+      let { uid, displayName, email, photoURL } = firebaseUserSelector;
+      email = email ? email : firebaseUserSelector.providerData[0].email;
       dispatch(
         userAction.updateUser({
           user: { uid, name: displayName!, email: email!, photoUrl: photoURL! },
